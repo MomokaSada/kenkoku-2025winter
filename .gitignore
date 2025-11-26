@@ -1,0 +1,24 @@
+# --- Minecraft Server ---
+# 1. Ignore EVERYTHING inside minecraft_server by default
+minecraft_server/*
+
+# 2. Whitelist (Keep) specific configuration files and folders
+!minecraft_server/plugins/
+!minecraft_server/config/
+!minecraft_server/*.yml
+!minecraft_server/*.properties
+!minecraft_server/*.txt
+!minecraft_server/banned-*.json
+!minecraft_server/ops.json
+!minecraft_server/whitelist.json
+!minecraft_server/usercache.json
+
+# --- Other ---
+mysql/
+.env
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
