@@ -12,6 +12,8 @@ minecraft_server/*
 !minecraft_server/ops.json
 !minecraft_server/whitelist.json
 !minecraft_server/usercache.json
+!minecraft_server/server.properties
+
 
 # --- Other ---
 mysql/
