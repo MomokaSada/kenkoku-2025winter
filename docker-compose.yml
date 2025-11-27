@@ -11,15 +11,21 @@ services:
       MEMORY: "8G"
       OPS: "momoka_sada"
     volumes:
-      - ./minecraft_server:/data
+      - minecraft_data:/data
     restart: unless-stopped
       
   db:
     image: mysql:8.0
     volumes:
-      - ./mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3306:3306"
+
+volumes:
+  minecraft_data:
+    driver: local
+  mysql_data:
+    driver: local
