@@ -24,11 +24,9 @@ minecraft_server/cache/
 minecraft_server/.cache/
 minecraft_server/libraries/
 minecraft_server/versions/
-minecraft_server/config/
 minecraft_server/world*/
 minecraft_server/*.jar
 minecraft_server/usercache.json
-minecraft_server/banned-*.json
 minecraft_server/version_history.json
 minecraft_server/map-color-cache.dat
 minecraft_server/.console_history
@@ -104,9 +102,6 @@ minecraft_server/plugins/Skript/scripts/-- *
 minecraft_server/plugins/MyCommand/commands/examples.yml
 
 # 7. Ignore sensitive configuration files
-minecraft_server/plugins/DiscordSRV/config.yml
-minecraft_server/plugins/DiscordSRV/linking.yml
-minecraft_server/plugins/DiscordSRV/synchronization.yml
-minecraft_server/plugins/CoreProtect/config.yml
+
 minecraft_server/plugins/Geyser-Spigot/extensions/mcxboxbroadcast/cache.json
 minecraft_server/plugins/floodgate/key.pem
