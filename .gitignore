@@ -1,4 +1,12 @@
-# --- System & IDE ---
+# Ignore sensitive plugin config files (CoreProtect, DiscordSRV)
+# These files contain DB credentials / bot tokens — keep them out of VCS.
+minecraft_server/plugins/CoreProtect/config.yml
+minecraft_server/plugins/DiscordSRV/config.yml
+
+# Keep common generated files ignored
+.DS_Store
+logs/
+minecraft_server/cache/# --- System & IDE ---
 .DS_Store
 Thumbs.db
 .vscode/
