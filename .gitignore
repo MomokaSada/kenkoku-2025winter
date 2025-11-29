@@ -70,6 +70,7 @@ minecraft_server/plugins/**/*.lock
 minecraft_server/plugins/**/*.session
 
 # 6. Ignore specific plugin directories
+minecraft_server/plugins/.paper-remapped/
 minecraft_server/plugins/bStats/
 minecraft_server/plugins/PluginMetrics/
 minecraft_server/plugins/Updater/
@@ -79,6 +80,11 @@ minecraft_server/plugins/LuckPerms/yaml-storage/users/
 minecraft_server/plugins/WorldGuard/worlds/
 minecraft_server/plugins/Multiverse-Core/worlds.yml
 minecraft_server/plugins/Multiverse-Inventories/worlds/
+minecraft_server/plugins/Multiverse-Inventories/groups/
+minecraft_server/plugins/Multiverse-Inventories/playernames.json
+minecraft_server/plugins/Essentials/usermap.bin
+minecraft_server/plugins/MyCommand/playerdata.yml
+minecraft_server/plugins/MyCommand/playerevents.yml
 
 # 7. Ignore sensitive configuration files
 minecraft_server/plugins/DiscordSRV/config.yml
