@@ -1,26 +1,89 @@
-# --- Minecraft Server ---
-# 1. Ignore EVERYTHING inside minecraft_server by default
-minecraft_server/*
-
-# 2. Whitelist (Keep) specific configuration files and folders
-!minecraft_server/plugins/
-!minecraft_server/config/
-!minecraft_server/*.yml
-!minecraft_server/*.properties
-!minecraft_server/*.txt
-!minecraft_server/banned-*.json
-!minecraft_server/ops.json
-!minecraft_server/whitelist.json
-!minecraft_server/usercache.json
-!minecraft_server/server.properties
-
-
-# --- Other ---
-mysql/
-.env
-
-# OS/Editor
+# --- System & IDE ---
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# --- Docker & Environment ---
+.env
+mysql_data/
+
+# --- Minecraft Server (Whitelist Strategy) ---
+# 1. Ignore everything by default
+minecraft_server/*
+
+# 2. Allow specific configuration files in the server root
+!minecraft_server/*.yml
+!minecraft_server/*.json
+!minecraft_server/*.properties
+!minecraft_server/*.txt
+
+# 3. Explicitly ignore generated/heavy data
+minecraft_server/logs/
+minecraft_server/cache/
+minecraft_server/.cache/
+minecraft_server/libraries/
+minecraft_server/versions/
+minecraft_server/config/
+minecraft_server/world*/
+minecraft_server/*.jar
+minecraft_server/usercache.json
+minecraft_server/banned-*.json
+minecraft_server/version_history.json
+minecraft_server/map-color-cache.dat
+minecraft_server/.console_history
+minecraft_server/.paper*
+minecraft_server/.rcon-cli.*
+
+# --- Plugins ---
+# 4. Allow plugins directory and binaries
+!minecraft_server/plugins/
+!minecraft_server/plugins/**/*.jar
+
+# 5. Ignore runtime/generated plugin data
+minecraft_server/plugins/**/backup*/
+minecraft_server/plugins/**/logs/
+minecraft_server/plugins/**/cache/
+minecraft_server/plugins/**/stats/
+minecraft_server/plugins/**/data/
+minecraft_server/plugins/**/tmp/
+minecraft_server/plugins/**/temp/
+minecraft_server/plugins/**/userdata/
+minecraft_server/plugins/**/players/
+minecraft_server/plugins/**/playerdata/
+minecraft_server/plugins/**/users/
+minecraft_server/plugins/**/uid.txt
+minecraft_server/plugins/**/sessions/
+minecraft_server/plugins/**/upload/
+minecraft_server/plugins/**/tasks/
+minecraft_server/plugins/**/lang/
+minecraft_server/plugins/**/locales/
+minecraft_server/plugins/**/translations/
+minecraft_server/plugins/**/messages/
+minecraft_server/plugins/**/libs/
+minecraft_server/plugins/**/extensions/
+minecraft_server/plugins/**/schematics/
+minecraft_server/plugins/**/warps/
+minecraft_server/plugins/**/*.db
+minecraft_server/plugins/**/*.log
+minecraft_server/plugins/**/*.lock
+minecraft_server/plugins/**/*.session
+
+# 6. Ignore specific plugin directories
+minecraft_server/plugins/bStats/
+minecraft_server/plugins/PluginMetrics/
+minecraft_server/plugins/Updater/
+minecraft_server/plugins/dynmap/web/
+minecraft_server/plugins/Geyser-Spigot/packs/
+minecraft_server/plugins/LuckPerms/yaml-storage/users/
+minecraft_server/plugins/WorldGuard/worlds/
+minecraft_server/plugins/Multiverse-Core/worlds.yml
+minecraft_server/plugins/Multiverse-Inventories/worlds/
+
+# 7. Ignore sensitive configuration files
+minecraft_server/plugins/DiscordSRV/config.yml
+minecraft_server/plugins/DiscordSRV/linking.yml
+minecraft_server/plugins/DiscordSRV/synchronization.yml
+minecraft_server/plugins/CoreProtect/config.yml
+minecraft_server/plugins/Geyser-Spigot/extensions/mcxboxbroadcast/cache.json
+minecraft_server/plugins/floodgate/key.pem

@@ -3,24 +3,32 @@ services:
     image: itzg/minecraft-server
     ports:
       - "25565:25565"
-      - "19132:19132/udp" 
+      - "19132:19132/udp"
+    env_file:
+      - .env
     environment:
       EULA: "TRUE"
       TYPE: "PAPER"
       VERSION: "LATEST"
       MEMORY: "8G"
       OPS: "momoka_sada"
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
     volumes:
-      - minecraft_data:/data
+      - ./minecraft_server:/data
     restart: unless-stopped
-      
+
   db:
     image: mysql:8.0
     volumes:
       - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-minecraft}
+      MYSQL_USER: ${MYSQL_USER:-minecraft_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-minecraft_password}
     ports:
       - "3306:3306"
 
