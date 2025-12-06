@@ -114,3 +114,6 @@ minecraft_server/plugins/MyCommand/commands/examples.yml
 
 minecraft_server/plugins/Geyser-Spigot/extensions/mcxboxbroadcast/cache.json
 minecraft_server/plugins/floodgate/key.pem
+
+# 8. Ignore History/Backup data
+minecraft_server/plugins/FastAsyncWorldEdit/history/
