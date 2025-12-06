@@ -2,8 +2,8 @@ services:
   app:
     image: itzg/minecraft-server
     ports:
-      - "25565:25565"
-      - "19132:19132/udp"
+      - "0.0.0.0:25565:25565"
+      - "0.0.0.0:19132:19132/udp"
     env_file:
       - .env
     environment:
@@ -21,19 +21,13 @@ services:
   db:
     image: mysql:8.0
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./db/mysql_data:/var/lib/mysql
+      - ./db/initdb:/docker-entrypoint-initdb.d:ro
     env_file:
       - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-minecraft}
       MYSQL_USER: ${MYSQL_USER:-minecraft_user}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-minecraft_password}
     ports:
       - "3306:3306"
-
-volumes:
-  minecraft_data:
-    driver: local
-  mysql_data:
-    driver: local

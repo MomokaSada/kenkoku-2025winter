@@ -1,0 +1,6 @@
+CREATE DATABASE IF NOT EXISTS coreprotect;
+CREATE DATABASE IF NOT EXISTS lwc;
+
+GRANT ALL PRIVILEGES ON coreprotect.* TO 'minecraft_user'@'%';
+GRANT ALL PRIVILEGES ON lwc.* TO 'minecraft_user'@'%';
+FLUSH PRIVILEGES;

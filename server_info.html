@@ -1,129 +1,248 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>建国サーバー 2025 Winter - サーバー情報</title>
-<style>
-  /* CSS Variables & Reset */
-  :root {
-    --bg-color: #121212;
-    --card-bg: #1e1e1e;
-    --text-primary: #e0e0e0;
-    --text-secondary: #a0a0a0;
-    --accent-color: #4caf50; /* Minecraft Green-ish */
-    --accent-hover: #45a049;
-    --danger-color: #ff5252;
-    --gold-color: #ffd700;
-    --rare-color: #e91e63;
-    --font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  }
-  
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    font-family: var(--font-family);
-    line-height: 1.6;
-    padding: 20px;
-    background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #121212 100%);
-    min-height: 100vh;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>建国サーバー 2025 Winter - サーバー情報</title>
+  <style>
+    /* CSS Variables & Reset */
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --accent-color: #4caf50;
+      /* Minecraft Green-ish */
+      --accent-hover: #45a049;
+      --danger-color: #ff5252;
+      --gold-color: #ffd700;
+      --rare-color: #e91e63;
+      --font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    }
 
-  /* Typography */
-  h1, h2, h3, h4 { color: #fff; margin-bottom: 1rem; font-weight: 700; }
-  h1 { 
-    text-align: center; 
-    margin-bottom: 3rem; 
-    font-size: 2.5rem; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    background: linear-gradient(45deg, #fff, #ccc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  h2 { 
-    border-bottom: 2px solid var(--accent-color); 
-    padding-bottom: 0.5rem; 
-    display: inline-block;
-    font-size: 1.5rem;
-  }
-  h3 { font-size: 1.2rem; color: var(--text-secondary); margin-top: 1.5rem; border-left: 3px solid var(--accent-color); padding-left: 10px; }
-  h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* Layout */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
-  }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding: 20px;
+      background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #121212 100%);
+      min-height: 100vh;
+    }
 
-  .full-width { grid-column: 1 / -1; }
+    /* Typography */
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: #fff;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
 
-  /* Cards */
-  .card {
-    background-color: var(--card-bg);
-    border-radius: 16px;
-    padding: 25px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-    border-color: rgba(255,255,255,0.1);
-  }
+    h1 {
+      text-align: center;
+      margin-bottom: 3rem;
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #fff, #ccc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-  /* Specific Sections */
-  .rules-list { list-style: none; }
-  .rules-list li { 
-    padding: 12px 15px; 
-    border-left: 4px solid var(--danger-color); 
-    background: rgba(255, 82, 82, 0.1); 
-    margin-bottom: 10px; 
-    border-radius: 0 6px 6px 0;
-    font-weight: 600;
-  }
-  .note { font-size: 0.9em; color: var(--text-secondary); margin-top: 10px; font-style: italic; }
+    h2 {
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 0.5rem;
+      display: inline-block;
+      font-size: 1.5rem;
+    }
 
-  .price-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-  .price-table th, .price-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #333; }
-  .price-table tr:last-child td { border-bottom: none; }
-  .price-value { font-family: 'Roboto Mono', monospace; font-size: 1.1em; color: var(--gold-color); text-align: right; font-weight: bold; }
-  .price-value::after { content: " G"; font-size: 0.8em; color: var(--text-secondary); }
+    h3 {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-top: 1.5rem;
+      border-left: 3px solid var(--accent-color);
+      padding-left: 10px;
+    }
 
-  .gacha-rate { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-  .progress-bar { height: 10px; background: #333; border-radius: 5px; overflow: hidden; margin-bottom: 15px; }
-  .progress-fill { height: 100%; border-radius: 5px; }
-  
-  .item-list { list-style: none; padding-left: 0; }
-  .item-list li { padding: 8px 0; border-bottom: 1px solid #333; display: flex; align-items: center; }
-  .item-list li:last-child { border-bottom: none; }
-  .item-list li::before { content: "◆"; color: var(--accent-color); margin-right: 12px; font-size: 0.8em; }
+    h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
 
-  .rare-item li::before { color: var(--gold-color); }
-  .super-rare-item li::before { color: var(--rare-color); }
+    /* Layout */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    h1 { font-size: 1.8rem; margin-bottom: 2rem; }
-    .container { grid-template-columns: 1fr; }
-    .card { padding: 20px; }
-  }
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Specific Sections */
+    .rules-list {
+      list-style: none;
+    }
+
+    .rules-list li {
+      padding: 12px 15px;
+      border-left: 4px solid var(--danger-color);
+      background: rgba(255, 82, 82, 0.1);
+      margin-bottom: 10px;
+      border-radius: 0 6px 6px 0;
+      font-weight: 600;
+    }
+
+    .note {
+      font-size: 0.9em;
+      color: var(--text-secondary);
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .price-table th,
+    .price-table td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+
+    .price-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .price-value {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1.1em;
+      color: var(--gold-color);
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .price-value::after {
+      content: " G";
+      font-size: 0.8em;
+      color: var(--text-secondary);
+    }
+
+    .gacha-rate {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #333;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 5px;
+    }
+
+    .item-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .item-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+      display: flex;
+      align-items: center;
+    }
+
+    .item-list li:last-child {
+      border-bottom: none;
+    }
+
+    .item-list li::before {
+      content: "◆";
+      color: var(--accent-color);
+      margin-right: 12px;
+      font-size: 0.8em;
+    }
+
+    .rare-item li::before {
+      color: var(--gold-color);
+    }
+
+    .super-rare-item li::before {
+      color: var(--rare-color);
+    }
+
+    .quest-reward {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+      }
+
+      .container {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
 
   <h1>建国サーバー 2025 Winter</h1>
 
   <div class="container">
-    
+
     <!-- 仕様 -->
     <div class="card full-width">
       <h2>⚠️ サーバー仕様・禁止事項</h2>
@@ -140,39 +259,84 @@
     <!-- 買取 -->
     <div class="card">
       <h2>💰 買取価格表</h2>
-      
+
       <h3>鉱石・ブロック</h3>
       <table class="price-table">
-        <tr><td>原銅ブロック</td><td class="price-value">10</td></tr>
-        <tr><td>原金ブロック</td><td class="price-value">300</td></tr>
-        <tr><td>ダイヤ</td><td class="price-value">1,000</td></tr>
-        <tr><td>レッドストーンブロック</td><td class="price-value">100</td></tr>
-        <tr><td>ラピスラズリブロック</td><td class="price-value">100</td></tr>
-        <tr><td>ネザーラック</td><td class="price-value">1</td></tr>
-        <tr><td>丸石</td><td class="price-value">1</td></tr>
-        <tr><td>荒れた深層岩</td><td class="price-value">1</td></tr>
+        <tr>
+          <td>原銅ブロック</td>
+          <td class="price-value">10</td>
+        </tr>
+        <tr>
+          <td>原金ブロック</td>
+          <td class="price-value">300</td>
+        </tr>
+        <tr>
+          <td>ダイヤ</td>
+          <td class="price-value">1,000</td>
+        </tr>
+        <tr>
+          <td>レッドストーンブロック</td>
+          <td class="price-value">100</td>
+        </tr>
+        <tr>
+          <td>ラピスラズリブロック</td>
+          <td class="price-value">100</td>
+        </tr>
+        <tr>
+          <td>ネザーラック</td>
+          <td class="price-value">1</td>
+        </tr>
+        <tr>
+          <td>丸石</td>
+          <td class="price-value">1</td>
+        </tr>
+        <tr>
+          <td>荒れた深層岩</td>
+          <td class="price-value">1</td>
+        </tr>
       </table>
 
       <h3>農作物</h3>
       <table class="price-table">
-        <tr><td>人参</td><td class="price-value">2</td></tr>
-        <tr><td>じゃがいも</td><td class="price-value">2</td></tr>
-        <tr><td>俵</td><td class="price-value">100</td></tr>
-        <tr><td>ビートルート</td><td class="price-value">10</td></tr>
-        <tr><td>青い目のジャガイモ</td><td class="price-value">100</td></tr>
+        <tr>
+          <td>人参</td>
+          <td class="price-value">2</td>
+        </tr>
+        <tr>
+          <td>じゃがいも</td>
+          <td class="price-value">2</td>
+        </tr>
+        <tr>
+          <td>俵</td>
+          <td class="price-value">100</td>
+        </tr>
+        <tr>
+          <td>ビートルート</td>
+          <td class="price-value">10</td>
+        </tr>
+        <tr>
+          <td>青い目のジャガイモ</td>
+          <td class="price-value">100</td>
+        </tr>
       </table>
 
       <h3>レアアイテム</h3>
       <table class="price-table">
-        <tr><td>エンチャント金リンゴ</td><td class="price-value">30,000</td></tr>
-        <tr><td>海の心</td><td class="price-value">10,000</td></tr>
+        <tr>
+          <td>エンチャント金リンゴ</td>
+          <td class="price-value">30,000</td>
+        </tr>
+        <tr>
+          <td>海の心</td>
+          <td class="price-value">10,000</td>
+        </tr>
       </table>
     </div>
 
     <!-- アクセサリー -->
     <div class="card">
       <h2>💍 アクセサリー一覧</h2>
-      
+
       <h3>パッシブスキル系</h3>
       <ul class="item-list">
         <li>体力増強 (10)</li>
@@ -197,26 +361,38 @@
     <!-- 福引 -->
     <div class="card">
       <h2>🎰 福引システム</h2>
-      
+
       <h3>確率設定</h3>
       <div style="margin-top: 15px;">
         <div class="gacha-rate"><span>ハズレ</span><span>70%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width: 70%; background: #757575;"></div></div>
-        
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 70%; background: #757575;"></div>
+        </div>
+
         <div class="gacha-rate"><span>当たり</span><span>23%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width: 23%; background: #4caf50;"></div></div>
-        
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 23%; background: #4caf50;"></div>
+        </div>
+
         <div class="gacha-rate"><span>大当たり</span><span>5%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width: 5%; background: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></div></div>
-        
+        <div class="progress-bar">
+          <div class="progress-fill"
+            style="width: 5%; background: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);"></div>
+        </div>
+
         <div class="gacha-rate" style="color: var(--rare-color);"><span>アクセ</span><span>2%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width: 2%; background: #e91e63; box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);"></div></div>
+        <div class="progress-bar">
+          <div class="progress-fill"
+            style="width: 2%; background: #e91e63; box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);"></div>
+        </div>
       </div>
 
       <h3>景品リスト</h3>
-      
+
       <h4>ハズレ</h4>
-      <ul class="item-list" style="margin-bottom: 15px;"><li>ハズレ券 ×1</li></ul>
+      <ul class="item-list" style="margin-bottom: 15px;">
+        <li>ハズレ券 ×1</li>
+      </ul>
 
       <h4>当たり枠</h4>
       <ul class="item-list" style="margin-bottom: 15px;">
@@ -239,7 +415,144 @@
       </ul>
     </div>
 
+    <!-- クエスト -->
+    <div class="card full-width">
+      <h2>📜 クエスト一覧</h2>
+
+      <h3>★ (初級)</h3>
+      <table class="price-table">
+        <tr>
+          <th>クエスト名</th>
+          <th>納品物</th>
+          <th>報酬</th>
+        </tr>
+        <tr>
+          <td>街のお掃除</td>
+          <td>落ち葉 ×64</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+        <tr>
+          <td>珍味？</td>
+          <td>金リンゴ ×1</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+        <tr>
+          <td>ダイヤ発見記念</td>
+          <td>ダイヤ ×1</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+        <tr>
+          <td>アメジスト発見記念</td>
+          <td>アメジストブロック ×10</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+        <tr>
+          <td>スローライフ</td>
+          <td>生鮭 ×16</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+        <tr>
+          <td>モンスターハンター</td>
+          <td>腐肉 ×16</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+        <tr>
+          <td>雪だるま</td>
+          <td>雪ブロック ×2</td>
+          <td class="quest-reward">チケット ×10</td>
+        </tr>
+      </table>
+
+      <h3>★★ (中級)</h3>
+      <table class="price-table">
+        <tr>
+          <th>クエスト名</th>
+          <th>納品物</th>
+          <th>報酬</th>
+        </tr>
+        <tr>
+          <td>リッチな昼食</td>
+          <td>うさぎシチュー ×1</td>
+          <td class="quest-reward">チケット ×20</td>
+        </tr>
+        <tr>
+          <td>硬くて溶けない氷</td>
+          <td>氷塊 ×1</td>
+          <td class="quest-reward">チケット ×20</td>
+        </tr>
+        <tr>
+          <td>ブヨブヨしてる緑な奴</td>
+          <td>スライムブロック ×4</td>
+          <td class="quest-reward">チケット ×20</td>
+        </tr>
+        <tr>
+          <td>ブヨブヨしてる甘い奴</td>
+          <td>ハチミツブロック ×4</td>
+          <td class="quest-reward">チケット ×20</td>
+        </tr>
+      </table>
+
+      <h3>★★★ (上級)</h3>
+      <table class="price-table">
+        <tr>
+          <th>クエスト名</th>
+          <th>納品物</th>
+          <th>報酬</th>
+        </tr>
+        <tr>
+          <td>うさぎ討伐隊</td>
+          <td>うさぎの足 ×4</td>
+          <td class="quest-reward">チケット ×30</td>
+        </tr>
+        <tr>
+          <td>お豆腐屋さん</td>
+          <td>ハッピーガスト ×3</td>
+          <td class="quest-reward">チケット ×30</td>
+        </tr>
+        <tr>
+          <td>イカしたフィスを探せ</td>
+          <td>ウィザースケルトンの頭</td>
+          <td class="quest-reward">チケット ×30</td>
+        </tr>
+        <tr>
+          <td>ホットな羽付き大会</td>
+          <td>ガストの涙 ×3</td>
+          <td class="quest-reward">チケット ×30</td>
+        </tr>
+      </table>
+
+      <h3>特別クエスト</h3>
+      <table class="price-table">
+        <tr>
+          <th>クエスト名</th>
+          <th>納品物</th>
+          <th>報酬</th>
+        </tr>
+        <tr>
+          <td>ブラック鉱夫</td>
+          <td>黒曜石 ×32</td>
+          <td class="quest-reward">鉄ピッケル (耐久X、修繕)</td>
+        </tr>
+        <tr>
+          <td>赤くてデカくなるアレ</td>
+          <td>赤きのこ ×32</td>
+          <td class="quest-reward">体力増強 (10)</td>
+        </tr>
+        <tr>
+          <td>目指せ太公望</td>
+          <td>ふぐ ×64</td>
+          <td class="quest-reward">釣竿 (入れ食いX、耐久X)</td>
+        </tr>
+        <tr>
+          <td>追尾しない方の甲羅</td>
+          <td>オウムガイ ×3</td>
+          <td class="quest-reward">亀の甲羅 (耐久X)</td>
+        </tr>
+      </table>
+    </div>
+
   </div>
 
 </body>
+
 </html>

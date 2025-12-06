@@ -2,6 +2,7 @@
 # These files contain DB credentials / bot tokens — keep them out of VCS.
 minecraft_server/plugins/CoreProtect/config.yml
 minecraft_server/plugins/DiscordSRV/config.yml
+minecraft_server/plugins/LWC/core.yml
 
 # Keep common generated files ignored
 .DS_Store
