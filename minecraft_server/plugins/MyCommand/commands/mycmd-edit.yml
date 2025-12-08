@@ -1,0 +1,12 @@
+lock:
+  command: /lock
+  runcmd:
+  - /cprivate
+  type: RUN_COMMAND
+  permission-required: false
+unlock:
+  command: /unlock
+  runcmd:
+  - /cremove
+  permission-required: false
+  type: RUN_COMMAND
