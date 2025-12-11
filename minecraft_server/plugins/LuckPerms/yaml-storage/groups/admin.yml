@@ -1,0 +1,9 @@
+name: admin
+permissions:
+- mv.bypass.gamemode.*
+- 'displayname.&6[運営] '
+- minecraft.command.op
+- weight.10
+prefixes:
+- '&6[運営] ':
+    priority: 0
