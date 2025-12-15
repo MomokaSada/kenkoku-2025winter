@@ -1,0 +1,107 @@
+# ----- 設定 -----
+# inputAmount: 取り出し額の倍率を管理するスコアボード（表示用）
+# money: プレイヤーの所持金スコアボード（表示用）
+# ----------------
+
+command /getwallet:
+    permission: op
+    trigger:
+        execute console command "give %player% leather_horse_armor[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'item.armor.equip_leather'},custom_data={itemType:'wallet'},item_name='&6お財布'] 1"
+        send "&6お財布を入手しました！"
+
+command /getbill <number> [<number>]:
+    permission: op
+    trigger:
+        set {_amount} to arg-2
+        if {_amount} is not set:
+            set {_amount} to 1
+        execute console command "give %player% paper[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'entity.experience_orb.pickup'},custom_data={itemType:'bill',value:%arg-1%},item_name='&6%arg-1%G'] %{_amount}%"
+        send "&6%arg-1%Gを入手しました！"
+
+on tab complete of "/money":
+    set tab completions for position 1 to "add", "remove" and "set"
+    set tab completions for position 2 to all players
+
+command /money <text> <player> <number>:
+    permission: op
+    trigger:
+        if arg-1 is "add":
+            add arg-3 to {money::%arg-2%}
+            send "&6%arg-2%&eの所持金を &6%arg-3%G &e追加しました。" to player
+        if arg-1 is "remove":
+            subtract arg-3 from {money::%arg-2%}
+            send "&6%arg-2%&eの所持金を &6%arg-3%G &e引きました。" to player
+        if arg-1 is "set":
+            set {money::%arg-2%} to arg-3
+            send "&6%arg-2%&eの所持金を &6%arg-3%G &eに設定しました。" to player
+        updateSidebar(arg-2)
+
+command /showmoney [<player>]:
+    trigger:
+        if arg-1 is set:
+            send "&6%arg-1%&eの所持金は &6%{money::%arg-1%}%G &eです。"
+        else:
+            send "&6あなたの所持金は &6%{money::%player%}%G &eです。"
+
+
+
+
+# イベント: お財布を使った時
+on consume of leather horse armor:
+    if "%nbt compound from event-item%" contains "wallet":
+        cancel event
+        
+        # --- スニーク中: 取り出し設定額の変更 ---
+        if player is sneaking:
+            # 変数で計算（コマンド呼び出しより軽い）
+            if {wallet_input::%player%} is not set:
+                set {wallet_input::%player%} to 1
+            
+            if {wallet_input::%player%} < 100000000:
+                set {wallet_input::%player%} to {wallet_input::%player%} * 10
+            else:
+                set {wallet_input::%player%} to 1
+            
+            # スコアボードに同期（表示用）
+            execute console command "scoreboard players set %player% inputAmount %{wallet_input::%player%}%"
+            send "&e[お財布] 取り出し額を &6%{wallet_input::%player%}%G &eに設定しました。"
+
+        # --- 通常時: お金の引き出し ---
+        else:
+            set {_amount} to {wallet_input::%player%}
+            if {_amount} is not set:
+                set {_amount} to 1
+            
+            # 変数初期化
+            if {money::%player%} is not set:
+                set {money::%player%} to 0
+
+            # 残高チェック
+            if {money::%player%} >= {_amount}:
+                # 引き落とし
+                subtract {_amount} from {money::%player%}
+
+                # サイドバー更新
+                updateSidebar(player)
+                
+                # アイテム付与
+                execute console command "give %player% paper[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'entity.experience_orb.pickup'},custom_data={itemType:'bill',value:%{_amount}%},item_name='&6%{_amount}%G'] 1"
+                
+                send "&a%{_amount}%Gを引き出しました。"
+            else:
+                send "&c残高が足りません！（設定額: %{_amount}%G）"
+
+# イベント: お金を使った時（入金）
+on consume of paper:
+    if "%nbt compound from event-item%" contains "bill":
+        
+        set {_value} to int tag "value" of custom nbt of event-item
+        if {money::%player%} is not set:
+            set {money::%player%} to 0
+            
+        add {_value} to {money::%player%}
+        
+        # サイドバー更新
+        updateSidebar(player)
+            
+        send "&a%{_value}%Gを口座に加算しました。"
