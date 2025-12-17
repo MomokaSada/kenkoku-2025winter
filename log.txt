@@ -1,0 +1,995 @@
+db-1  | 2025-12-17 04:50:51+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.44-1.el9 started.
+db-1  | 2025-12-17 04:50:52+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+db-1  | 2025-12-17 04:50:52+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.44-1.el9 started.
+db-1  | '/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'
+db-1  | 2025-12-17T04:50:53.238561Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+db-1  | 2025-12-17T04:50:53.242575Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.44) starting as process 1
+db-1  | 2025-12-17T04:50:53.249096Z 0 [Warning] [MY-010159] [Server] Setting lower_case_table_names=2 because file system for /var/lib/mysql/ is case insensitive
+db-1  | 2025-12-17T04:50:53.268648Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+db-1  | 2025-12-17T04:50:54.098603Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+db-1  | 2025-12-17T04:50:54.402161Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+db-1  | 2025-12-17T04:50:54.402479Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+db-1  | 2025-12-17T04:50:54.406800Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+db-1  | 2025-12-17T04:50:54.500791Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.44'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+db-1  | 2025-12-17T04:50:54.500820Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+db-1  | 2025-12-17T04:55:34.084695Z 0 [System] [MY-013172] [Server] Received SHUTDOWN from user <via user signal>. Shutting down mysqld (Version: 8.0.44).
+db-1  | 2025-12-17T04:55:36.156959Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 48  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.161251Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 8  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.162715Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 42  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.163984Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 43  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.165272Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 44  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.167018Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 45  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.170985Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 46  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:36.173215Z 0 [Warning] [MY-010909] [Server] /usr/sbin/mysqld: Forcing close of thread 47  user: 'minecraft_user'.
+db-1  | 2025-12-17T04:55:37.143069Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.44)  MySQL Community Server - GPL.
+db-1  | 2025-12-17 04:59:20+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.44-1.el9 started.
+db-1  | 2025-12-17 04:59:21+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+db-1  | 2025-12-17 04:59:21+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.44-1.el9 started.
+db-1  | '/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'
+db-1  | 2025-12-17T04:59:23.047403Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+db-1  | 2025-12-17T04:59:23.064474Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.44) starting as process 1
+db-1  | 2025-12-17T04:59:23.079081Z 0 [Warning] [MY-010159] [Server] Setting lower_case_table_names=2 because file system for /var/lib/mysql/ is case insensitive
+db-1  | 2025-12-17T04:59:23.124514Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+db-1  | 2025-12-17T04:59:23.917382Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+db-1  | 2025-12-17T04:59:24.464695Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+db-1  | 2025-12-17T04:59:24.464823Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+db-1  | 2025-12-17T04:59:24.472698Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+db-1  | 2025-12-17T04:59:24.540377Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+db-1  | 2025-12-17T04:59:24.540426Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.44'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+app-1  | [init] Running as uid=1000 gid=1000 with /data as 'drwxrwxrwx 35 1000 1000 1120 Dec 16 00:48 /data'
+app-1  | [init] Image info: buildtime=2025-12-01T13:25:28.945Z,version=java21,revision=53fcaabdf77ea3e4bda8825890b6cdd1cea03043
+app-1  | [init] Resolving type given CUSTOM
+app-1  | [init] Copying any plugins from /plugins to /data/plugins
+app-1  | [init] Copying any mods from /mods to /data/mods
+app-1  | [init] Copying any configs from /config to /data/config
+app-1  | [39m[mc-image-helper] 04:50:56.150 INFO  : Created/updated 1 property in /data/server.properties
+app-1  | [0;39m[init] Setting initial memory to 8G and max to 8G
+app-1  | [init] Starting the Minecraft server...
+app-1  | Starting org.bukkit.craftbukkit.Main
+app-1  | 2025-12-17T04:51:03.712957179Z ServerMain WARN Advanced terminal features are not available in this environment
+app-1  | [04:51:04 INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.9+10-LTS; Eclipse Adoptium Temurin-21.0.9+10) on Linux 6.10.14-linuxkit (aarch64)
+app-1  | [04:51:04 INFO]: [bootstrap] Loading Paper 1.21.11-39-main@e5e2c50 (2025-12-12T22:00:30Z) for Minecraft 1.21.11
+app-1  | [04:51:04 INFO]: [PluginInitializerManager] Initializing plugins...
+app-1  | [04:51:05 INFO]: [FileProviderSource] The spark plugin will not be loaded as this server bundles the spark profiler.
+app-1  | [04:51:05 INFO]: [PluginInitializerManager] Initialized 23 plugins
+app-1  | [04:51:05 INFO]: [PluginInitializerManager] Paper plugins (1):
+app-1  |  - PlugManX (3.0.2)
+app-1  | [04:51:05 INFO]: [PluginInitializerManager] Bukkit plugins (22):
+app-1  |  - AdminTerminal (1.0.1), Chunky (1.4.40), CoreProtect (23.1), DiscordSRV (1.30.2), FastAsyncWorldEdit (2.14.2+1c61d82), GSit (3.1.0), Geyser-Spigot (2.9.2-SNAPSHOT), GeyserSkinManager (1.8), GriefPrevention (16.18.5), ImageFrame (1.8.7.4), LWC (2.4.1), LuckPerms (5.5.17), Multiverse-Core (5.3.4), Multiverse-Inventories (5.2.2-pre), Multiverse-NetherPortals (5.0.3), MyCommand (5.7.4), Skript (2.12.2), TabTPS (1.3.30), ViaBackwards (5.5.2-SNAPSHOT), ViaVersion (5.6.0), WorldGuard (7.0.15-beta-01+445a1d7), floodgate (2.2.5-SNAPSHOT (b121-55a85ec))
+app-1  | [04:51:14 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+app-1  | [04:51:16 INFO]: Loaded 1470 recipes
+app-1  | [04:51:16 INFO]: Loaded 1584 advancements
+app-1  | [04:51:16 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+app-1  | [04:51:17 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 842.7ms
+app-1  | [04:51:17 INFO]: Starting minecraft server version 1.21.11
+app-1  | [04:51:17 INFO]: Loading properties
+app-1  | [04:51:17 INFO]: This server is running Paper version 1.21.11-39-main@e5e2c50 (2025-12-12T22:00:30Z) (Implementing API version 1.21.11-R0.1-SNAPSHOT)
+app-1  | [04:51:18 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+app-1  | [04:51:18 INFO]: Server Ping Player Sample Count: 12
+app-1  | [04:51:18 INFO]: Using 4 threads for Netty based IO
+app-1  | [04:51:18 INFO]: [MoonriseCommon] Paper is using 2 worker threads, 1 I/O threads
+app-1  | [04:51:20 INFO]: Default game type: SURVIVAL
+app-1  | [04:51:20 INFO]: Generating keypair
+app-1  | [04:51:20 INFO]: Starting Minecraft server on *:25565
+app-1  | [04:51:20 INFO]: Paper: Using libdeflate (Linux aarch64) compression from Velocity.
+app-1  | [04:51:20 INFO]: Paper: Using OpenSSL 3.x.x (Linux aarch64) cipher from Velocity.
+app-1  | [04:51:23 INFO]: [FastAsyncWorldEdit] Loading server plugin FastAsyncWorldEdit v2.14.2+1c61d82
+app-1  | [04:51:25 INFO]: Got request to register class com.sk89q.worldedit.bukkit.BukkitServerInterface with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@582a5e5b]
+app-1  | [04:51:25 INFO]: [WorldGuard] Loading server plugin WorldGuard v7.0.15-beta-01+445a1d7
+app-1  | [04:51:25 INFO]: [CoreLogging] Loading server plugin Multiverse-Core v5.3.4
+app-1  | [04:51:25 INFO]: [floodgate] Loading server plugin floodgate v2.2.5-SNAPSHOT (b121-55a85ec)
+app-1  | [04:51:26 INFO]: [floodgate] Took 662ms to boot Floodgate
+app-1  | [04:51:26 INFO]: [ViaVersion] Loading server plugin ViaVersion v5.6.0
+app-1  | [04:51:26 INFO]: [ViaVersion] ViaVersion 5.6.0 is now loaded. Registering protocol transformers and injecting...
+app-1  | [04:51:26 INFO]: [ViaVersion] Loading block connection mappings ...
+app-1  | [04:51:26 INFO]: [ViaVersion] Using FastUtil Long2ObjectOpenHashMap for block connections
+app-1  | [04:51:27 INFO]: [ViaBackwards] Loading translations...
+app-1  | [04:51:27 INFO]: [ViaBackwards] Registering protocols...
+app-1  | [04:51:28 INFO]: [GriefPrevention] Loading server plugin GriefPrevention v16.18.5
+app-1  | [04:51:28 INFO]: [Geyser-Spigot] Loading server plugin Geyser-Spigot v2.9.2-SNAPSHOT
+app-1  | [04:51:29 INFO]: [Geyser-Spigot] Loading extensions...
+app-1  | [04:51:29 INFO]: [Geyser-Spigot] Loaded 0 extension(s)
+app-1  | [04:51:29 INFO]: [PlugManX] Loading server plugin PlugManX v3.0.2
+app-1  | [04:51:29 INFO]: [LuckPerms] Loading server plugin LuckPerms v5.5.17
+app-1  | [04:51:29 INFO]: [LuckPerms] Loading configuration...
+app-1  | [04:51:29 INFO]: [Skript] Loading server plugin Skript v2.12.2
+app-1  | [04:51:29 INFO]: [TabTPS] Loading server plugin TabTPS v1.3.30
+app-1  | [04:51:29 INFO]: [LWC] Loading server plugin LWC v2.4.1
+app-1  | [04:51:29 INFO]: [GSit] Loading server plugin GSit v3.1.0
+app-1  | [04:51:30 INFO]: [GeyserSkinManager] Loading server plugin GeyserSkinManager v1.8
+app-1  | [04:51:30 INFO]: [AT] Loading server plugin AdminTerminal v1.0.1
+app-1  | [04:51:30 INFO]: [ViaBackwards] Loading server plugin ViaBackwards v5.5.2-SNAPSHOT
+app-1  | [04:51:30 INFO]: [Multiverse-NetherPortals] Loading server plugin Multiverse-NetherPortals v5.0.3
+app-1  | [04:51:30 INFO]: [DiscordSRV] Loading server plugin DiscordSRV v1.30.2
+app-1  | [04:51:30 INFO]: [Multiverse-Inventories] Loading server plugin Multiverse-Inventories v5.2.2-pre
+app-1  | [04:51:30 INFO]: [CoreProtect] Loading server plugin CoreProtect v23.1
+app-1  | [04:51:30 INFO]: [MyCommand] Loading server plugin MyCommand v5.7.4
+app-1  | [04:51:30 INFO]: [Chunky] Loading server plugin Chunky v1.4.40
+app-1  | [04:51:30 INFO]: [ImageFrame] Loading server plugin ImageFrame v1.8.7.4
+app-1  | [04:51:30 INFO]: Server permissions file permissions.yml is empty, ignoring it
+app-1  | [04:51:30 INFO]: [FastAsyncWorldEdit] Enabling FastAsyncWorldEdit v2.14.2+1c61d82
+app-1  | [04:51:30 INFO]: [com.fastasyncworldedit.core.Fawe] LZ4 Compression Binding loaded successfully
+app-1  | [04:51:30 INFO]: [com.fastasyncworldedit.core.Fawe] ZSTD Compression Binding loaded successfully
+app-1  | [04:51:30 INFO]: Registering commands with com.sk89q.worldedit.bukkit.BukkitServerInterface
+app-1  | [04:51:30 INFO]: WEPIF: Using the Bukkit Permissions API.
+app-1  | [04:51:30 WARN]: This version of FastAsyncWorldEdit has not been tested with the current Minecraft version.
+app-1  | While it may work, there might be unexpected issues.
+app-1  | It is recommended to use a version of FastAsyncWorldEdit that supports your Minecraft version.
+app-1  | 
+app-1  | [04:51:31 WARN]: 
+app-1  | **********************************************
+app-1  | ** This FastAsyncWorldEdit version does not fully support your version of Bukkit.
+app-1  | ** You can fix this by:
+app-1  | ** - Updating your server version (Check /version to see how many versions you are behind)
+app-1  | ** - Updating FAWE
+app-1  | **
+app-1  | ** When working with blocks or undoing, chests will be empty, signs
+app-1  | ** will be blank, and so on. There will be no support for entity
+app-1  | ** and block property-related functions.
+app-1  | **********************************************
+app-1  | 
+app-1  | [04:51:31 WARN]: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypesCache.<clinit>(BlockTypesCache.java:237)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.init(BlockTypes.java:2406)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.<clinit>(BlockTypes.java:48)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:156)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:132)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.loadFromResource(LegacyMapper.java:124)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.<init>(LegacyMapper.java:84)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.getInstance(LegacyMapper.java:329)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.WorldEdit.loadMappings(WorldEdit.java:428)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.setupPreWorldData(WorldEditPlugin.java:294)
+app-1  | [04:51:31 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.onEnable(WorldEditPlugin.java:264)
+app-1  | [04:51:31 WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279)
+app-1  | [04:51:31 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202)
+app-1  | [04:51:31 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109)
+app-1  | [04:51:31 WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520)
+app-1  | [04:51:31 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639)
+app-1  | [04:51:31 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596)
+app-1  | [04:51:31 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:321)
+app-1  | [04:51:31 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260)
+app-1  | [04:51:31 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [04:51:31 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [04:51:31 WARN]: Failed to load the built-in legacy id registry
+app-1  | java.lang.ExceptionInInitializerError
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.init(BlockTypes.java:2406) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.<clinit>(BlockTypes.java:48) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:156) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:132) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.loadFromResource(LegacyMapper.java:124) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.<init>(LegacyMapper.java:84) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.getInstance(LegacyMapper.java:329) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.WorldEdit.loadMappings(WorldEdit.java:428) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.setupPreWorldData(WorldEditPlugin.java:294) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.onEnable(WorldEditPlugin.java:264) ~[?:?]
+app-1  | 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:321) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at java.base/java.lang.Thread.run(Unknown Source) ~[?:?]
+app-1  | Caused by: java.lang.RuntimeException: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypesCache.<clinit>(BlockTypesCache.java:278) ~[?:?]
+app-1  | 	... 20 more
+app-1  | Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypesCache.<clinit>(BlockTypesCache.java:237) ~[?:?]
+app-1  | 	... 20 more
+app-1  | [04:51:32 INFO]: [PlugManX] Enabling PlugManX v3.0.2
+app-1  | [04:51:33 WARN]: [com.fastasyncworldedit.core.util.UpdateNotification] An update for FastAsyncWorldEdit is available. You are 1236 build(s) out of date.
+app-1  | You are running build 0, the latest version is build 1236.
+app-1  | Update at https://ci.athion.net/job/FastAsyncWorldEdit
+app-1  | [04:51:33 WARN]: [PlugManX] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app-1  | [04:51:33 WARN]: [PlugManX] It seems like you're running on paper.
+app-1  | [04:51:33 WARN]: [PlugManX] PlugManX cannot interact with paper-plugins, yet.
+app-1  | [04:51:33 WARN]: [PlugManX] Also, if you encounter any issues, please join my discord: https://discord.gg/GxEFhVY6ff
+app-1  | [04:51:33 WARN]: [PlugManX] Or create an issue on GitHub: https://github.com/Test-Account666/PlugMan
+app-1  | [04:51:33 WARN]: [PlugManX] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app-1  | [04:51:33 INFO]: [PlugManX] You can disable this warning by setting 'showPaperWarning' to false in the config.yml
+app-1  | [04:51:33 INFO]: [LuckPerms] Enabling LuckPerms v5.5.17
+app-1  | [04:51:34 INFO]:         __    
+app-1  | [04:51:34 INFO]:   |    |__)   LuckPerms v5.5.17
+app-1  | [04:51:34 INFO]:   |___ |      Running on Bukkit - Paper
+app-1  | [04:51:34 INFO]: 
+app-1  | [04:51:35 INFO]: [LuckPerms] Loading storage provider... [H2]
+app-1  | [04:51:36 INFO]: [LuckPerms] Loading internal permission managers...
+app-1  | [04:51:36 INFO]: [LuckPerms] Performing initial data load...
+app-1  | [04:51:36 INFO]: [LuckPerms] Successfully enabled. (took 2408ms)
+app-1  | [04:51:36 INFO]: [LWC] Enabling LWC v2.4.1
+app-1  | [04:51:36 INFO]: [LWC] Connecting to MySQL
+app-1  | [04:51:37 INFO]: [AT] Enabling AdminTerminal v1.0.1
+app-1  | [04:51:37 INFO]: [AT] AdminTerminal 1.0.1 Enabled!
+app-1  | [04:51:37 INFO]: [AT] Current server operating system: Linux (aarch64) - 6.10.14-linuxkit
+app-1  | [04:51:37 WARN]: [AT] System command execution alert enabled.
+app-1  | [04:51:37 INFO]: Preparing level "world"
+app-1  | [04:51:38 WARN]: Failed to load biomes via adapter (not present). Will load via bukkit
+app-1  | [04:51:38 ERROR]: Could not pass event WorldInitEvent to FastAsyncWorldEdit v2.14.2+1c61d82
+app-1  | java.util.NoSuchElementException: No value present
+app-1  | 	at java.base/java.util.Optional.get(Unknown Source) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.setupWorldData(WorldEditPlugin.java:303) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin$WorldInitListener.onWorldInit(WorldEditPlugin.java:707) ~[?:?]
+app-1  | 	at co.aikar.timings.TimedEventExecutor.execute(TimedEventExecutor.java:80) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at org.bukkit.plugin.RegisteredListener.callEvent(RegisteredListener.java:71) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperEventManager.callEvent(PaperEventManager.java:54) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.callEvent(PaperPluginManagerImpl.java:131) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.plugin.SimplePluginManager.callEvent(SimplePluginManager.java:628) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at net.minecraft.server.MinecraftServer.initWorld(MinecraftServer.java:737) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.createLevel(MinecraftServer.java:729) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.world.PaperWorldLoader.loadInitialWorlds(PaperWorldLoader.java:165) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.loadLevel(MinecraftServer.java:606) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:361) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at java.base/java.lang.Thread.run(Unknown Source) ~[?:?]
+app-1  | [04:51:38 INFO]: Loading 0 persistent chunks for world 'minecraft:overworld'...
+app-1  | [04:51:38 INFO]: Prepared spawn area in 2 ms
+app-1  | [04:51:38 INFO]: Loading 0 persistent chunks for world 'minecraft:the_nether'...
+app-1  | [04:51:38 INFO]: Prepared spawn area in 1 ms
+app-1  | [04:51:38 INFO]: Loading 0 persistent chunks for world 'minecraft:the_end'...
+app-1  | [04:51:38 INFO]: Prepared spawn area in 1 ms
+app-1  | [04:51:38 INFO]: Done preparing level "world" (0.762s)
+app-1  | [04:51:38 INFO]: [WorldGuard] Enabling WorldGuard v7.0.15-beta-01+445a1d7
+app-1  | [04:51:38 INFO]: [WorldGuard] (world) TNT ignition is PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world) Lighters are PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world) Lava fire is PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world) Fire spread is UNRESTRICTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] Loaded configuration for world 'world'
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_nether) TNT ignition is PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_nether) Lighters are PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_nether) Lava fire is PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_nether) Fire spread is UNRESTRICTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] Loaded configuration for world 'world_nether'
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_the_end) TNT ignition is PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_the_end) Lighters are PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_the_end) Lava fire is PERMITTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] (world_the_end) Fire spread is UNRESTRICTED.
+app-1  | [04:51:38 INFO]: [WorldGuard] Loaded configuration for world 'world_the_end'
+app-1  | [04:51:38 INFO]: [WorldGuard] Loading region data...
+app-1  | [04:51:38 INFO]: [Multiverse-Core] Enabling Multiverse-Core v5.3.4
+app-1  | [04:51:40 INFO]: [Multiverse-Core] API service loaded!
+app-1  | [04:51:40 INFO]: [Multiverse-Core] [32mVersion 5.3.4 (API v5.3) Enabled - By dumptruckman, Rigby, fernferret, lithium3141, main--, benwoo1110 and Zax71[39m
+app-1  | [04:51:40 INFO]: [Multiverse-Core] [32mLoving Multiverse-Core? Please consider supporting the project with a small donation: https://github.com/sponsors/Multiverse[39m
+app-1  | [04:51:40 INFO]: [floodgate] Enabling floodgate v2.2.5-SNAPSHOT (b121-55a85ec)
+app-1  | [04:51:40 INFO]: [ViaVersion] Enabling ViaVersion v5.6.0
+app-1  | [04:51:40 INFO]: [ViaVersion] ViaVersion detected server version: 1.21.11 (774)
+app-1  | [04:51:40 WARN]: [ViaVersion] ViaVersion does not have any compatible versions for this server version!
+app-1  | [04:51:40 WARN]: [ViaVersion] ViaVersion only supports newer client versions. Use ViaBackwards to allow older versions (ViaRewind for 1.7/1.8) to join.
+app-1  | [04:51:40 WARN]: [ViaVersion] Get setup help at https://viaversion.com/setup or download ViaBackwards/ViaRewind directly at https://ci.viaversion.com/
+app-1  | [04:51:40 WARN]: [ViaVersion] Need more help? Join our Discord at https://viaversion.com/discord
+app-1  | [04:51:40 INFO]: [GriefPrevention] Enabling GriefPrevention v16.18.5
+app-1  | [04:51:40 INFO]: [GriefPrevention] Finished loading configuration.
+app-1  | [04:51:40 INFO]: [GriefPrevention] 0 total claims loaded.
+app-1  | [04:51:41 INFO]: [GriefPrevention] Customizable messages loaded.
+app-1  | [04:51:41 INFO]: [GriefPrevention] Successfully hooked into WorldGuard.
+app-1  | [04:51:41 INFO]: [GriefPrevention] Finished loading data (File Mode).
+app-1  | [04:51:41 INFO]: [GriefPrevention] Boot finished.
+app-1  | [04:51:41 INFO]: [Geyser-Spigot] Enabling Geyser-Spigot v2.9.2-SNAPSHOT
+app-1  | [04:51:41 ERROR]: Error occurred while enabling Geyser-Spigot v2.9.2-SNAPSHOT (Is it up to date?)
+app-1  | java.lang.ExceptionInInitializerError
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.MinecraftArgumentTypes$ArgumentTypeGetterImpl.lambda$new$0(MinecraftArgumentTypes.java:85) ~[?:?]
+app-1  | 	at com.google.common.base.Suppliers$NonSerializableMemoizingSupplier.get(Suppliers.java:201) ~[guava-33.5.0-jre.jar:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.MinecraftArgumentTypes$ArgumentTypeGetterImpl.getClassByKey(MinecraftArgumentTypes.java:98) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.MinecraftArgumentTypes.getClassByKey(MinecraftArgumentTypes.java:70) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.BukkitBrigadierMapper.registerUUID(BukkitBrigadierMapper.java:132) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.BukkitBrigadierMapper.registerBuiltInMappings(BukkitBrigadierMapper.java:82) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.paper.ModernPaperBrigadier.<init>(ModernPaperBrigadier.java:118) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.paper.LegacyPaperCommandManager.registerBrigadier(LegacyPaperCommandManager.java:174) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.paper.LegacyPaperCommandManager.registerBrigadier(LegacyPaperCommandManager.java:141) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.GeyserSpigotPlugin.onEnable(GeyserSpigotPlugin.java:205) ~[?:?]
+app-1  | 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:365) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at java.base/java.lang.Thread.run(Unknown Source) ~[?:?]
+app-1  | Caused by: java.lang.IllegalArgumentException: Cound't find the NMS class 'MinecraftKey', or any of the following fallbacks: [net.minecraft.resources.MinecraftKey, net.minecraft.resources.ResourceLocation]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.CraftBukkitReflection.firstNonNullOrThrow(CraftBukkitReflection.java:125) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.CraftBukkitReflection.needNMSClassOrElse(CraftBukkitReflection.java:138) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.RegistryReflection.<clinit>(RegistryReflection.java:49) ~[?:?]
+app-1  | 	... 21 more
+app-1  | [04:51:41 INFO]: [Geyser-Spigot] Disabling Geyser-Spigot v2.9.2-SNAPSHOT
+app-1  | [04:51:41 INFO]: [Geyser-Spigot] Geyser shutdown successfully.
+app-1  | [04:51:41 INFO]: [Skript] Enabling Skript v2.12.2
+app-1  | [04:51:44 INFO]: [Skript]  ~ created by & © Peter Güttinger aka Njol ~
+app-1  | [04:51:44 INFO]: [TabTPS] Enabling TabTPS v1.3.30
+app-1  | [04:51:44 INFO]: [Skript] A new version of Skript is available: 2.13.2 (you're currently running 2.12.2)
+app-1  | [04:51:44 INFO]: Download it at: https://github.com/SkriptLang/Skript/releases/download/2.13.2/Skript-2.13.2.jar
+app-1  | [04:51:45 INFO]: [GSit] Enabling GSit v3.1.0
+app-1  | [04:51:45 INFO]: [WorldGuard] Registering session handler dev.geco.gsit.link.worldguard.RegionFlagHandler
+app-1  | [04:51:45 INFO]: [GSit] The plugin was successfully enabled.
+app-1  | [04:51:45 INFO]: [GSit] Link with WorldGuard successful!
+app-1  | [04:51:45 INFO]: [GeyserSkinManager] Enabling GeyserSkinManager v1.8
+app-1  | [04:51:45 INFO]: [Skript] Loaded 5684 aliases in 1603ms
+app-1  | [04:51:46 WARN]: [GeyserSkinManager] ForceShowSkins active through config; Floodgate check is bypassed!
+app-1  | [04:51:46 INFO]: [ViaBackwards] Enabling ViaBackwards v5.5.2-SNAPSHOT
+app-1  | [04:51:46 INFO]: [Multiverse-NetherPortals] Enabling Multiverse-NetherPortals v5.0.3
+app-1  | [04:51:46 INFO]: [Multiverse-NetherPortals 5.0.3]  Enabled - By Rigby, fernferret and benwoo1110
+app-1  | [04:51:46 INFO]: [DiscordSRV] Enabling DiscordSRV v1.30.2
+app-1  | [04:51:46 INFO]: [Multiverse-Inventories] Enabling Multiverse-Inventories v5.2.2-pre
+app-1  | [04:51:47 INFO]: [Multiverse-Inventories] Loading player names map...
+app-1  | [04:51:47 INFO]: [Multiverse-Inventories] Version 5.2.2-pre (API v5.2) Enabled - By dumptruckman and benwoo1110
+app-1  | [04:51:47 INFO]: [CoreProtect] Enabling CoreProtect v23.1
+app-1  | [04:51:47 INFO]: [net.coreprotect.hikari.HikariDataSource] HikariPool-1 - Starting...
+app-1  | [04:51:47 INFO]: [net.coreprotect.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@576abc65
+app-1  | [04:51:47 INFO]: [net.coreprotect.hikari.HikariDataSource] HikariPool-1 - Start completed.
+app-1  | [04:51:47 INFO]: [CoreProtect] CoreProtect Community Edition has been successfully enabled! 
+app-1  | [04:51:47 INFO]: [CoreProtect] Using MySQL for data storage.
+app-1  | [04:51:47 INFO]: --------------------
+app-1  | [04:51:47 INFO]: [CoreProtect] Enjoy CoreProtect? Join our Discord!
+app-1  | [04:51:47 INFO]: [CoreProtect] Discord: www.coreprotect.net/discord/
+app-1  | [04:51:47 INFO]: --------------------
+app-1  | [04:51:47 INFO]: [MyCommand] Enabling MyCommand v5.7.4
+app-1  | [04:51:47 INFO]: *-=-=-=-=-=-=-=-=-* MyCommand v.5.7.4*-=-=-=-=-=-=-=-=-=-*
+app-1  | [04:51:47 INFO]: | Vault plugin not found. Using BukkitPermissions
+app-1  | [04:51:47 INFO]: | No Economy support without Vault!
+app-1  | [04:51:47 INFO]: | Command file(s) found : 1
+app-1  | [04:51:47 INFO]: -----
+app-1  | [04:51:47 INFO]: [CoreProtect] Performing v23.0 upgrade. Please wait...
+app-1  | [04:51:47 INFO]: -----
+app-1  | [04:51:47 INFO]: | Config : Ready.
+app-1  | [04:51:47 INFO]: | ProtocolLib not found.
+app-1  | [04:51:47 INFO]: [CoreProtect] Skipping table update on co_skull.
+app-1  | [04:51:47 INFO]: -----
+app-1  | [04:51:47 INFO]: [CoreProtect] Performing v23.1 upgrade. Please wait...
+app-1  | [04:51:47 INFO]: -----
+app-1  | [04:51:47 INFO]: [CoreProtect] Skipping table update on co_skull.
+app-1  | [04:51:47 INFO]: [CoreProtect] Processing new data. Please wait...
+app-1  | [04:51:48 INFO]: | PlaceholderAPI: Not Found
+app-1  | [04:51:48 INFO]: | Custom commands loaded : 44
+app-1  | [04:51:48 INFO]: -----
+app-1  | [04:51:48 INFO]: [CoreProtect] Successfully upgraded to v23.1.
+app-1  | [04:51:48 INFO]: -----
+app-1  | [04:51:49 INFO]: | New update available : MyCommand v5.7.5
+app-1  | [04:51:49 INFO]: [DiscordSRV] [JDA] Login Successful!
+app-1  | [04:51:49 INFO]: |          by emmerrei a.k.a. ivanfromitaly.           
+app-1  | [04:51:49 INFO]: *-=-=-=-=-=-=-=-=-=-*   Done!   *-=-=-=-=-=-=-=-=-=-=-*
+app-1  | [04:51:49 INFO]: [Chunky] Enabling Chunky v1.4.40
+app-1  | [04:51:49 INFO]: [ImageFrame] Enabling ImageFrame v1.8.7.4
+app-1  | [04:51:49 INFO]: [ImageFrame] This version of minecraft is unsupported! (Unsupported)
+app-1  | [04:51:50 INFO]: [ImageFrame] ImageFrame has hooked into ViaVersion!
+app-1  | [04:51:50 WARN]: [DiscordSRV] 
+app-1  | 
+app-1  | The current build of DiscordSRV is outdated by 7 commits! Get the latest build at your favorite distribution center.
+app-1  | 
+app-1  | Modrinth: https://modrinth.com/plugin/discordsrv/
+app-1  | Github: https://github.com/DiscordSRV/DiscordSRV/releases/
+app-1  | Direct Download: https://get.discordsrv.com/
+app-1  | 
+app-1  | [04:51:51 INFO]: [DiscordSRV] [JDA] Connected to WebSocket
+app-1  | [04:51:54 INFO]: [DiscordSRV] [JDA] Finished Loading!
+app-1  | [04:51:54 INFO]: [DiscordSRV] Console forwarding assigned to channel TC:鯖console(1443898893459783744)
+app-1  | [04:51:55 INFO]: [DiscordSRV] Enabling LuckPerms hook
+app-1  | [04:51:55 INFO]: [DiscordSRV] Enabling Multiverse-Core hook
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:url_static
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:url_animated
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:url_static_overlay
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:non_updatable_static
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered MediaLoader imageframe:gif_reader to ImageMapLoader imageframe:url_animated
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered MediaLoader imageframe:imageio to ImageMapLoader imageframe:url_static
+app-1  | [04:51:56 INFO]: [ImageFrame] Registered MediaLoader imageframe:imageio to ImageMapLoader imageframe:url_static_overlay
+app-1  | [04:51:56 INFO]: [ImageFrame] ImageFrame has been Enabled!
+app-1  | [04:51:57 INFO]: [spark] Starting background profiler...
+app-1  | [04:51:57 INFO]: Starting remote control listener
+app-1  | [04:51:57 INFO]: Thread RCON Listener started
+app-1  | [04:51:57 INFO]: RCON running on 0.0.0.0:25575
+app-1  | [04:51:57 INFO]: Running delayed init tasks
+app-1  | [04:51:57 INFO]: [com.fastasyncworldedit.bukkit.regions.WorldGuardFeature] Plugin 'WorldGuard' found. Using it now.
+app-1  | [04:51:57 INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'WorldGuard'
+app-1  | [04:51:57 INFO]: [com.fastasyncworldedit.bukkit.regions.GriefPreventionFeature] Plugin 'GriefPrevention' found. Using it now.
+app-1  | [04:51:57 INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'GriefPrevention'
+app-1  | [04:51:57 INFO]: [ViaVersion] Finished mapping loading, shutting down loader executor.
+app-1  | [04:51:57 INFO]: [Skript] Loading variables...
+app-1  | [04:51:57 INFO]: [Skript] Loaded 2 variables in 0.0 seconds
+app-1  | [04:51:57 INFO]: [Skript] All scripts loaded without errors.
+app-1  | [04:51:57 INFO]: [Skript]     No scripts were found, maybe you should write some ;)
+app-1  | [04:51:57 INFO]: [Skript] Finished loading.
+app-1  | [04:51:57 INFO]: [CoreProtect] FastAsyncWorldEdit logging successfully initialized.
+app-1  | [04:51:57 INFO]: Done (54.760s)! For help, type "help"
+app-1  | [04:51:57 INFO]: [ImageFrame] Unable to load ImageMap data in /data/plugins/ImageFrame/data/0
+app-1  | [04:51:57 WARN]: java.util.concurrent.ExecutionException: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [04:51:57 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:73)
+app-1  | [04:51:57 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:40)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.URLStaticImageMapLoader.load(URLStaticImageMapLoader.java:180)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.ImageMapLoaders.load(ImageMapLoaders.java:103)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.storage.FileImageFrameStorage.loadMaps(FileImageFrameStorage.java:186)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.ImageMapManager.loadMaps(ImageMapManager.java:251)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.ImageFrame.lambda$onEnable$1(ImageFrame.java:359)
+app-1  | [04:51:57 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+app-1  | [04:51:57 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftAsyncTask.run(CraftAsyncTask.java:57)
+app-1  | [04:51:57 WARN]: 	at com.destroystokyo.paper.ServerSchedulerReportingWrapper.run(ServerSchedulerReportingWrapper.java:22)
+app-1  | [04:51:57 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+app-1  | [04:51:57 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+app-1  | [04:51:57 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [04:51:57 WARN]: Caused by: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:43)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.utils.MapUtils.lambda$getMapOrCreateMissing$12(MapUtils.java:428)
+app-1  | [04:51:57 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.run(CraftFuture.java:88)
+app-1  | [04:51:57 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+app-1  | [04:51:57 WARN]: 	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1758)
+app-1  | [04:51:57 WARN]: 	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1613)
+app-1  | [04:51:57 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:427)
+app-1  | [04:51:57 WARN]: 	at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1669)
+app-1  | [04:51:57 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1337)
+app-1  | [04:51:57 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [04:51:57 WARN]: 	... 1 more
+app-1  | [04:51:57 WARN]: Caused by: java.lang.ClassNotFoundException: com.loohp.imageframe.nms.UNSUPPORTED
+app-1  | [04:51:57 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass0(PluginClassLoader.java:208)
+app-1  | [04:51:57 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass(PluginClassLoader.java:175)
+app-1  | [04:51:57 WARN]: 	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+app-1  | [04:51:57 WARN]: 	at java.base/java.lang.Class.forName0(Native Method)
+app-1  | [04:51:57 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [04:51:57 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [04:51:57 WARN]: 	at io.papermc.reflectionrewriter.runtime.AbstractDefaultRulesReflectionProxy.forName(AbstractDefaultRulesReflectionProxy.java:68)
+app-1  | [04:51:57 WARN]: 	at io.papermc.paper.pluginremap.reflect.PaperReflectionHolder.forName(Unknown Source)
+app-1  | [04:51:57 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:37)
+app-1  | [04:51:57 WARN]: 	... 10 more
+app-1  | [04:51:58 INFO]: [ImageFrame] Unable to load ImageMap data in /data/plugins/ImageFrame/data/1
+app-1  | [04:51:58 WARN]: java.util.concurrent.ExecutionException: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:73)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:40)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.URLStaticImageMapLoader.load(URLStaticImageMapLoader.java:180)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.ImageMapLoaders.load(ImageMapLoaders.java:103)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.storage.FileImageFrameStorage.loadMaps(FileImageFrameStorage.java:186)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.ImageMapManager.loadMaps(ImageMapManager.java:251)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.ImageFrame.lambda$onEnable$1(ImageFrame.java:359)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftAsyncTask.run(CraftAsyncTask.java:57)
+app-1  | [04:51:58 WARN]: 	at com.destroystokyo.paper.ServerSchedulerReportingWrapper.run(ServerSchedulerReportingWrapper.java:22)
+app-1  | [04:51:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [04:51:58 WARN]: Caused by: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:43)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.utils.MapUtils.lambda$getMapOrCreateMissing$12(MapUtils.java:428)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.run(CraftFuture.java:88)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1758)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1613)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:427)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1669)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1337)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [04:51:58 WARN]: 	... 1 more
+app-1  | [04:51:58 WARN]: Caused by: java.lang.ClassNotFoundException: com.loohp.imageframe.nms.UNSUPPORTED
+app-1  | [04:51:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass0(PluginClassLoader.java:208)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass(PluginClassLoader.java:175)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Class.forName0(Native Method)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at io.papermc.reflectionrewriter.runtime.AbstractDefaultRulesReflectionProxy.forName(AbstractDefaultRulesReflectionProxy.java:68)
+app-1  | [04:51:58 WARN]: 	at io.papermc.paper.pluginremap.reflect.PaperReflectionHolder.forName(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:37)
+app-1  | [04:51:58 WARN]: 	... 10 more
+app-1  | [04:51:58 INFO]: [ImageFrame] Unable to load ImageMap data in /data/plugins/ImageFrame/data/2
+app-1  | [04:51:58 WARN]: java.util.concurrent.ExecutionException: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:73)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:40)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.URLAnimatedImageMapLoader.load(URLAnimatedImageMapLoader.java:181)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.ImageMapLoaders.load(ImageMapLoaders.java:103)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.storage.FileImageFrameStorage.loadMaps(FileImageFrameStorage.java:186)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.objectholders.ImageMapManager.loadMaps(ImageMapManager.java:251)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.ImageFrame.lambda$onEnable$1(ImageFrame.java:359)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftAsyncTask.run(CraftAsyncTask.java:57)
+app-1  | [04:51:58 WARN]: 	at com.destroystokyo.paper.ServerSchedulerReportingWrapper.run(ServerSchedulerReportingWrapper.java:22)
+app-1  | [04:51:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [04:51:58 WARN]: Caused by: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:43)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.utils.MapUtils.lambda$getMapOrCreateMissing$12(MapUtils.java:428)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.run(CraftFuture.java:88)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1758)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1613)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:427)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1669)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1337)
+app-1  | [04:51:58 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [04:51:58 WARN]: 	... 1 more
+app-1  | [04:51:58 WARN]: Caused by: java.lang.ClassNotFoundException: com.loohp.imageframe.nms.UNSUPPORTED
+app-1  | [04:51:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass0(PluginClassLoader.java:208)
+app-1  | [04:51:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass(PluginClassLoader.java:175)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Class.forName0(Native Method)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at io.papermc.reflectionrewriter.runtime.AbstractDefaultRulesReflectionProxy.forName(AbstractDefaultRulesReflectionProxy.java:68)
+app-1  | [04:51:58 WARN]: 	at io.papermc.paper.pluginremap.reflect.PaperReflectionHolder.forName(Unknown Source)
+app-1  | [04:51:58 WARN]: 	at ImageFrame-1.8.7.4.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:37)
+app-1  | [04:51:58 WARN]: 	... 10 more
+app-1  | [04:51:58 INFO]: [ImageFrame] Data loading completed! Loaded 0 ImageMaps!
+app-1  | [04:51:58 INFO]: [DiscordSRV] Cleared all pre-existing slash commands in 2/2 guilds (0 cancelled)
+app-1  | [04:52:03 INFO]: [MyCmd] Respawning 1 holograms
+app-1  | [04:52:08 INFO]: [MyCommand] found an update for MyCommand. Type /mycommand for more infos.
+app-1  | 2025-12-17T04:55:34.116Z	INFO	mc-server-runner	gracefully stopping server...
+app-1  | 2025/12/17 04:55:34 Stopping with rcon-cli
+app-1  | [04:55:34 INFO]: Thread RCON Client /0:0:0:0:0:0:0:1 started
+app-1  | [04:55:34 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@18afc795 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:35 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1d51c8ae (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:35 INFO]: [Rcon: Stopping the server]
+app-1  | [04:55:35 INFO]: Thread RCON Client /0:0:0:0:0:0:0:1 shutting down
+app-1  | [04:55:35 INFO]: Stopping server
+app-1  | 2025-12-17T04:55:36.000Z	INFO	mc-server-runner	Waiting for completion...
+app-1  | [04:55:36 INFO]: [ImageFrame] Disabling ImageFrame v1.8.7.4
+app-1  | [04:55:36 INFO]: [ImageFrame] ImageFrame has been Disabled!
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@508a6825 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@36ff8ece (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5c2358e6 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4fa4ef74 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4cec6de5 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6af0348 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@408d8f13 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 WARN]: [net.coreprotect.hikari.pool.PoolBase] HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@283a0739 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+app-1  | [04:55:36 INFO]: [Chunky] Disabling Chunky v1.4.40
+app-1  | [04:55:36 INFO]: [MyCommand] Disabling MyCommand v5.7.4
+app-1  | [04:55:36 INFO]: *-=-=-=-=-=-=-=-=-* MyCommand v.5.7.4*-=-=-=-=-=-=-=-=-=-*
+app-1  | [04:55:36 INFO]: | Tasks : Stopped all tasks.
+app-1  | [04:55:36 INFO]: *-=-=-=-=-=-=-=-=-=-*    Bye!   *-=-=-=-=-=-=-=-=-=-=-*
+app-1  | [04:55:36 INFO]: [CoreProtect] Disabling CoreProtect v23.1
+app-1  | [04:55:36 INFO]: [CoreProtect] Finishing up data logging. Please wait...
+app-1  | [init] Running as uid=1000 gid=1000 with /data as 'drwxrwxrwx 35 1000 1000 1120 Dec 17 04:51 /data'
+app-1  | [init] Image info: buildtime=2025-12-01T13:25:28.945Z,version=java21,revision=53fcaabdf77ea3e4bda8825890b6cdd1cea03043
+app-1  | [init] Resolving type given CUSTOM
+app-1  | [init] Copying any plugins from /plugins to /data/plugins
+app-1  | [init] Copying any mods from /mods to /data/mods
+app-1  | [init] Copying any configs from /config to /data/config
+app-1  | [39m[mc-image-helper] 04:59:26.016 INFO  : Created/updated 1 property in /data/server.properties
+app-1  | [0;39m[init] Setting initial memory to 8G and max to 8G
+app-1  | [init] Starting the Minecraft server...
+app-1  | Starting org.bukkit.craftbukkit.Main
+app-1  | 2025-12-17T04:59:31.483134969Z ServerMain WARN Advanced terminal features are not available in this environment
+app-1  | [04:59:31 INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.9+10-LTS; Eclipse Adoptium Temurin-21.0.9+10) on Linux 6.10.14-linuxkit (aarch64)
+app-1  | [04:59:31 INFO]: [bootstrap] Loading Paper 1.21.11-39-main@e5e2c50 (2025-12-12T22:00:30Z) for Minecraft 1.21.11
+app-1  | [04:59:32 INFO]: [PluginInitializerManager] Initializing plugins...
+app-1  | [04:59:32 INFO]: [FileProviderSource] The spark plugin will not be loaded as this server bundles the spark profiler.
+app-1  | [04:59:32 INFO]: [PluginInitializerManager] Initialized 23 plugins
+app-1  | [04:59:32 INFO]: [PluginInitializerManager] Paper plugins (1):
+app-1  |  - PlugManX (3.0.2)
+app-1  | [04:59:32 INFO]: [PluginInitializerManager] Bukkit plugins (22):
+app-1  |  - AdminTerminal (1.0.1), Chunky (1.4.40), CoreProtect (23.1), DiscordSRV (1.30.2), FastAsyncWorldEdit (2.14.2+1c61d82), GSit (3.1.0), Geyser-Spigot (2.9.2-SNAPSHOT), GeyserSkinManager (1.8), GriefPrevention (16.18.5), ImageFrame (1.8.7.5), LWC (2.4.1), LuckPerms (5.5.17), Multiverse-Core (5.3.4), Multiverse-Inventories (5.2.2-pre), Multiverse-NetherPortals (5.0.3), MyCommand (5.7.4), Skript (2.12.2), TabTPS (1.3.30), ViaBackwards (5.5.2-SNAPSHOT), ViaVersion (5.6.0), WorldGuard (7.0.15-beta-01+445a1d7), floodgate (2.2.5-SNAPSHOT (b121-55a85ec))
+app-1  | [04:59:40 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+app-1  | [04:59:43 INFO]: Loaded 1470 recipes
+app-1  | [04:59:43 INFO]: Loaded 1584 advancements
+app-1  | [04:59:43 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+app-1  | [04:59:45 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 1,946.1ms
+app-1  | [04:59:45 INFO]: Starting minecraft server version 1.21.11
+app-1  | [04:59:45 INFO]: Loading properties
+app-1  | [04:59:46 INFO]: This server is running Paper version 1.21.11-39-main@e5e2c50 (2025-12-12T22:00:30Z) (Implementing API version 1.21.11-R0.1-SNAPSHOT)
+app-1  | [04:59:46 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+app-1  | [04:59:46 INFO]: Server Ping Player Sample Count: 12
+app-1  | [04:59:46 INFO]: Using 4 threads for Netty based IO
+app-1  | [04:59:47 INFO]: [MoonriseCommon] Paper is using 2 worker threads, 1 I/O threads
+app-1  | [04:59:49 INFO]: Default game type: SURVIVAL
+app-1  | [04:59:49 INFO]: Generating keypair
+app-1  | [04:59:49 INFO]: Starting Minecraft server on *:25565
+app-1  | [04:59:49 INFO]: Paper: Using libdeflate (Linux aarch64) compression from Velocity.
+app-1  | [04:59:49 INFO]: Paper: Using OpenSSL 3.x.x (Linux aarch64) cipher from Velocity.
+app-1  | [04:59:50 INFO]: [FastAsyncWorldEdit] Loading server plugin FastAsyncWorldEdit v2.14.2+1c61d82
+app-1  | [04:59:53 INFO]: Got request to register class com.sk89q.worldedit.bukkit.BukkitServerInterface with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@13e4bc78]
+app-1  | [04:59:53 INFO]: [WorldGuard] Loading server plugin WorldGuard v7.0.15-beta-01+445a1d7
+app-1  | [04:59:53 INFO]: [CoreLogging] Loading server plugin Multiverse-Core v5.3.4
+app-1  | [04:59:53 INFO]: [floodgate] Loading server plugin floodgate v2.2.5-SNAPSHOT (b121-55a85ec)
+app-1  | [04:59:55 INFO]: [floodgate] Took 1,703ms to boot Floodgate
+app-1  | [04:59:55 INFO]: [ViaVersion] Loading server plugin ViaVersion v5.6.0
+app-1  | [04:59:55 INFO]: [ViaVersion] ViaVersion 5.6.0 is now loaded. Registering protocol transformers and injecting...
+app-1  | [04:59:56 INFO]: [ViaVersion] Loading block connection mappings ...
+app-1  | [04:59:56 INFO]: [ViaVersion] Using FastUtil Long2ObjectOpenHashMap for block connections
+app-1  | [04:59:56 INFO]: [ViaBackwards] Loading translations...
+app-1  | [04:59:56 INFO]: [ViaBackwards] Registering protocols...
+app-1  | [04:59:57 INFO]: [GriefPrevention] Loading server plugin GriefPrevention v16.18.5
+app-1  | [04:59:57 INFO]: [Geyser-Spigot] Loading server plugin Geyser-Spigot v2.9.2-SNAPSHOT
+app-1  | [04:59:58 INFO]: [Geyser-Spigot] Loading extensions...
+app-1  | [04:59:58 INFO]: [Geyser-Spigot] Loaded 0 extension(s)
+app-1  | [04:59:58 INFO]: [PlugManX] Loading server plugin PlugManX v3.0.2
+app-1  | [04:59:58 INFO]: [LuckPerms] Loading server plugin LuckPerms v5.5.17
+app-1  | [04:59:58 INFO]: [LuckPerms] Loading configuration...
+app-1  | [04:59:58 INFO]: [Skript] Loading server plugin Skript v2.12.2
+app-1  | [04:59:58 INFO]: [TabTPS] Loading server plugin TabTPS v1.3.30
+app-1  | [04:59:58 INFO]: [LWC] Loading server plugin LWC v2.4.1
+app-1  | [04:59:58 INFO]: [GSit] Loading server plugin GSit v3.1.0
+app-1  | [04:59:58 INFO]: [GeyserSkinManager] Loading server plugin GeyserSkinManager v1.8
+app-1  | [04:59:58 INFO]: [AT] Loading server plugin AdminTerminal v1.0.1
+app-1  | [04:59:58 INFO]: [ViaBackwards] Loading server plugin ViaBackwards v5.5.2-SNAPSHOT
+app-1  | [04:59:58 INFO]: [Multiverse-NetherPortals] Loading server plugin Multiverse-NetherPortals v5.0.3
+app-1  | [04:59:58 INFO]: [DiscordSRV] Loading server plugin DiscordSRV v1.30.2
+app-1  | [04:59:58 INFO]: [Multiverse-Inventories] Loading server plugin Multiverse-Inventories v5.2.2-pre
+app-1  | [04:59:58 INFO]: [CoreProtect] Loading server plugin CoreProtect v23.1
+app-1  | [04:59:58 INFO]: [MyCommand] Loading server plugin MyCommand v5.7.4
+app-1  | [04:59:58 INFO]: [ImageFrame] Loading server plugin ImageFrame v1.8.7.5
+app-1  | [04:59:58 INFO]: [Chunky] Loading server plugin Chunky v1.4.40
+app-1  | [04:59:58 INFO]: Server permissions file permissions.yml is empty, ignoring it
+app-1  | [04:59:58 INFO]: [FastAsyncWorldEdit] Enabling FastAsyncWorldEdit v2.14.2+1c61d82
+app-1  | [04:59:59 INFO]: [com.fastasyncworldedit.core.Fawe] LZ4 Compression Binding loaded successfully
+app-1  | [04:59:59 INFO]: [com.fastasyncworldedit.core.Fawe] ZSTD Compression Binding loaded successfully
+app-1  | [04:59:59 INFO]: Registering commands with com.sk89q.worldedit.bukkit.BukkitServerInterface
+app-1  | [04:59:59 INFO]: WEPIF: Using the Bukkit Permissions API.
+app-1  | [04:59:59 WARN]: This version of FastAsyncWorldEdit has not been tested with the current Minecraft version.
+app-1  | While it may work, there might be unexpected issues.
+app-1  | It is recommended to use a version of FastAsyncWorldEdit that supports your Minecraft version.
+app-1  | 
+app-1  | [05:00:01 WARN]: 
+app-1  | **********************************************
+app-1  | ** This FastAsyncWorldEdit version does not fully support your version of Bukkit.
+app-1  | ** You can fix this by:
+app-1  | ** - Updating your server version (Check /version to see how many versions you are behind)
+app-1  | ** - Updating FAWE
+app-1  | **
+app-1  | ** When working with blocks or undoing, chests will be empty, signs
+app-1  | ** will be blank, and so on. There will be no support for entity
+app-1  | ** and block property-related functions.
+app-1  | **********************************************
+app-1  | 
+app-1  | [05:00:02 WARN]: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypesCache.<clinit>(BlockTypesCache.java:237)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.init(BlockTypes.java:2406)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.<clinit>(BlockTypes.java:48)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:156)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:132)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.loadFromResource(LegacyMapper.java:124)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.<init>(LegacyMapper.java:84)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.getInstance(LegacyMapper.java:329)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.WorldEdit.loadMappings(WorldEdit.java:428)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.setupPreWorldData(WorldEditPlugin.java:294)
+app-1  | [05:00:02 WARN]: 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.onEnable(WorldEditPlugin.java:264)
+app-1  | [05:00:02 WARN]: 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279)
+app-1  | [05:00:02 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202)
+app-1  | [05:00:02 WARN]: 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109)
+app-1  | [05:00:02 WARN]: 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520)
+app-1  | [05:00:02 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639)
+app-1  | [05:00:02 WARN]: 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596)
+app-1  | [05:00:02 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:321)
+app-1  | [05:00:02 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260)
+app-1  | [05:00:02 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [05:00:02 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [05:00:02 WARN]: Failed to load the built-in legacy id registry
+app-1  | java.lang.ExceptionInInitializerError
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.init(BlockTypes.java:2406) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypes.<clinit>(BlockTypes.java:48) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:156) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockState.get(BlockState.java:132) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.loadFromResource(LegacyMapper.java:124) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.<init>(LegacyMapper.java:84) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.registry.LegacyMapper.getInstance(LegacyMapper.java:329) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.WorldEdit.loadMappings(WorldEdit.java:428) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.setupPreWorldData(WorldEditPlugin.java:294) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.onEnable(WorldEditPlugin.java:264) ~[?:?]
+app-1  | 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:321) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at java.base/java.lang.Thread.run(Unknown Source) ~[?:?]
+app-1  | Caused by: java.lang.RuntimeException: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypesCache.<clinit>(BlockTypesCache.java:278) ~[?:?]
+app-1  | 	... 20 more
+app-1  | Caused by: java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.world.block.BlockTypesCache.<clinit>(BlockTypesCache.java:237) ~[?:?]
+app-1  | 	... 20 more
+app-1  | [05:00:02 INFO]: [PlugManX] Enabling PlugManX v3.0.2
+app-1  | [05:00:03 WARN]: [com.fastasyncworldedit.core.util.UpdateNotification] An update for FastAsyncWorldEdit is available. You are 1236 build(s) out of date.
+app-1  | You are running build 0, the latest version is build 1236.
+app-1  | Update at https://ci.athion.net/job/FastAsyncWorldEdit
+app-1  | [05:00:03 WARN]: [PlugManX] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app-1  | [05:00:03 WARN]: [PlugManX] It seems like you're running on paper.
+app-1  | [05:00:03 WARN]: [PlugManX] PlugManX cannot interact with paper-plugins, yet.
+app-1  | [05:00:03 WARN]: [PlugManX] Also, if you encounter any issues, please join my discord: https://discord.gg/GxEFhVY6ff
+app-1  | [05:00:03 WARN]: [PlugManX] Or create an issue on GitHub: https://github.com/Test-Account666/PlugMan
+app-1  | [05:00:03 WARN]: [PlugManX] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app-1  | [05:00:03 INFO]: [PlugManX] You can disable this warning by setting 'showPaperWarning' to false in the config.yml
+app-1  | [05:00:03 INFO]: [LuckPerms] Enabling LuckPerms v5.5.17
+app-1  | [05:00:04 INFO]:         __    
+app-1  | [05:00:04 INFO]:   |    |__)   LuckPerms v5.5.17
+app-1  | [05:00:04 INFO]:   |___ |      Running on Bukkit - Paper
+app-1  | [05:00:04 INFO]: 
+app-1  | [05:00:05 INFO]: [LuckPerms] Loading storage provider... [H2]
+app-1  | [05:00:05 INFO]: [LuckPerms] Loading internal permission managers...
+app-1  | [05:00:05 INFO]: [LuckPerms] Performing initial data load...
+app-1  | [05:00:05 INFO]: [LuckPerms] Successfully enabled. (took 2031ms)
+app-1  | [05:00:05 INFO]: [LWC] Enabling LWC v2.4.1
+app-1  | [05:00:05 INFO]: [LWC] Connecting to MySQL
+app-1  | [05:00:06 INFO]: [AT] Enabling AdminTerminal v1.0.1
+app-1  | [05:00:06 INFO]: [AT] AdminTerminal 1.0.1 Enabled!
+app-1  | [05:00:06 INFO]: [AT] Current server operating system: Linux (aarch64) - 6.10.14-linuxkit
+app-1  | [05:00:06 WARN]: [AT] System command execution alert enabled.
+app-1  | [05:00:06 INFO]: Preparing level "world"
+app-1  | [05:00:07 WARN]: Failed to load biomes via adapter (not present). Will load via bukkit
+app-1  | [05:00:07 ERROR]: Could not pass event WorldInitEvent to FastAsyncWorldEdit v2.14.2+1c61d82
+app-1  | java.util.NoSuchElementException: No value present
+app-1  | 	at java.base/java.util.Optional.get(Unknown Source) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin.setupWorldData(WorldEditPlugin.java:303) ~[?:?]
+app-1  | 	at FastAsyncWorldEdit-Paper-2.14.2.jar//com.sk89q.worldedit.bukkit.WorldEditPlugin$WorldInitListener.onWorldInit(WorldEditPlugin.java:707) ~[?:?]
+app-1  | 	at co.aikar.timings.TimedEventExecutor.execute(TimedEventExecutor.java:80) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at org.bukkit.plugin.RegisteredListener.callEvent(RegisteredListener.java:71) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperEventManager.callEvent(PaperEventManager.java:54) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.callEvent(PaperPluginManagerImpl.java:131) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.plugin.SimplePluginManager.callEvent(SimplePluginManager.java:628) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at net.minecraft.server.MinecraftServer.initWorld(MinecraftServer.java:737) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.createLevel(MinecraftServer.java:729) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.world.PaperWorldLoader.loadInitialWorlds(PaperWorldLoader.java:165) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.loadLevel(MinecraftServer.java:606) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:361) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at java.base/java.lang.Thread.run(Unknown Source) ~[?:?]
+app-1  | [05:00:08 INFO]: Loading 0 persistent chunks for world 'minecraft:overworld'...
+app-1  | [05:00:08 INFO]: Preparing spawn area: 100%
+app-1  | [05:00:08 INFO]: Prepared spawn area in 3 ms
+app-1  | [05:00:08 INFO]: Loading 0 persistent chunks for world 'minecraft:the_nether'...
+app-1  | [05:00:08 INFO]: Prepared spawn area in 1 ms
+app-1  | [05:00:08 INFO]: Loading 0 persistent chunks for world 'minecraft:the_end'...
+app-1  | [05:00:08 INFO]: Prepared spawn area in 1 ms
+app-1  | [05:00:08 INFO]: Done preparing level "world" (1.633s)
+app-1  | [05:00:08 INFO]: [WorldGuard] Enabling WorldGuard v7.0.15-beta-01+445a1d7
+app-1  | [05:00:09 INFO]: [WorldGuard] (world) TNT ignition is PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world) Lighters are PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world) Lava fire is PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world) Fire spread is UNRESTRICTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] Loaded configuration for world 'world'
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_nether) TNT ignition is PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_nether) Lighters are PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_nether) Lava fire is PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_nether) Fire spread is UNRESTRICTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] Loaded configuration for world 'world_nether'
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_the_end) TNT ignition is PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_the_end) Lighters are PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_the_end) Lava fire is PERMITTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] (world_the_end) Fire spread is UNRESTRICTED.
+app-1  | [05:00:09 INFO]: [WorldGuard] Loaded configuration for world 'world_the_end'
+app-1  | [05:00:09 INFO]: [WorldGuard] Loading region data...
+app-1  | [05:00:10 INFO]: [Multiverse-Core] Enabling Multiverse-Core v5.3.4
+app-1  | [05:00:14 INFO]: [Multiverse-Core] API service loaded!
+app-1  | [05:00:15 INFO]: [Multiverse-Core] [32mVersion 5.3.4 (API v5.3) Enabled - By dumptruckman, Rigby, fernferret, lithium3141, main--, benwoo1110 and Zax71[39m
+app-1  | [05:00:15 INFO]: [Multiverse-Core] [32mLoving Multiverse-Core? Please consider supporting the project with a small donation: https://github.com/sponsors/Multiverse[39m
+app-1  | [05:00:15 INFO]: [floodgate] Enabling floodgate v2.2.5-SNAPSHOT (b121-55a85ec)
+app-1  | [05:00:15 INFO]: [ViaVersion] Enabling ViaVersion v5.6.0
+app-1  | [05:00:15 INFO]: [ViaVersion] ViaVersion detected server version: 1.21.11 (774)
+app-1  | [05:00:15 WARN]: [ViaVersion] ViaVersion does not have any compatible versions for this server version!
+app-1  | [05:00:15 WARN]: [ViaVersion] ViaVersion only supports newer client versions. Use ViaBackwards to allow older versions (ViaRewind for 1.7/1.8) to join.
+app-1  | [05:00:15 WARN]: [ViaVersion] Get setup help at https://viaversion.com/setup or download ViaBackwards/ViaRewind directly at https://ci.viaversion.com/
+app-1  | [05:00:15 WARN]: [ViaVersion] Need more help? Join our Discord at https://viaversion.com/discord
+app-1  | [05:00:15 INFO]: [GriefPrevention] Enabling GriefPrevention v16.18.5
+app-1  | [05:00:15 INFO]: [GriefPrevention] Finished loading configuration.
+app-1  | [05:00:15 INFO]: [GriefPrevention] 0 total claims loaded.
+app-1  | [05:00:16 INFO]: [GriefPrevention] Customizable messages loaded.
+app-1  | [05:00:16 INFO]: [GriefPrevention] Successfully hooked into WorldGuard.
+app-1  | [05:00:16 INFO]: [GriefPrevention] Finished loading data (File Mode).
+app-1  | [05:00:16 INFO]: [GriefPrevention] Boot finished.
+app-1  | [05:00:16 INFO]: [Geyser-Spigot] Enabling Geyser-Spigot v2.9.2-SNAPSHOT
+app-1  | [05:00:17 ERROR]: Error occurred while enabling Geyser-Spigot v2.9.2-SNAPSHOT (Is it up to date?)
+app-1  | java.lang.ExceptionInInitializerError
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.MinecraftArgumentTypes$ArgumentTypeGetterImpl.lambda$new$0(MinecraftArgumentTypes.java:85) ~[?:?]
+app-1  | 	at com.google.common.base.Suppliers$NonSerializableMemoizingSupplier.get(Suppliers.java:201) ~[guava-33.5.0-jre.jar:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.MinecraftArgumentTypes$ArgumentTypeGetterImpl.getClassByKey(MinecraftArgumentTypes.java:98) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.MinecraftArgumentTypes.getClassByKey(MinecraftArgumentTypes.java:70) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.BukkitBrigadierMapper.registerUUID(BukkitBrigadierMapper.java:132) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.BukkitBrigadierMapper.registerBuiltInMappings(BukkitBrigadierMapper.java:82) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.paper.ModernPaperBrigadier.<init>(ModernPaperBrigadier.java:118) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.paper.LegacyPaperCommandManager.registerBrigadier(LegacyPaperCommandManager.java:174) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.paper.LegacyPaperCommandManager.registerBrigadier(LegacyPaperCommandManager.java:141) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.GeyserSpigotPlugin.onEnable(GeyserSpigotPlugin.java:205) ~[?:?]
+app-1  | 	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:279) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.enablePlugin(PaperPluginInstanceManager.java:202) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.enablePlugin(PaperPluginManagerImpl.java:109) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.plugin.SimplePluginManager.enablePlugin(SimplePluginManager.java:520) ~[paper-api-1.21.11-R0.1-SNAPSHOT.jar:?]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugin(CraftServer.java:639) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at org.bukkit.craftbukkit.CraftServer.enablePlugins(CraftServer.java:596) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.initPostWorld(MinecraftServer.java:636) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.dedicated.DedicatedServer.initServer(DedicatedServer.java:365) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1260) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388) ~[paper-1.21.11.jar:1.21.11-39-e5e2c50]
+app-1  | 	at java.base/java.lang.Thread.run(Unknown Source) ~[?:?]
+app-1  | Caused by: java.lang.IllegalArgumentException: Cound't find the NMS class 'MinecraftKey', or any of the following fallbacks: [net.minecraft.resources.MinecraftKey, net.minecraft.resources.ResourceLocation]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.CraftBukkitReflection.firstNonNullOrThrow(CraftBukkitReflection.java:125) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.CraftBukkitReflection.needNMSClassOrElse(CraftBukkitReflection.java:138) ~[?:?]
+app-1  | 	at Geyser-Spigot.jar//org.geysermc.geyser.platform.spigot.shaded.org.incendo.cloud.bukkit.internal.RegistryReflection.<clinit>(RegistryReflection.java:49) ~[?:?]
+app-1  | 	... 21 more
+app-1  | [05:00:17 INFO]: [Geyser-Spigot] Disabling Geyser-Spigot v2.9.2-SNAPSHOT
+app-1  | [05:00:17 INFO]: [Geyser-Spigot] Geyser shutdown successfully.
+app-1  | [05:00:17 INFO]: [Skript] Enabling Skript v2.12.2
+app-1  | [05:00:18 INFO]: [Skript] A new version of Skript is available: 2.13.2 (you're currently running 2.12.2)
+app-1  | [05:00:18 INFO]: Download it at: https://github.com/SkriptLang/Skript/releases/download/2.13.2/Skript-2.13.2.jar
+app-1  | [05:00:19 INFO]: [Skript]  ~ created by & © Peter Güttinger aka Njol ~
+app-1  | [05:00:19 INFO]: [TabTPS] Enabling TabTPS v1.3.30
+app-1  | [05:00:22 INFO]: [GSit] Enabling GSit v3.1.0
+app-1  | [05:00:22 INFO]: [WorldGuard] Registering session handler dev.geco.gsit.link.worldguard.RegionFlagHandler
+app-1  | [05:00:22 INFO]: [GSit] The plugin was successfully enabled.
+app-1  | [05:00:22 INFO]: [GSit] Link with WorldGuard successful!
+app-1  | [05:00:22 INFO]: [GeyserSkinManager] Enabling GeyserSkinManager v1.8
+app-1  | [05:00:22 INFO]: [Skript] Loaded 5684 aliases in 2782ms
+app-1  | [05:00:24 WARN]: [GeyserSkinManager] ForceShowSkins active through config; Floodgate check is bypassed!
+app-1  | [05:00:24 INFO]: [ViaBackwards] Enabling ViaBackwards v5.5.2-SNAPSHOT
+app-1  | [05:00:24 INFO]: [Multiverse-NetherPortals] Enabling Multiverse-NetherPortals v5.0.3
+app-1  | [05:00:24 INFO]: [Multiverse-NetherPortals 5.0.3]  Enabled - By Rigby, fernferret and benwoo1110
+app-1  | [05:00:24 INFO]: [DiscordSRV] Enabling DiscordSRV v1.30.2
+app-1  | [05:00:25 INFO]: [Multiverse-Inventories] Enabling Multiverse-Inventories v5.2.2-pre
+app-1  | [05:00:26 WARN]: [DiscordSRV] 
+app-1  | 
+app-1  | The current build of DiscordSRV is outdated by 7 commits! Get the latest build at your favorite distribution center.
+app-1  | 
+app-1  | Modrinth: https://modrinth.com/plugin/discordsrv/
+app-1  | Github: https://github.com/DiscordSRV/DiscordSRV/releases/
+app-1  | Direct Download: https://get.discordsrv.com/
+app-1  | 
+app-1  | [05:00:26 INFO]: [Multiverse-Inventories] Loading player names map...
+app-1  | [05:00:27 INFO]: [Multiverse-Inventories] Version 5.2.2-pre (API v5.2) Enabled - By dumptruckman and benwoo1110
+app-1  | [05:00:27 INFO]: [CoreProtect] Enabling CoreProtect v23.1
+app-1  | [05:00:28 INFO]: [net.coreprotect.hikari.HikariDataSource] HikariPool-1 - Starting...
+app-1  | [05:00:29 INFO]: [net.coreprotect.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@646961eb
+app-1  | [05:00:29 INFO]: [net.coreprotect.hikari.HikariDataSource] HikariPool-1 - Start completed.
+app-1  | [05:00:29 INFO]: [CoreProtect] CoreProtect Community Edition has been successfully enabled! 
+app-1  | [05:00:29 INFO]: [CoreProtect] Using MySQL for data storage.
+app-1  | [05:00:29 INFO]: --------------------
+app-1  | [05:00:29 INFO]: [CoreProtect] Enjoy CoreProtect? Join our Discord!
+app-1  | [05:00:29 INFO]: [CoreProtect] Discord: www.coreprotect.net/discord/
+app-1  | [05:00:29 INFO]: --------------------
+app-1  | [05:00:29 INFO]: [MyCommand] Enabling MyCommand v5.7.4
+app-1  | [05:00:29 INFO]: *-=-=-=-=-=-=-=-=-* MyCommand v.5.7.4*-=-=-=-=-=-=-=-=-=-*
+app-1  | [05:00:29 INFO]: | Vault plugin not found. Using BukkitPermissions
+app-1  | [05:00:29 INFO]: | No Economy support without Vault!
+app-1  | [05:00:29 INFO]: | Command file(s) found : 1
+app-1  | [05:00:29 INFO]: | Config : Ready.
+app-1  | [05:00:29 INFO]: | ProtocolLib not found.
+app-1  | [05:00:29 INFO]: | PlaceholderAPI: Not Found
+app-1  | [05:00:30 INFO]: | Custom commands loaded : 44
+app-1  | [05:00:30 INFO]: [DiscordSRV] [JDA] Login Successful!
+app-1  | [05:00:30 INFO]: | New update available : MyCommand v5.7.5
+app-1  | [05:00:30 INFO]: |          by emmerrei a.k.a. ivanfromitaly.           
+app-1  | [05:00:30 INFO]: *-=-=-=-=-=-=-=-=-=-*   Done!   *-=-=-=-=-=-=-=-=-=-=-*
+app-1  | [05:00:30 INFO]: [ImageFrame] Enabling ImageFrame v1.8.7.5
+app-1  | [05:00:30 INFO]: [ImageFrame] This version of minecraft is unsupported! (Unsupported)
+app-1  | [05:00:31 INFO]: [DiscordSRV] [JDA] Connected to WebSocket
+app-1  | [05:00:31 INFO]: [ImageFrame] ImageFrame has hooked into ViaVersion!
+app-1  | [05:00:32 INFO]: [DiscordSRV] [JDA] Finished Loading!
+app-1  | [05:00:33 INFO]: [DiscordSRV] Console forwarding assigned to channel TC:鯖console(1443898893459783744)
+app-1  | [05:00:33 INFO]: [DiscordSRV] Enabling LuckPerms hook
+app-1  | [05:00:33 INFO]: [DiscordSRV] Enabling Multiverse-Core hook
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:url_static
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:url_animated
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:url_static_overlay
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered ImageMapLoader imageframe:non_updatable_static
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered MediaLoader imageframe:gif_reader to ImageMapLoader imageframe:url_animated
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered MediaLoader imageframe:imageio to ImageMapLoader imageframe:url_static
+app-1  | [05:00:56 INFO]: [ImageFrame] Registered MediaLoader imageframe:imageio to ImageMapLoader imageframe:url_static_overlay
+app-1  | [05:00:56 INFO]: [ImageFrame] ImageFrame has been Enabled!
+app-1  | [05:00:56 INFO]: [Chunky] Enabling Chunky v1.4.40
+app-1  | [05:00:56 INFO]: [spark] Starting background profiler...
+app-1  | [05:00:57 INFO]: Starting remote control listener
+app-1  | [05:00:57 INFO]: Thread RCON Listener started
+app-1  | [05:00:57 INFO]: RCON running on 0.0.0.0:25575
+app-1  | [05:00:57 INFO]: Running delayed init tasks
+app-1  | [05:00:57 INFO]: [ViaVersion] Finished mapping loading, shutting down loader executor.
+app-1  | [05:00:57 INFO]: [com.fastasyncworldedit.bukkit.regions.WorldGuardFeature] Plugin 'WorldGuard' found. Using it now.
+app-1  | [05:00:57 INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'WorldGuard'
+app-1  | [05:00:57 INFO]: [com.fastasyncworldedit.bukkit.regions.GriefPreventionFeature] Plugin 'GriefPrevention' found. Using it now.
+app-1  | [05:00:57 INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'GriefPrevention'
+app-1  | [05:00:58 INFO]: [Skript] Loading variables...
+app-1  | [05:00:58 INFO]: [Skript] Loaded 2 variables in 0.0 seconds
+app-1  | [05:00:58 INFO]: [Skript] All scripts loaded without errors.
+app-1  | [05:00:58 INFO]: [Skript]     No scripts were found, maybe you should write some ;)
+app-1  | [05:00:58 INFO]: [Skript] Finished loading.
+app-1  | [05:00:58 INFO]: [CoreProtect] FastAsyncWorldEdit logging successfully initialized.
+app-1  | [05:00:58 INFO]: [ImageFrame] Unable to load ImageMap data in /data/plugins/ImageFrame/data/0
+app-1  | [05:00:58 WARN]: java.util.concurrent.ExecutionException: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:73)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:40)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.URLStaticImageMapLoader.load(URLStaticImageMapLoader.java:180)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.ImageMapLoaders.load(ImageMapLoaders.java:103)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.storage.FileImageFrameStorage.loadMaps(FileImageFrameStorage.java:186)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.ImageMapManager.loadMaps(ImageMapManager.java:255)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.ImageFrame.lambda$onEnable$1(ImageFrame.java:290)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftAsyncTask.run(CraftAsyncTask.java:57)
+app-1  | [05:00:58 WARN]: 	at com.destroystokyo.paper.ServerSchedulerReportingWrapper.run(ServerSchedulerReportingWrapper.java:22)
+app-1  | [05:00:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [05:00:58 WARN]: Caused by: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:43)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.utils.MapUtils.lambda$getMapOrCreateMissing$12(MapUtils.java:430)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.run(CraftFuture.java:88)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1274)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [05:00:58 WARN]: 	... 1 more
+app-1  | [05:00:58 WARN]: Caused by: java.lang.ClassNotFoundException: com.loohp.imageframe.nms.UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass0(PluginClassLoader.java:208)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass(PluginClassLoader.java:175)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName0(Native Method)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at io.papermc.reflectionrewriter.runtime.AbstractDefaultRulesReflectionProxy.forName(AbstractDefaultRulesReflectionProxy.java:68)
+app-1  | [05:00:58 WARN]: 	at io.papermc.paper.pluginremap.reflect.PaperReflectionHolder.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:37)
+app-1  | [05:00:58 WARN]: 	... 6 more
+app-1  | [05:00:58 INFO]: [ImageFrame] Unable to load ImageMap data in /data/plugins/ImageFrame/data/1
+app-1  | [05:00:58 INFO]: Done (87.813s)! For help, type "help"
+app-1  | [05:00:58 WARN]: java.util.concurrent.ExecutionException: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:73)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:40)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.URLStaticImageMapLoader.load(URLStaticImageMapLoader.java:180)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.ImageMapLoaders.load(ImageMapLoaders.java:103)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.storage.FileImageFrameStorage.loadMaps(FileImageFrameStorage.java:186)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.ImageMapManager.loadMaps(ImageMapManager.java:255)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.ImageFrame.lambda$onEnable$1(ImageFrame.java:290)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftAsyncTask.run(CraftAsyncTask.java:57)
+app-1  | [05:00:58 WARN]: 	at com.destroystokyo.paper.ServerSchedulerReportingWrapper.run(ServerSchedulerReportingWrapper.java:22)
+app-1  | [05:00:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [05:00:58 WARN]: Caused by: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:43)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.utils.MapUtils.lambda$getMapOrCreateMissing$12(MapUtils.java:430)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.run(CraftFuture.java:88)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1274)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [05:00:58 WARN]: 	... 1 more
+app-1  | [05:00:58 WARN]: Caused by: java.lang.ClassNotFoundException: com.loohp.imageframe.nms.UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass0(PluginClassLoader.java:208)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass(PluginClassLoader.java:175)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName0(Native Method)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at io.papermc.reflectionrewriter.runtime.AbstractDefaultRulesReflectionProxy.forName(AbstractDefaultRulesReflectionProxy.java:68)
+app-1  | [05:00:58 WARN]: 	at io.papermc.paper.pluginremap.reflect.PaperReflectionHolder.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:37)
+app-1  | [05:00:58 WARN]: 	... 6 more
+app-1  | [05:00:58 INFO]: [ImageFrame] Unable to load ImageMap data in /data/plugins/ImageFrame/data/2
+app-1  | [05:00:58 WARN]: java.util.concurrent.ExecutionException: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:73)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.get(CraftFuture.java:40)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.URLAnimatedImageMapLoader.load(URLAnimatedImageMapLoader.java:180)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.ImageMapLoaders.load(ImageMapLoaders.java:103)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.storage.FileImageFrameStorage.loadMaps(FileImageFrameStorage.java:186)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.objectholders.ImageMapManager.loadMaps(ImageMapManager.java:255)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.ImageFrame.lambda$onEnable$1(ImageFrame.java:290)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftTask.run(CraftTask.java:78)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftAsyncTask.run(CraftAsyncTask.java:57)
+app-1  | [05:00:58 WARN]: 	at com.destroystokyo.paper.ServerSchedulerReportingWrapper.run(ServerSchedulerReportingWrapper.java:22)
+app-1  | [05:00:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Thread.run(Unknown Source)
+app-1  | [05:00:58 WARN]: Caused by: java.lang.RuntimeException: No NMSWrapper implementation for UNSUPPORTED version UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:43)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.utils.MapUtils.lambda$getMapOrCreateMissing$12(MapUtils.java:430)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftFuture.run(CraftFuture.java:88)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.craftbukkit.scheduler.CraftScheduler.mainThreadHeartbeat(CraftScheduler.java:474)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.tickChildren(MinecraftServer.java:1758)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.tickServer(MinecraftServer.java:1613)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.dedicated.DedicatedServer.tickServer(DedicatedServer.java:427)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.processPacketsAndTick(MinecraftServer.java:1669)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1337)
+app-1  | [05:00:58 WARN]: 	at net.minecraft.server.MinecraftServer.lambda$spin$2(MinecraftServer.java:388)
+app-1  | [05:00:58 WARN]: 	... 1 more
+app-1  | [05:00:58 WARN]: Caused by: java.lang.ClassNotFoundException: com.loohp.imageframe.nms.UNSUPPORTED
+app-1  | [05:00:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass0(PluginClassLoader.java:208)
+app-1  | [05:00:58 WARN]: 	at org.bukkit.plugin.java.PluginClassLoader.loadClass(PluginClassLoader.java:175)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.ClassLoader.loadClass(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName0(Native Method)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at java.base/java.lang.Class.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at io.papermc.reflectionrewriter.runtime.AbstractDefaultRulesReflectionProxy.forName(AbstractDefaultRulesReflectionProxy.java:68)
+app-1  | [05:00:58 WARN]: 	at io.papermc.paper.pluginremap.reflect.PaperReflectionHolder.forName(Unknown Source)
+app-1  | [05:00:58 WARN]: 	at ImageFrame-1.8.7.5.jar//com.loohp.imageframe.nms.NMS.getInstance(NMS.java:37)
+app-1  | [05:00:58 WARN]: 	... 10 more
+app-1  | [05:00:58 INFO]: [ImageFrame] Data loading completed! Loaded 0 ImageMaps!
+app-1  | [05:00:59 INFO]: [DiscordSRV] Cleared all pre-existing slash commands in 2/2 guilds (0 cancelled)
+app-1  | [05:01:04 INFO]: [MyCmd] Respawning 1 holograms
+app-1  | [05:01:10 INFO]: [MyCommand] found an update for MyCommand. Type /mycommand for more infos.

@@ -8,8 +8,8 @@ services:
       - .env
     environment:
       EULA: "TRUE"
-      TYPE: "PAPER"
-      VERSION: "LATEST"
+      TYPE: "CUSTOM"
+      CUSTOM_SERVER: "paper-1.21.11-39.jar"
       MEMORY: "8G"
       OPS: "momoka_sada"
       MYSQL_HOST: db
