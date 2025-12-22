@@ -1,0 +1,10 @@
+# 初回参加時の処理（初期データのセットなど）
+
+on first join:
+    # 変数の初期化
+    if {money::%player%} is not set:
+        set {money::%player%} to 0
+    
+    # 歓迎メッセージなど（必要であれば）
+    send "&b[システム] &fサーバーへようこそ！初期データを作成しました。"
+    broadcast "&e%player% さんが初めて参加しました！"

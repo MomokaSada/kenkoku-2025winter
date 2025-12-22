@@ -91,6 +91,7 @@ minecraft_server/plugins/Updater/
 minecraft_server/plugins/dynmap/web/
 minecraft_server/plugins/Geyser-Spigot/packs/
 minecraft_server/plugins/LuckPerms/yaml-storage/users/
+minecraft_server/plugins/LuckPerms/yaml-storage/uuidcache.txt
 minecraft_server/plugins/WorldGuard/worlds/
 minecraft_server/plugins/Multiverse-Core/worlds.yml
 minecraft_server/plugins/Multiverse-Inventories/worlds/
@@ -117,3 +118,5 @@ minecraft_server/plugins/floodgate/key.pem
 
 # 8. Ignore History/Backup data
 minecraft_server/plugins/FastAsyncWorldEdit/history/
+
+!minecraft_server/.env.exsample
