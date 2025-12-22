@@ -1,0 +1,369 @@
+# NPC管理システム
+
+# 定期的にNPCリストを更新する（補完用）
+every 5 minutes:
+    execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
+    clear {-npc_list_cache::*}
+    if {-npc_names_result::*} is set:
+        set {_row} to first element of {-npc_names_result::*}
+        set {_str} to "%{_row}%"
+        replace "names: " with "" in {_str}
+        set {_list::*} to split {_str} at "|"
+        loop {_list::*}:
+            add loop-value to {-npc_list_cache::*}
+
+on load:
+    execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
+    clear {-npc_list_cache::*}
+    if {-npc_names_result::*} is set:
+        set {_row} to first element of {-npc_names_result::*}
+        set {_str} to "%{_row}%"
+        replace "names: " with "" in {_str}
+        set {_list::*} to split {_str} at "|"
+        loop {_list::*}:
+            add loop-value to {-npc_list_cache::*}
+
+# NPCを召喚するコマンド
+# NPC召喚関数 (再利用可能)
+function spawnNpc(name: text, loc: location):
+    # DB接続チェック
+    if {kenkoku_db} is not set:
+        broadcast "&c[Error] データベース接続変数 {kenkoku_db} が設定されていません！"
+        stop
+        
+    delete {-npc_data::*}
+    
+    # NPC基本情報取得
+    execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {-npc_data::*}
+    
+    if {-npc_data::id::*} is not set:
+        broadcast "&c[Error] 指定されたNPC (%{_name}%) は見つかりませんでした。"
+        stop
+        
+    set {_id} to {-npc_data::id::1}
+    # 名前は引数のものを使う（DBのものと一致するはずだが）
+    # set {_name} to {-npc_data::name::1}
+    set {_level} to {-npc_data::level::1}
+    set {_biome} to {-npc_data::biome_key::1} ? "plains"
+    set {_profession} to {-npc_data::profession_key::1} ? "none"
+    set {_type_name} to {-npc_data::npc_type::1} ? "villager"
+    
+    # 村人を召喚
+    spawn villager at {_loc}
+    set {_npc} to spawned villager
+    set display name of {_npc} to {_name}
+    
+    # NBT設定 (基本)
+    set {_nbt_str} to "{VillagerData:{profession:'minecraft:%{_profession}%',type:'minecraft:%{_biome}%',level:%{_level}%},NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b}"
+    add nbt compound from {_nbt_str} to nbt of {_npc}
+    
+    # タグ設定
+    add "kenkoku_npc" to scoreboard tags of {_npc}
+    add "npc_id_%{_id}%" to scoreboard tags of {_npc}
+    add "npc_name_%{_name}%" to scoreboard tags of {_npc}
+    
+    # 取引情報の取得と設定
+    execute "SELECT id, content FROM trades WHERE npc_id = %{_id}%" in {kenkoku_db} and store the result in {-npc_trades::*}
+    
+    # NBTでのレシピ構築
+    # リスト変数をループしてレシピNBT文字列を作成
+    # レシピ構築用変数
+    set {_recipes_nbt} to "["
+    set {_first} to true
+    
+    loop {-npc_trades::id::*}:
+        set {_tid} to loop-value
+        set {_content} to {-npc_trades::content::%loop-index%}
+        
+        # ------------------------------------------------------------------
+        # 新戦略: SkBeeのSNBTシリアライズを利用する
+        # ------------------------------------------------------------------
+        
+        # 1. Buy Item (取引権) - SkBeeにお任せ
+        set {_buy_item} to paper
+        # 名前設定
+        set name of {_buy_item} to "&d取引権"
+        set lore of {_buy_item} to "&7貿易に使用します"
+        # エンチャント
+        enchant {_buy_item} with unbreaking 1
+        add hide enchants to item flags of {_buy_item}
+        # NBT取得 (SkBeeが正しいフォーマットで出力してくれるはず)
+        set {_buy_snbt} to full nbt of {_buy_item}
+        
+        # 2. Sell Item (結果アイテム)
+        # JSON Name
+        set {_sell_name_json} to "{\""text\"":\""%{_content}%\""}"
+        
+        # 2. Sell Item (結果アイテム)
+        set {_sell_item} to paper
+        set name of {_sell_item} to "%{_content}%"
+        
+        # SkBeeを使って custom_data コンポーネントを注入 (item自体を操作)
+        add nbt compound from "{""minecraft:custom_data"":{KenkokuTradeId:%{_tid}%}}" to nbt of {_sell_item}
+        
+        # NBT取得 (SkBeeが内部で正しい構造(SNBT)にしてくれる)
+        set {_sell_snbt} to full nbt of {_sell_item}
+
+        # 3. レシピ文字列に追加
+        # rewardExp:0b (経験値なし), uses:0 (使用回数0), maxUses:2147483647 (無制限)
+        if {_first} is true:
+            set {_recipes_nbt} to "%{_recipes_nbt}%{buy:%{_buy_snbt}%,sell:%{_sell_snbt}%,rewardExp:0b,uses:0,maxUses:2147483647}"
+            set {_first} to false
+        else:
+            set {_recipes_nbt} to "%{_recipes_nbt}%,{buy:%{_buy_snbt}%,sell:%{_sell_snbt}%,rewardExp:0b,uses:0,maxUses:2147483647}"
+        
+    set {_recipes_nbt} to "%{_recipes_nbt}%]"
+    
+    # Offersタグとして追加
+    # set {_offers_nbt} to "{Offers:{%{_recipes_nbt}%}}"
+    add nbt compound from "{Offers:{Recipes:%{_recipes_nbt}%}}" to nbt of {_npc}
+        
+    broadcast "&a[System] NPC (%{_name}%) を召喚しました！ (Trades: %size of {-npc_trades::id::*}%)"
+
+# NPCを召喚するコマンド (Function呼び出し)
+command /spawn-npc <text>:
+    permission: op
+    usage: /spawn-npc <NPC名>
+    trigger:
+        spawnNpc(arg-1, location of player)
+
+# NPC一括更新コマンド
+command /npc-update:
+    permission: op
+    trigger:
+        broadcast "&a[System] NPCの更新を開始します..."
+        
+        # 1. 対象のNPCをマーク
+        loop all villagers:
+            if scoreboard tags of loop-villager contains "kenkoku_npc":
+                add "oldNpc" to scoreboard tags of loop-villager
+                
+        # 2. マークされたNPCを更新
+        set {_count} to 0
+        loop all villagers:
+            if scoreboard tags of loop-villager contains "oldNpc":
+                # 名前を特定
+                delete {_target_name}
+                loop scoreboard tags of loop-villager:
+                    if loop-value-2 starts with "npc_name_":
+                        set {_target_name} to loop-value-2
+                        replace "npc_name_" with "" in {_target_name}
+                
+                if {_target_name} is set:
+                    set {_loc} to location of loop-villager
+                    spawnNpc({_target_name}, {_loc})
+                    kill loop-villager
+                    add 1 to {_count}
+                else:
+                    broadcast "&c[Warning] 名前タグが見つからないNPCをスキップしました (Loc: %location of loop-villager%)"
+                    remove "oldNpc" from scoreboard tags of loop-villager
+                    
+        broadcast "&a[System] %{_count}% 体のNPCを更新しました。"
+
+# デバッグ用: 取引権を入手するコマンド
+command /get-trading-right:
+    permission: op
+    trigger:
+        set {_item} to paper
+        enchant {_item} with unbreaking 1
+        add hide enchants to item flags of {_item}
+        set name of {_item} to "&d取引権"
+        set lore of {_item} to "&7貿易に使用します"
+        give {_item} to player
+        send "&a[System] 取引権を入手しました。"
+
+# 取引実行時の処理 (Inventory Click + NBT Tag ID)
+on inventory click:
+    # デバッグ情報の表示（必要に応じてコメントアウト）
+
+    
+    # ---------------------------------------------------------
+    # Merchant Inventory のチェック
+    # ---------------------------------------------------------
+    if "%event-inventory's type%" contains "merchant":
+        # 結果スロット(2)をクリックしたかチェック
+        if index of event-slot is 2:
+            # プレイヤー情報の確保
+            set {_player} to player
+            
+            # シフトクリック対策（デバッグ中は許可してもいいが、念のため）
+            # wait 1 tick の前に行う必要がある（イベントキャンセルは wait 後にはできないため）
+            if "%click type%" contains "SHIFT":
+                cancel event
+                send "&c[System] 取引権は1つずつ購入してください。" to {_player}
+                stop
+            
+            # 直接スロットを確認してもNBTが空（仮想アイテム）のため、
+            # 1 tick 待って、プレイヤーが手に持った（実体化した）アイテムを確認する
+            wait 1 tick
+            
+            set {_cursor_item} to cursor slot of player
+            # カーソルになければ、インベントリに入った可能性もある（シフトクリック等）
+            # ここでは簡単のためカーソル優先、なければ直近で増えたアイテムを探すロジックが必要だが
+            # まずはカーソルチェック
+            
+            set {_nbt} to nbt of {_cursor_item}
+            
+            # ID取得試行 (文字列解析による最終手段)
+            # SkBeeのNBTオブジェクト操作が不安定なため、確実にログに出ている文字列からパースする
+            set {_nbt_str} to "%{_nbt}%"
+            # 例: "... KenkokuTradeId:22} ..." または "... KenkokuTradeId:22, ..."
+            
+            if {_nbt_str} contains "KenkokuTradeId:":
+                set {_parts::*} to split {_nbt_str} at "KenkokuTradeId:"
+                # _parts::2 は "22}" や "22," で始まる文字列
+                set {_val_part} to {_parts::2}
+                
+                # 数字の後の区切り文字（} または ,）を探す
+                # Skriptの split は簡単だが、汎用的にやるなら文字ループが必要。
+                # ここでは簡易的に、"}" と "," の両方で split を試みる
+                
+                # まず "}" で区切る (JSON/SNBTの閉じカッコ)
+                set {_sub_parts::*} to split {_val_part} at "}"
+                set {_raw_id} to {_sub_parts::1}
+                
+                # さらに "," で区切る (複数のタグがある場合)
+                set {_sub_parts_2::*} to split {_raw_id} at ","
+                set {_raw_id} to {_sub_parts_2::1}
+                
+                # 空白除去 (念のため)
+                replace all " " with "" in {_raw_id}
+                replace all "}" with "" in {_raw_id}
+                replace all "," with "" in {_raw_id}
+                
+                # 数値変換
+                set {_tid} to {_raw_id} parsed as number
+            
+            # もし取得できなかった場合の処理
+            if {_tid} is not set:
+                # 古い形式(ルート直下)も念のため確認
+                set {_tid} to {_nbt::KenkokuTradeId}
+                if {_tid} is not set:
+                    stop
+            
+            # アイテムが見つかったので、変数にセットして後続処理へ
+            set {_item} to {_cursor_item}
+            
+            wait 1 tick
+            
+            # ---------------------------------------------------------
+            # ロジック変更: 取引結果の「地図」を即座に「取引権(紙)」に戻す
+            # これにより、取引権は消費されず、結果(とコスト)だけが処理される
+            # ---------------------------------------------------------
+            
+            # プレイヤーの手持ち(カーソル)またはインベントリにある地図を探す
+            set {_found_loc} to "none"
+            if cursor slot of {_player} is {_item}:
+                set {_found_loc} to "cursor"
+            else if {_player} has {_item}:
+                set {_found_loc} to "inventory"
+            
+            # 取引権アイテムの生成（返還用）
+            set {_token_item} to paper
+            enchant {_token_item} with unbreaking 1
+            add hide enchants to item flags of {_token_item}
+            set name of {_token_item} to "&d取引権"
+            set lore of {_token_item} to "&7貿易に使用します"
+            
+            if {_found_loc} is "cursor":
+                set cursor slot of {_player} to {_token_item}
+            else if {_found_loc} is "inventory":
+                remove {_item} from {_player}
+                give {_token_item} to {_player}
+            else:
+                broadcast "&c[Debug] Item not found in cursor or inventory."
+                stop
+                
+            # ---------------------------------------------------------
+            # DB照会 & コストチェック
+            # ---------------------------------------------------------
+            set {_can_afford} to true
+            set {_err_msg} to ""
+            
+            # Trade IDからNPCタイプを取得してクエストかどうか判定
+            execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
+            set {_npc_type} to {-trade_info::npc_type::1}
+            
+            # クエストの重複受領チェック
+            if {_npc_type} is "quest":
+                if scoreboard tags of {_player} contains "kenkoku_quest_completed_%{_tid}%":
+                    send "&c[System] このクエストは既に完了しています。" to {_player}
+                    stop
+            
+            # 1. コスト情報 (Cost Items + Money)
+            execute "SELECT i.key as item_key, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+
+            # 2. リワード情報 (Reward Items + Money)
+            execute "SELECT i.key as item_key, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+            
+            # 3. 所持チェック
+            loop {-trade_reqs::item_key::*}:
+                set {_req_key} to loop-value
+                set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
+                set {_req_item} to {_req_key} parsed as item
+                if {_req_item} is set:
+                    if amount of {_req_item} in {_player}'s inventory < {_req_qty}:
+                        set {_can_afford} to false
+                        set {_err_msg} to "&cアイテムが足りません: %{_req_key}% x%{_req_qty}%"
+                        
+            loop {-trade_reqs::price::*}:
+                set {_price} to loop-value
+                if {_price} > 0:
+                    if {money::%{_player}%} is not set:
+                        set {money::%{_player}%} to 0
+                    if {money::%{_player}%} < {_price}:
+                        set {_can_afford} to false
+                        set {_err_msg} to "&cお金が足りません: %{_price}%G"
+            
+            # 4. 取引実行
+            if {_can_afford} is true:
+                # コスト徴収
+                loop {-trade_reqs::item_key::*}:
+                    set {_req_key} to loop-value
+                    set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
+                    set {_req_item} to {_req_key} parsed as item
+                    remove {_req_qty} of {_req_item} from {_player}
+                    send "&c- %{_req_key}% x%{_req_qty}%" to {_player}
+                
+                loop {-trade_reqs::price::*}:
+                    set {_price} to loop-value
+                    if {_price} > 0:
+                        subtract {_price} from {money::%{_player}%}
+                        send "&c- %{_price}%G" to {_player}
+                
+                # リワード付与
+                loop {-trade_rewards::item_key::*}:
+                    set {_r_key} to loop-value
+                    set {_r_qty} to {-trade_rewards::quantity::%loop-index%}
+                    set {_r_item} to {_r_key} parsed as item
+                    give {_r_qty} of {_r_item} to {_player}
+                    send "&a+ %{_r_key}% x%{_r_qty}%" to {_player}
+                    
+                loop {-trade_rewards::price::*}:
+                    set {_r_price} to loop-value
+                    if {_r_price} > 0:
+                        add {_r_price} to {money::%{_player}%}
+                        send "&a+ %{_r_price}%G" to {_player}
+                
+                # クエスト完了タグの付与
+                if {_npc_type} is "quest":
+                    add "kenkoku_quest_completed_%{_tid}%" to scoreboard tags of {_player}
+                
+                send "&a[System] 取引成立！"
+                
+            else:
+                # 失敗時: メッセージのみ (アイテムは既に取引権に戻っている)
+                send {_err_msg} to {_player}
+                send "&c[System] 条件を満たしていないため、取引を実行できませんでした。"
+
+# その他のコマンドは変更なし
+on tab complete of "/spawn-npc":
+    set tab completions for position 1 to {-npc_list_cache::*}
+
+command /kill-nearby-npc:
+    permission: op
+    trigger:
+        loop all villagers in radius 5 around player:
+            if scoreboard tags of loop-entity contains "kenkoku_npc":
+                kill loop-entity
+                send "&c[System] 近くのNPCを削除しました。"

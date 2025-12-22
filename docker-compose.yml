@@ -1,5 +1,5 @@
 services:
-  app:
+  minecraft:
     image: itzg/minecraft-server
     ports:
       - "0.0.0.0:25565:25565"
@@ -18,8 +18,15 @@ services:
       - ./minecraft_server:/data
     restart: unless-stopped
 
+  app:
+    build: ./kenkoku-manage-service
+    volumes:
+      - ./kenkoku-manage-service:/workdir
+    ports:
+      - 8000:8000
   db:
     image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake
     volumes:
       - ./db/mysql_data:/var/lib/mysql
       - ./db/initdb:/docker-entrypoint-initdb.d:ro
