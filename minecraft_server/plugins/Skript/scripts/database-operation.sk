@@ -1,0 +1,172 @@
+# 全アイテムをDBに登録する処理
+import:
+    java.net.HttpURLConnection
+    java.net.URL
+    java.io.OutputStreamWriter
+    java.lang.System
+
+
+
+command /insert-all-items:
+    permission: op
+    trigger:
+        send "&e[System] 全バニラアイテムの登録を開始します..." to console
+        
+        # 登録カウンター
+        set {_count} to 0
+        set {_skipped} to 0
+        set {_error} to 0
+        
+        # すべてのアイテムタイプをループ
+        # Skriptの 'all itemtypes' エイリアスを使用
+        loop all itemtypes:
+            set {_item} to loop-value
+            # アイテムキーを取得、文字列化
+            set {_key} to "%namespaced key of {_item}%"
+            
+            # デバッグ: 最初の数個だけログ出し
+            if {_count} < 3:
+                send "&7[Debug] Processing: %{_key}%" to console
+            
+            # 既に存在するかチェックして登録する処理をSQLのみで完結させる
+            # MySQLの標準的な重複回避パターン: INSERT ... SELECT ... WHERE NOT EXISTS
+            # バニラアイテムに関しては name カラムは NULL (後でAPIが更新する)
+            # Skript-DBの仕様: 文字列内の %変数% は自動的にプレースホルダー(?)に変換され、バインドされる
+            # そのため、'%{_key}%' のようにクォートで囲むと '?' (文字列) になり、パラメータ数が0になってしまう (Index out of rangeエラー)
+            # 正解はクォートなしで書くこと (自動でバインドされるため安全)
+            execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) SELECT %{_key}%, NULL, FALSE, NULL, NOW(), NOW() WHERE NOT EXISTS (SELECT 1 FROM items WHERE `key` = %{_key}%)" in {kenkoku_db}
+            
+            # エラーチェック
+            set {_last_error} to last sql error
+            if {_last_error} is set:
+                send "&c[Error] Failed to insert %{_key}%: %{_last_error}%" to console
+                add 1 to {_error}
+            else:
+                add 1 to {_count}
+            
+            # 負荷軽減のため、少しずつwaitを入れる（50個ごとに1tick）
+            if mod({_count}, 50) is 0:
+                wait 1 tick
+                send "&7... %{_count}% 個処理中" to console
+        
+        send "&a[System] DB登録完了！" to console
+        send "&b- 新規登録: %{_count}%" to console
+        send "&e- スキップ: %{_skipped}%" to console
+        if {_error} > 0:
+            send "&c- エラー: %{_error}%" to console
+
+        # ---------------------------------------------------------
+        # API連携: Laravel側に翻訳データを更新させる
+        # ---------------------------------------------------------
+        # ---------------------------------------------------------
+        # ---------------------------------------------------------
+        # API連携: Laravel側に翻訳データを更新させる
+        # ---------------------------------------------------------
+        send "&e[System] APIに翻訳更新リクエストを送信中... (via java-reflect)" to console
+        
+        # 環境変数取得
+        set {_api_key} to System.getenv("KENKOKU_MANAGE_SERVICE_API_KEY")
+        set {_api_url} to System.getenv("KENKOKU_MANAGE_SERVICE_URL")
+        
+        if {_api_url} is not set:
+            set {_api_url} to "http://app:8000"
+            
+        replace "localhost" with "app" in {_api_url}
+        
+        if {_api_key} is not set:
+            send "&c[System] API Key not found." to console
+            stop trigger
+
+        # Java HttpURLConnection
+        set {_url_obj} to new URL("%{_api_url}%/api/items")
+        set {_con} to {_url_obj}.openConnection()
+        {_con}.setRequestMethod("POST")
+        {_con}.setRequestProperty("X-HTTP-Method-Override", "PATCH")
+        {_con}.setRequestProperty("Authorization", "Bearer %{_api_key}%")
+        {_con}.setRequestProperty("Content-Type", "application/json")
+        {_con}.setDoOutput(true)
+        
+        # Body送信
+        set {_writer} to new OutputStreamWriter({_con}.getOutputStream())
+        {_writer}.write("{""minecraft_version"": ""1.21.11""}")
+        {_writer}.flush()
+        {_writer}.close()
+        
+        # レスポンスコード確認
+        set {_code} to {_con}.getResponseCode()
+        if {_code} is 200:
+            send "&a[System] リクエスト成功 (HTTP 200)" to console
+        else:
+            send "&c[System] リクエスト失敗 (HTTP %{_code}%)" to console
+# オリジナルアイテムを個別に登録するコマンド
+# /insert-original-item <BaseItemID(name)> <UniqueKey(key)> <NBT>
+command /insert-original-item <text> <text> <text>:
+    permission: op
+    usage: /insert-original-item <BaseItem(name)> <UniqueKey(key)> <nbt>
+    trigger:
+        set {_base_id} to arg-1
+        set {_unique_key} to arg-2
+        set {_nbt} to arg-3
+        
+        send "&e[System] オリジナルアイテムの登録を開始します: %{_unique_key}% (Base: %{_base_id}%)"
+        
+        # KEY = ユニークID, NAME = 種アイテムID
+        execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) SELECT %{_unique_key}%, %{_base_id}%, TRUE, %{_nbt}%, NOW(), NOW() WHERE NOT EXISTS (SELECT 1 FROM items WHERE `key` = %{_unique_key}%)" in {kenkoku_db}
+        
+        set {_last_error} to last sql error
+        if {_last_error} is set:
+            send "&c[Error] 登録に失敗しました: %{_last_error}%"
+        else:
+            send "&a[System] 登録処理を実行しました。（既に同IDが存在する場合はスキップされました）"
+
+# サーバーロード時に補完リストをキャッシュ作成
+on load:
+    clear {-all_items_cache::*}
+    loop all itemtypes:
+        add "%namespaced key of loop-value%" to {-all_items_cache::*}
+
+# コマンドのタブ補完
+on tab complete of "/insert-original-item":
+    set tab completions for position 1 to {-all_items_cache::*}
+    # position 2 はユニークキー（自由入力）なので補完を出さない
+    set tab completions for position 3 to "{display:{Name:'""名前""'}}"
+
+
+# 村人の設定（職業・バイオーム）をDBに登録する処理
+command /insert-villager-settings:
+    permission: op
+    trigger:
+        send "&e[System] 村人設定（職業・バイオーム）の登録を開始します..." to console
+        
+        # 1. Professions (職業)
+        send "&e- 職業データの登録中..." to console
+        set {_professions::*} to "armorer", "butcher", "cartographer", "cleric", "farmer", "fisherman", "fletcher", "leatherworker", "librarian", "mason", "nitwit", "none", "shepherd", "toolsmith" and "weaponsmith"
+        
+        set {_p_count} to 0
+        loop {_professions::*}:
+            set {_key} to loop-value
+            set {_key} to {_key} in lowercase
+            
+            # DB登録
+            # professionsテーブル
+            execute "INSERT INTO professions (`key`, created_at, updated_at) SELECT %{_key}%, NOW(), NOW() WHERE NOT EXISTS (SELECT 1 FROM professions WHERE `key` = %{_key}%)" in {kenkoku_db}
+            add 1 to {_p_count}
+            
+        send "&a- 職業データ登録完了: %{_p_count}% 件処理" to console
+
+        # 2. Villager Types (Biomes)
+        # ※テーブル名は biomes だが、マイクラ内の概念は Villager Type
+        send "&e- バイオーム型（Villager Type）データの登録中..." to console
+        set {_biomes::*} to "desert", "jungle", "plains", "savanna", "snow", "swamp" and "taiga"
+        
+        set {_b_count} to 0
+        loop {_biomes::*}:
+            set {_key} to loop-value
+            set {_key} to {_key} in lowercase
+            
+            execute "INSERT INTO biomes (`key`, created_at, updated_at) SELECT %{_key}%, NOW(), NOW() WHERE NOT EXISTS (SELECT 1 FROM biomes WHERE `key` = %{_key}%)" in {kenkoku_db}
+            add 1 to {_b_count}
+            
+        send "&a- バイオーム型データ登録完了: %{_b_count}% 件処理" to console
+        send "&a[System] 村人設定の登録が完了しました！" to console
+

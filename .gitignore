@@ -118,3 +118,5 @@ minecraft_server/plugins/floodgate/key.pem
 
 # 8. Ignore History/Backup data
 minecraft_server/plugins/FastAsyncWorldEdit/history/
+
+!minecraft_server/.env.exsample
