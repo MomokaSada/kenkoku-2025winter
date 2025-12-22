@@ -1,0 +1,66 @@
+# ----- サイドバー管理 -----
+
+# サイドバーを更新する関数
+function updateSidebar(p: player):
+    # 管理者が非表示にしている場合は更新しない
+    if {sidebar_hidden::%{_p}%} is set:
+        stop
+
+    # タイトル設定
+    set title of {_p}'s scoreboard to "&6&l建国鯖 2025 Winter"
+    
+    # 行の設定
+    set line 1 of {_p}'s scoreboard to ""
+    set line 2 of {_p}'s scoreboard to "&e&lProfile"
+    set line 3 of {_p}'s scoreboard to " &fUser: &a%{_p}%"
+    set {_team} to team of {_p}
+    if {_team} is set:
+        set {_tname} to name of {_team}
+        if {_tname} is "TyokoreCountry":
+            set {_country} to "&6ちょこれ国"
+        else if {_tname} is "KurumiyaCountry":
+            set {_country} to "&6來宮国"
+        else if {_tname} is "HamuCountry":
+            set {_country} to "&6はむ国"
+        else if {_tname} is "KonkunCountry":
+            set {_country} to "&6こん国"
+        else:
+            set {_country} to {_tname}
+            
+    if {_country} is not set:
+        set {_country} to "無所属"
+    set line 4 of {_p}'s scoreboard to " &fCountry: %{_country}%"
+    set line 5 of {_p}'s scoreboard to " &fMoney: &e%{money::%{_p}%}%G"
+    set line 6 of {_p}'s scoreboard to " &fPing: &b%ping of {_p}%ms"
+    set line 7 of {_p}'s scoreboard to ""
+    set line 8 of {_p}'s scoreboard to "&e&lServer Info"
+    set line 9 of {_p}'s scoreboard to " &fTPS: &a%first element of tps%"
+    set line 10 of {_p}'s scoreboard to " &fOnline: &a%number of all players%/%max players%"
+    set line 11 of {_p}'s scoreboard to ""
+    set line 12 of {_p}'s scoreboard to "&e&dLocation"
+    set line 13 of {_p}'s scoreboard to " &fWorld: &7%world of {_p}%"
+    set line 14 of {_p}'s scoreboard to " &fX: &7%round(x-coordinate of {_p})% &fY: &7%round(y-coordinate of {_p})% &fZ: &7%round(z-coordinate of {_p})%"
+    set line 15 of {_p}'s scoreboard to "&7-------------------"
+
+# 管理者用: サイドバー表示切替コマンド
+command /adminsidebar:
+    permission: op
+    trigger:
+        if {sidebar_hidden::%player%} is not set:
+            set {sidebar_hidden::%player%} to true
+            # SkBeeのスコアボードをクリアしてバニラのスコアボードが見えるようにする
+            clear scoreboard of player
+            send "&c[System] カスタムサイドバーを非表示にしました。"
+        else:
+            delete {sidebar_hidden::%player%}
+            updateSidebar(player)
+            send "&a[System] カスタムサイドバーを表示しました。"
+
+# 定期更新 (1秒ごと)
+every 1 second:
+    loop all players:
+        updateSidebar(loop-player)
+
+# 参加時に表示
+on join:
+    updateSidebar(player)
