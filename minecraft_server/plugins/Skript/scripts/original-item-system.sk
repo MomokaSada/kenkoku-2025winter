@@ -1,0 +1,138 @@
+# original-item-system.sk
+# オリジナルアイテムの登録・取得関連コマンド
+
+# キャッシュ作成 (サーバー起動時 & リロード時)
+on load:
+    # 1. バニラアイテムのキャッシュ (Base用)
+    clear {-all_items_cache::*}
+    loop all itemtypes:
+        add "%namespaced key of loop-value%" to {-all_items_cache::*}
+    
+    # 2. オリジナルアイテム名のキャッシュ (Get用)
+    # これだけだと非同期で取れないので、初回は空でもいいが、定期更新やコマンド実行後に更新すると良い
+    # ここでは簡易的にロード時にDBから取得する（同期実行になるためデータ量が多いとラグの原因になるが、現状は許容）
+    clear {-original_names_cache::*}
+    execute "SELECT name FROM items WHERE is_original = TRUE AND name IS NOT NULL" in {kenkoku_db} and store the result in {-db_originals::*}
+    loop {-db_originals::name::*}:
+        add loop-value to {-original_names_cache::*}
+
+# -------------------------------------------------------------------------
+# 1. オリジナルアイテム登録コマンド
+# /insert-original-item <UniqueName(name)> <BaseItem(key)> <NBT>
+# -------------------------------------------------------------------------
+command /insert-original-item <text> <text> <text>:
+    permission: op
+    usage: /insert-original-item <UniqueName(name)> <BaseItem(key)> <nbt>
+    trigger:
+        set {_unique_name} to arg-1
+        set {_base_key} to arg-2
+        set {_nbt} to arg-3
+        
+        send "&e[System] オリジナルアイテムの登録を開始します: %{_unique_name}% (Base: %{_base_key}%)"
+        
+        # 存在チェック (Unique Nameでチェック, NULL除外)
+        delete {-check::*}
+        execute "SELECT id FROM items WHERE `name` = %{_unique_name}% AND `name` IS NOT NULL LIMIT 1" in {kenkoku_db} and store the result in {-check::*}
+        
+        if {-check::id::1} is set:
+            # 更新 (UPDATE)
+            execute "UPDATE items SET `key` = %{_base_key}%, is_original = TRUE, nbt = %{_nbt}%, updated_at = NOW() WHERE `name` = %{_unique_name}%" in {kenkoku_db}
+            set {_action} to "更新"
+        else:
+            # 新規登録 (INSERT)
+            execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) VALUES (%{_base_key}%, %{_unique_name}%, TRUE, %{_nbt}%, NOW(), NOW())" in {kenkoku_db}
+            set {_action} to "新規登録"
+            # キャッシュに追加
+            add {_unique_name} to {-original_names_cache::*}
+        
+        set {_last_error} to last sql error
+        if {_last_error} is set:
+            send "&c[Error] %{_action}%に失敗しました: %{_last_error}%"
+        else:
+            send "&a[System] オリジナルアイテムを%{_action}%しました。"
+
+on tab complete of "/insert-original-item":
+    # position 1: Unique Name (自由入力だが、既存のものを更新したい場合のためにキャッシュを出すのもあり)
+    # ここでは自由入力優先とするが、キャッシュも出して損はない
+    set tab completions for position 1 to {-original_names_cache::*}
+    
+    # position 2: Base Item (バニラアイテム)
+    set tab completions for position 2 to {-all_items_cache::*}
+    
+    # position 3: NBT (Template)
+    set tab completions for position 3 to "{display:{Name:'""名前""'}}"
+
+# -------------------------------------------------------------------------
+# 2. オリジナルアイテム取得コマンド
+# /get-original-item <UniqueName>
+# -------------------------------------------------------------------------
+command /get-original-item <text>:
+    permission: op
+    usage: /get-original-item <UniqueName>
+    trigger:
+        set {_target_name} to arg-1
+        
+        # DBから取得
+        execute "SELECT `key`, nbt FROM items WHERE `name` = %{_target_name}% AND is_original = TRUE LIMIT 1" in {kenkoku_db} and store the result in {-result::*}
+        
+        if {-result::key::1} is not set:
+            send "&c[Error] 指定されたオリジナルアイテムは見つかりませんでした: %{_target_name}%"
+            stop
+            
+        set {_base_key} to {-result::key::1}
+        set {_nbt_str} to {-result::nbt::1}
+        
+        # アイテム生成
+        set {_item} to {_base_key} parsed as item
+        if {_item} is not set:
+            send "&c[Error] ベースアイテムIDが無効です: %{_base_key}%"
+            stop
+            
+        # NBT適用
+        if {_nbt_str} is set:
+            add nbt from {_nbt_str} to nbt of {_item}
+            
+        # プレイヤーに付与
+        give {_item} to player
+        send "&a[System] オリジナルアイテムを取得しました: %{_target_name}%"
+
+on tab complete of "/get-original-item":
+    set tab completions for position 1 to {-original_names_cache::*}
+
+command /getwallet:
+    permission: op
+    trigger:
+        execute console command "give %player% leather_horse_armor[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'item.armor.equip_leather'},custom_data={itemType:'wallet'},item_name='&6お財布'] 1"
+        send "&6お財布を入手しました！"
+
+command /getbill <number> [<number>]:
+    permission: op
+    trigger:
+        set {_amount} to arg-2
+        if {_amount} is not set:
+            set {_amount} to 1
+        execute console command "give %player% paper[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'entity.experience_orb.pickup'},custom_data={itemType:'bill',value:%arg-1%},item_name='&6%arg-1%G'] %{_amount}%"
+        send "&6%arg-1%Gを入手しました！"
+
+command /get-trading-right:
+    permission: op
+    trigger:
+        set {_item} to paper
+        enchant {_item} with unbreaking 1
+        add hide enchants to item flags of {_item}
+        set name of {_item} to "&d取引権"
+        set lore of {_item} to "&7貿易に使用します"
+        give {_item} to player
+        send "&a[System] 取引権を入手しました。"
+
+# -------------------------------------------------------------------------
+# 3. アクセサリーシステム (パッシブ効果 & 無限アイテム)
+# -------------------------------------------------------------------------
+
+/get-accessory <text>:
+    permission: op
+    trigger:
+    if arg-1 is "health_10":
+        console command "give %player% leather_helmet[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'item.armor.equip_leather'},custom_data={itemType:'health_10'},item_name='&6ヘルメット'] 1"
+        
+        

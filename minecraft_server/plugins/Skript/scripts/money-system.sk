@@ -3,20 +3,7 @@
 # money: プレイヤーの所持金スコアボード（表示用）
 # ----------------
 
-command /getwallet:
-    permission: op
-    trigger:
-        execute console command "give %player% leather_horse_armor[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'item.armor.equip_leather'},custom_data={itemType:'wallet'},item_name='&6お財布'] 1"
-        send "&6お財布を入手しました！"
 
-command /getbill <number> [<number>]:
-    permission: op
-    trigger:
-        set {_amount} to arg-2
-        if {_amount} is not set:
-            set {_amount} to 1
-        execute console command "give %player% paper[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'entity.experience_orb.pickup'},custom_data={itemType:'bill',value:%arg-1%},item_name='&6%arg-1%G'] %{_amount}%"
-        send "&6%arg-1%Gを入手しました！"
 
 on tab complete of "/money":
     set tab completions for position 1 to "add", "remove" and "set"

@@ -160,23 +160,8 @@ command /npc-update:
                     
         broadcast "&a[System] %{_count}% 体のNPCを更新しました。"
 
-# デバッグ用: 取引権を入手するコマンド
-command /get-trading-right:
-    permission: op
-    trigger:
-        set {_item} to paper
-        enchant {_item} with unbreaking 1
-        add hide enchants to item flags of {_item}
-        set name of {_item} to "&d取引権"
-        set lore of {_item} to "&7貿易に使用します"
-        give {_item} to player
-        send "&a[System] 取引権を入手しました。"
-
 # 取引実行時の処理 (Inventory Click + NBT Tag ID)
 on inventory click:
-    # デバッグ情報の表示（必要に応じてコメントアウト）
-
-    
     # ---------------------------------------------------------
     # Merchant Inventory のチェック
     # ---------------------------------------------------------
