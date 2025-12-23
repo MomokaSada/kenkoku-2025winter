@@ -13,7 +13,7 @@ on load:
     if {_password} is not set:
         set {_password} to "password" # フォールバック
 
-    set {-db_url} to "mysql://db:3306/dev?user=root"
+    set {-db_url} to "mysql://160.251.209.80:3306/dev?user=root"
     set {-db_url} to "%{-db_url}%%{_and}%password=%{_password}%"
     set {-db_url} to "%{-db_url}%%{_and}%autoReconnect=true"
     set {-db_url} to "%{-db_url}%%{_and}%allowPublicKeyRetrieval=true"
@@ -70,6 +70,54 @@ command /dbtest:
             send "&a[Database] 接続テストOK！"
         else:
             send "&c[Database] 接続失敗... 変数 {kenkoku_db} が設定されていません。"
+
+command /dbcheck:
+    permission: op
+    trigger:
+        execute "SELECT player_uuid, player_name, money FROM player_information" in {kenkoku_db} and store the result in {-result::*}
+        set {_err} to last sql error
+        if {_err} is set:
+            send "&c[Database] /dbcheck error: %{_err}%" to player
+        else:
+            send "&a[Database] Player Information:" to player
+            loop {-result::*}:
+                send "&eUUID: %loop-value-1% | Name: %loop-value-2% | Money: %loop-value-3%G" to player
+
+command /reconnect:
+    permission: op
+    trigger:
+        delete {kenkoku_db}
+        set {_and} to "&"
+        set {_password} to System.getenv("MYSQL_ROOT_PASSWORD")
+        if {_password} is not set:
+            set {_password} to "password"
+        set {-db_url} to "mysql://160.251.209.80:3306/dev?user=root"
+        set {-db_url} to "%{-db_url}%%{_and}%password=%{_password}%"
+        set {-db_url} to "%{-db_url}%%{_and}%autoReconnect=true"
+        set {-db_url} to "%{-db_url}%%{_and}%allowPublicKeyRetrieval=true"
+        set {-db_url} to "%{-db_url}%%{_and}%useSSL=false"
+        set {-db_url} to "%{-db_url}%%{_and}%useUnicode=true"
+        set {-db_url} to "%{-db_url}%%{_and}%characterEncoding=UTF-8"
+        set {-db_url} to "%{-db_url}%%{_and}%connectionCollation=utf8mb4_unicode_ci"
+        set {kenkoku_db} to the database {-db_url}
+        wait 1 tick
+        execute "SET NAMES utf8mb4" in {kenkoku_db}
+        execute "SELECT 1" in {kenkoku_db} and store the result in {-result}
+        if {-result} is set:
+            send "&a[Database] Reconnected successfully!"
+        else:
+            send "&c[Database] Reconnect failed."
+
+command /insertdata <number>:
+    permission: op
+    trigger:
+        set {_uuid} to "41a79e88-906b-4ed3-8014-f35d3ab71944"
+        execute "INSERT INTO player_information (player_uuid, player_name, money, created_at, updated_at) VALUES (%{_uuid}%, 'momoka_sada', %arg-1%, NOW(), NOW()) ON DUPLICATE KEY UPDATE money = VALUES(money), updated_at = NOW()" in {kenkoku_db}
+        set {_err} to last sql error
+        if {_err} is set:
+            send "&c[Database] Insert error: %{_err}%"
+        else:
+            send "&a[Database] Inserted momoka_sada data."
 
 
 

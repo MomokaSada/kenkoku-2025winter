@@ -9,6 +9,8 @@ on join:
     set {_uuid} to "%uuid of player%"
     set {_name} to name of player
     
+    send "&a[System] %player% joined with UUID: %{_uuid}%" to console
+    
     # DBから参照
     execute "SELECT money FROM player_information WHERE player_uuid = %{_uuid}% LIMIT 1" in {kenkoku_db} and store the result in {-result::*}
     
@@ -17,6 +19,9 @@ on join:
         set {money::%player%} to {-result::money::1}
         # 名前が変わっている可能性があるため更新しておく
         execute "UPDATE player_information SET player_name = %{_name}%, updated_at = NOW() WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+        set {_err} to last sql error
+        if {_err} is set:
+            send "&c[System] UPDATE error for %player%: %{_err}%" to console
         send "&a[System] 所持金をロードしました: %{money::%player%}%G" to console
     else:
         # DBにデータがない場合 -> 新規作成 (0円)
@@ -24,7 +29,7 @@ on join:
         execute "INSERT INTO player_information (player_uuid, player_name, money, created_at, updated_at) VALUES (%{_uuid}%, %{_name}%, 0, NOW(), NOW())" in {kenkoku_db}
         set {_err} to last sql error
         if {_err} is set:
-            send "&c[System] 新規登録エラー: %{_err}%" to console
+            send "&c[System] INSERT error for %player%: %{_err}%" to console
         else:
             send "&a[System] 新規プレイヤーデータを登録しました。" to console
 
@@ -36,4 +41,9 @@ on quit:
         set {_money} to 0
         
     execute "UPDATE player_information SET money = %{_money}%, updated_at = NOW() WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+    set {_err} to last sql error
+    if {_err} is set:
+        send "&c[System] QUIT UPDATE error for %player%: %{_err}%" to console
+    else:
+        send "&a[System] %player% quit, saved money: %{_money}%G" to console
 
