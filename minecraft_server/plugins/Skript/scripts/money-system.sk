@@ -29,14 +29,26 @@ command /money <text> <player> <number>:
         if arg-1 is "add":
             add arg-3 to {money::%arg-2%}
             execute "UPDATE player_information SET money = %{money::%arg-2%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            wait 1 tick
+            set {_err} to last sql error
+            if {_err} is set:
+                send "&c[System] /money add error for %arg-2%: %{_err}%" to console
             send "&6%arg-2%&eの所持金を &6%arg-3%G &e追加しました。" to player
         if arg-1 is "remove":
             subtract arg-3 from {money::%arg-2%}
             execute "UPDATE player_information SET money = %{money::%arg-2%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            wait 1 tick
+            set {_err} to last sql error
+            if {_err} is set:
+                send "&c[System] /money remove error for %arg-2%: %{_err}%" to console
             send "&6%arg-2%&eの所持金を &6%arg-3%G &e引きました。" to player
         if arg-1 is "set":
             set {money::%arg-2%} to arg-3
             execute "UPDATE player_information SET money = %{money::%arg-2%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            wait 1 tick
+            set {_err} to last sql error
+            if {_err} is set:
+                send "&c[System] /money set error for %arg-2%: %{_err}%" to console
             send "&6%arg-2%&eの所持金を &6%arg-3%G &eに設定しました。" to player
         updateSidebar(arg-2)
 
@@ -82,10 +94,12 @@ on consume of leather horse armor:
 
             # 残高チェック
             if {money::%player%} >= {_amount}:
-                # 引き落とし
+            # 引き落とし
                 subtract {_amount} from {money::%player%}
                 set {_uuid} to "%uuid of player%"
-                execute "UPDATE player_information SET money = %{money::%player%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+                execute "UPDATE player_information SET money = %{money::%player%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}                wait 1 tick                set {_err} to last sql error
+                if {_err} is set:
+                    send "&c[System] Wallet withdraw error for %player%: %{_err}%" to console
 
                 # サイドバー更新
                 updateSidebar(player)
@@ -108,6 +122,9 @@ on consume of paper:
         add {_value} to {money::%player%}
         set {_uuid} to "%uuid of player%"
         execute "UPDATE player_information SET money = %{money::%player%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+        set {_err} to last sql error
+        if {_err} is set:
+            send "&c[System] Bill deposit error for %player%: %{_err}%" to console
         
         # サイドバー更新
         updateSidebar(player)
