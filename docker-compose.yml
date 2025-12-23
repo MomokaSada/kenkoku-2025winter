@@ -9,8 +9,8 @@ services:
     environment:
       EULA: "TRUE"
       TYPE: "CUSTOM"
-      CUSTOM_SERVER: "paper-1.21.11-39.jar"
-      MEMORY: "8G"
+      CUSTOM_SERVER: "server.jar"
+      MEMORY: "4G"
       OPS: "momoka_sada"
       MYSQL_HOST: db
       MYSQL_PORT: 3306
@@ -38,3 +38,4 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-minecraft_password}
     ports:
       - "3306:3306"
+

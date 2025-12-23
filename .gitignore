@@ -20,11 +20,11 @@ mysql_data/
 # --- Minecraft Server (Whitelist Strategy) ---
 # 1. Ignore everything by default
 minecraft_server/*
+minecraft_server/ops.json
 
 # 2. Allow specific configuration files in the server root
 !minecraft_server/*.yml
-!minecraft_server/*.json
-!minecraft_server/*.properties
+!minecraft_server/*.examples
 !minecraft_server/*.txt
 
 # 3. Explicitly ignore generated/heavy data
@@ -82,6 +82,7 @@ minecraft_server/plugins/**/*.csv
 minecraft_server/plugins/**/contexts.json
 minecraft_server/plugins/**/_schemaVersion
 minecraft_server/plugins/**/upgrades-done.yml
+minecraft_server/plugins/ImageFrame/language_hashas.json
 
 # 6. Ignore specific plugin directories and files
 minecraft_server/plugins/.paper-remapped/
