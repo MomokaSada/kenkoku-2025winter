@@ -1,0 +1,427 @@
+core:
+    locale: en
+    flushInterval: 10
+    cacheSize: 10000
+    precache: -1
+    showNotices: true
+    showMyNotices: false
+    opIsLWCAdmin: true
+    disableHistory: true
+    factionCheck: false
+    groupPrefix: group.
+    updateNotifier: true
+optional:
+    onlyProtectWhenOwnerIsOnline: false
+    onlyProtectWhenOwnerIsOffline: false
+    exemptBlocks: []
+    optOut: false
+    blacklistedBlocks:
+    - '166'
+    - hopper
+    blacklistedPlayers:
+    - player
+    useProtectionLimits: true
+    useActionBar: false
+    alternativeHopperProtection: false
+    useFormattedInfo: true
+database:
+    adapter: sqlite
+    path: plugins/LWC/lwc.db
+protections:
+    denyRedstone: false
+    denyHoppers: true
+    autoRegister: off
+    ignoreBlockDestruction: false
+    ignoreLeftClick: false
+    ignoreRightClick: false
+    ignoreExplosions: false
+    allowEntityBreakDoor: false
+    allowEntityInteract: false
+    quiet: false
+    readonly-modify: false
+    readonly-remove: false
+    blocks:
+        chest:
+            enabled: true
+            autoRegister: off
+        trapped_chest:
+            enabled: true
+            autoRegister: off
+        furnace:
+            enabled: true
+            autoRegister: off
+        blast_furnace:
+            enabled: true
+            autoRegister: off
+        smoker:
+            enabled: true
+            autoRegister: off
+        dispenser:
+            enabled: true
+            autoRegister: off
+        dropper:
+            enabled: true
+            autoRegister: off
+        barrel:
+            enabled: true
+            autoRegister: off
+        composter:
+            enabled: true
+            autoRegister: off
+        lectern:
+            enabled: true
+            autoRegister: off
+        shulker_box:
+            enabled: true
+            autoRegister: off
+        white_shulker_box:
+            enabled: true
+            autoRegister: off
+        orange_shulker_box:
+            enabled: true
+            autoRegister: off
+        magenta_shulker_box:
+            enabled: true
+            autoRegister: off
+        light_blue_shulker_box:
+            enabled: true
+            autoRegister: off
+        yellow_shulker_box:
+            enabled: true
+            autoRegister: off
+        lime_shulker_box:
+            enabled: true
+            autoRegister: off
+        pink_shulker_box:
+            enabled: true
+            autoRegister: off
+        gray_shulker_box:
+            enabled: true
+            autoRegister: off
+        light_gray_shulker_box:
+            enabled: true
+            autoRegister: off
+        cyan_shulker_box:
+            enabled: true
+            autoRegister: off
+        purple_shulker_box:
+            enabled: true
+            autoRegister: off
+        blue_shulker_box:
+            enabled: true
+            autoRegister: off
+        brown_shulker_box:
+            enabled: true
+            autoRegister: off
+        green_shulker_box:
+            enabled: true
+            autoRegister: off
+        red_shulker_box:
+            enabled: true
+            autoRegister: off
+        black_shulker_box:
+            enabled: true
+            autoRegister: off
+        sign:
+            enabled: true
+            autoRegister: off
+        oak_hanging_sign:
+            enabled: true
+            autoRegister: off
+        spruce_hanging_sign:
+            enabled: true
+            autoRegister: off
+        birch_hanging_sign:
+            enabled: true
+            autoRegister: off
+        jungle_hanging_sign:
+            enabled: true
+            autoRegister: off
+        acacia_hanging_sign:
+            enabled: true
+            autoRegister: off
+        dark_oak_hanging_sign:
+            enabled: true
+            autoRegister: off
+        mangrove_hanging_sign:
+            enabled: true
+            autoRegister: off
+        crimson_hanging_sign:
+            enabled: true
+            autoRegister: off
+        warped_hanging_sign:
+            enabled: true
+            autoRegister: off
+        bamboo_hanging_sign:
+            enabled: true
+            autoRegister: off
+        cherry_hanging_sign:
+            enabled: true
+            autoRegister: off
+        pale_oak_hanging_sign:
+            enabled: true
+            autoRegister: off
+        iron_door:
+            enabled: true
+            autoRegister: off
+        oak_door:
+            enabled: true
+            autoRegister: off
+        spruce_door:
+            enabled: true
+            autoRegister: off
+        birch_door:
+            enabled: true
+            autoRegister: off
+        jungle_door:
+            enabled: true
+            autoRegister: off
+        acacia_door:
+            enabled: true
+            autoRegister: off
+        dark_oak_door:
+            enabled: true
+            autoRegister: off
+        mangrove_door:
+            enabled: true
+            autoRegister: off
+        crimson_door:
+            enabled: true
+            autoRegister: off
+        warped_door:
+            enabled: true
+            autoRegister: off
+        bamboo_door:
+            enabled: true
+            autoRegister: off
+        cherry_door:
+            enabled: true
+            autoRegister: off
+        pale_oak_door:
+            enabled: true
+            autoRegister: off
+        copper_door:
+            enabled: true
+            autoRegister: off
+        exposed_copper_door:
+            enabled: true
+            autoRegister: off
+        oxidized_copper_door:
+            enabled: true
+            autoRegister: off
+        weathered_copper_door:
+            enabled: true
+            autoRegister: off
+        waxed_copper_door:
+            enabled: true
+            autoRegister: off
+        waxed_exposed_copper_door:
+            enabled: true
+            autoRegister: off
+        waxed_oxidized_copper_door:
+            enabled: true
+            autoRegister: off
+        waxed_weathered_copper_door:
+            enabled: true
+            autoRegister: off
+        iron_trapdoor:
+            enabled: true
+            autoRegister: off
+        oak_trapdoor:
+            enabled: true
+            autoRegister: off
+        spruce_trapdoor:
+            enabled: true
+            autoRegister: off
+        birch_trapdoor:
+            enabled: true
+            autoRegister: off
+        jungle_trapdoor:
+            enabled: true
+            autoRegister: off
+        acacia_trapdoor:
+            enabled: true
+            autoRegister: off
+        dark_oak_trapdoor:
+            enabled: true
+            autoRegister: off
+        mangrove_trapdoor:
+            enabled: true
+            autoRegister: off
+        crimson_trapdoor:
+            enabled: true
+            autoRegister: off
+        warped_trapdoor:
+            enabled: true
+            autoRegister: off
+        bamboo_trapdoor:
+            enabled: true
+            autoRegister: off
+        cherry_trapdoor:
+            enabled: true
+            autoRegister: off
+        pale_oak_trapdoor:
+            enabled: true
+            autoRegister: off
+        copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        exposed_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        oxidized_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        weathered_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        waxed_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        waxed_exposed_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        waxed_oxidized_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        waxed_weathered_copper_trapdoor:
+            enabled: true
+            autoRegister: off
+        oak_fence_gate:
+            enabled: true
+            autoRegister: off
+        spruce_fence_gate:
+            enabled: true
+            autoRegister: off
+        birch_fence_gate:
+            enabled: true
+            autoRegister: off
+        jungle_fence_gate:
+            enabled: true
+            autoRegister: off
+        acacia_fence_gate:
+            enabled: true
+            autoRegister: off
+        dark_oak_fence_gate:
+            enabled: true
+            autoRegister: off
+        mangrove_fence_gate:
+            enabled: true
+            autoRegister: off
+        crimson_fence_gate:
+            enabled: true
+            autoRegister: off
+        warped_fence_gate:
+            enabled: true
+            autoRegister: off
+        bamboo_fence_gate:
+            enabled: true
+            autoRegister: off
+        cherry_fence_gate:
+            enabled: true
+            autoRegister: off
+        pale_oak_fence_gate:
+            enabled: true
+            autoRegister: off
+        white_banner:
+            enabled: true
+            autoRegister: off
+        orange_banner:
+            enabled: true
+            autoRegister: off
+        magenta_banner:
+            enabled: true
+            autoRegister: off
+        light_blue_banner:
+            enabled: true
+            autoRegister: off
+        yellow_banner:
+            enabled: true
+            autoRegister: off
+        lime_banner:
+            enabled: true
+            autoRegister: off
+        pink_banner:
+            enabled: true
+            autoRegister: off
+        gray_banner:
+            enabled: true
+            autoRegister: off
+        light_gray_banner:
+            enabled: true
+            autoRegister: off
+        cyan_banner:
+            enabled: true
+            autoRegister: off
+        purple_banner:
+            enabled: true
+            autoRegister: off
+        blue_banner:
+            enabled: true
+            autoRegister: off
+        brown_banner:
+            enabled: true
+            autoRegister: off
+        green_banner:
+            enabled: true
+            autoRegister: off
+        red_banner:
+            enabled: true
+            autoRegister: off
+        black_banner:
+            enabled: true
+            autoRegister: off
+        white_wall_banner:
+            enabled: true
+            autoRegister: off
+        orange_wall_banner:
+            enabled: true
+            autoRegister: off
+        magenta_wall_banner:
+            enabled: true
+            autoRegister: off
+        light_blue_wall_banner:
+            enabled: true
+            autoRegister: off
+        yellow_wall_banner:
+            enabled: true
+            autoRegister: off
+        lime_wall_banner:
+            enabled: true
+            autoRegister: off
+        pink_wall_banner:
+            enabled: true
+            autoRegister: off
+        gray_wall_banner:
+            enabled: true
+            autoRegister: off
+        light_gray_wall_banner:
+            enabled: true
+            autoRegister: off
+        cyan_wall_banner:
+            enabled: true
+            autoRegister: off
+        purple_wall_banner:
+            enabled: true
+            autoRegister: off
+        blue_wall_banner:
+            enabled: true
+            autoRegister: off
+        brown_wall_banner:
+            enabled: true
+            autoRegister: off
+        green_wall_banner:
+            enabled: true
+            autoRegister: off
+        red_wall_banner:
+            enabled: true
+            autoRegister: off
+        black_wall_banner:
+            enabled: true
+            autoRegister: off
+modes:
+    droptransfer:
+        enabled: true
+        crossWorld: false
+    persist:
+        enabled: true

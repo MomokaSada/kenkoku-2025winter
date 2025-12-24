@@ -1,0 +1,3 @@
+[submodule "kenkoku-manage-service"]
+	path = kenkoku-manage-service
+	url = https://github.com/MomokaSada/kenkoku-manage-service.git
