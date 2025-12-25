@@ -97,7 +97,10 @@ on consume of leather horse armor:
             # 引き落とし
                 subtract {_amount} from {money::%player%}
                 set {_uuid} to "%uuid of player%"
-                execute "UPDATE player_information SET money = %{money::%player%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}                wait 1 tick                set {_err} to last sql error
+                set {_m} to {money::%player%}
+                execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+                wait 1 tick
+                set {_err} to last sql error
                 if {_err} is set:
                     send "&c[System] Wallet withdraw error for %player%: %{_err}%" to console
 
