@@ -3,6 +3,7 @@
 minecraft_server/plugins/CoreProtect/config.yml
 minecraft_server/plugins/DiscordSRV/config.yml
 minecraft_server/plugins/LWC/core.yml
+minecraft_server/plugins/FastAsyncWorldEdit/config.yml
 
 # Keep common generated files ignored
 .DS_Store
