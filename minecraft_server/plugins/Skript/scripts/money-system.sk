@@ -27,24 +27,38 @@ command /money <text> <player> <number>:
     trigger:
         set {_uuid} to "%uuid of arg-2%"
         if arg-1 is "add":
-            add arg-3 to {money::%arg-2%}
-            execute "UPDATE player_information SET money = %{money::%arg-2%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            set {_current} to metadata "money" of arg-2
+            if {_current} is not set:
+                set {_current} to 0
+            set {_new} to {_current} + arg-3
+            set metadata "money" of arg-2 to {_new}
+            
+            set {_m} to metadata "money" of arg-2
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
             wait 1 tick
             set {_err} to last sql error
             if {_err} is set:
                 send "&c[System] /money add error for %arg-2%: %{_err}%" to console
             send "&6%arg-2%&eの所持金を &6%arg-3%G &e追加しました。" to player
         if arg-1 is "remove":
-            subtract arg-3 from {money::%arg-2%}
-            execute "UPDATE player_information SET money = %{money::%arg-2%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            set {_current} to metadata "money" of arg-2
+            if {_current} is not set:
+                set {_current} to 0
+            set {_new} to {_current} - arg-3
+            set metadata "money" of arg-2 to {_new}
+
+            set {_m} to metadata "money" of arg-2
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
             wait 1 tick
             set {_err} to last sql error
             if {_err} is set:
                 send "&c[System] /money remove error for %arg-2%: %{_err}%" to console
             send "&6%arg-2%&eの所持金を &6%arg-3%G &e引きました。" to player
         if arg-1 is "set":
-            set {money::%arg-2%} to arg-3
-            execute "UPDATE player_information SET money = %{money::%arg-2%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            set metadata "money" of arg-2 to arg-3
+            
+            set {_m} to metadata "money" of arg-2
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
             wait 1 tick
             set {_err} to last sql error
             if {_err} is set:
@@ -55,9 +69,11 @@ command /money <text> <player> <number>:
 command /showmoney [<player>]:
     trigger:
         if arg-1 is set:
-            send "&6%arg-1%&eの所持金は &6%{money::%arg-1%}%G &eです。"
+            set {_m} to metadata "money" of arg-1
+            send "&6%arg-1%&eの所持金は &6%{_m}%G &eです。"
         else:
-            send "&6あなたの所持金は &6%{money::%player%}%G &eです。"
+            set {_m} to metadata "money" of player
+            send "&6あなたの所持金は &6%{_m}%G &eです。"
 
 
 
@@ -70,6 +86,9 @@ on consume of leather horse armor:
         # --- スニーク中: 取り出し設定額の変更 ---
         if player is sneaking:
             # 変数で計算（コマンド呼び出しより軽い）
+            # inputAmountは一時的なものなのでここもmetadataにするかどうか迷うが、今回はmoneyだけが主犯なのでmoneyだけ変える
+            # ただし wallet_inputも永続化不要なはず（ログアウトでリセットされてもいいなら）
+            # 一旦moneyに集中するため他は触らない
             if {wallet_input::%player%} is not set:
                 set {wallet_input::%player%} to 1
             
@@ -89,15 +108,19 @@ on consume of leather horse armor:
                 set {_amount} to 1
             
             # 変数初期化
-            if {money::%player%} is not set:
-                set {money::%player%} to 0
+            set {_money} to metadata "money" of player
+            if {_money} is not set:
+                set {_money} to 0
+                set metadata "money" of player to 0
 
             # 残高チェック
-            if {money::%player%} >= {_amount}:
+            if {_money} >= {_amount}:
             # 引き落とし
-                subtract {_amount} from {money::%player%}
+                set {_new} to {_money} - {_amount}
+                set metadata "money" of player to {_new}
+                
                 set {_uuid} to "%uuid of player%"
-                set {_m} to {money::%player%}
+                set {_m} to metadata "money" of player
                 execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
                 wait 1 tick
                 set {_err} to last sql error
@@ -119,12 +142,16 @@ on consume of paper:
     if "%nbt compound from event-item%" contains "bill":
         
         set {_value} to int tag "value" of custom nbt of event-item
-        if {money::%player%} is not set:
-            set {money::%player%} to 0
+        set {_money} to metadata "money" of player
+        if {_money} is not set:
+            set {_money} to 0
             
-        add {_value} to {money::%player%}
+        set {_new} to {_money} + {_value}
+        set metadata "money" of player to {_new}
+        
         set {_uuid} to "%uuid of player%"
-        execute "UPDATE player_information SET money = %{money::%player%}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+        set {_m} to metadata "money" of player
+        execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
         set {_err} to last sql error
         if {_err} is set:
             send "&c[System] Bill deposit error for %player%: %{_err}%" to console
@@ -133,3 +160,4 @@ on consume of paper:
         updateSidebar(player)
             
         send "&a%{_value}%Gを口座に加算しました。"
+
