@@ -123,3 +123,4 @@ minecraft_server/plugins/FastAsyncWorldEdit/history/
 !minecraft_server/.env.example
 minecraft_server/server.properties
 minecraft_server/ops.json
+minecraft_server/server.properties.example
