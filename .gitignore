@@ -3,6 +3,7 @@
 minecraft_server/plugins/CoreProtect/config.yml
 minecraft_server/plugins/DiscordSRV/config.yml
 minecraft_server/plugins/LWC/core.yml
+minecraft_server/plugins/FastAsyncWorldEdit/config.yml
 
 # Keep common generated files ignored
 .DS_Store
@@ -123,3 +124,4 @@ minecraft_server/plugins/FastAsyncWorldEdit/history/
 !minecraft_server/.env.example
 minecraft_server/server.properties
 minecraft_server/ops.json
+minecraft_server/server.properties.example

@@ -10,7 +10,7 @@ services:
       EULA: "TRUE"
       TYPE: "CUSTOM"
       CUSTOM_SERVER: "server.jar"
-      MEMORY: "4G"
+      MEMORY: "8G"
       OPS: "momoka_sada"
       MYSQL_HOST: db
       MYSQL_PORT: 3306
