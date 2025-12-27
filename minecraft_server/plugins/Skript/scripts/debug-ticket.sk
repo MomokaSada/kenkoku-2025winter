@@ -1,0 +1,49 @@
+command /test-ticket-gen:
+    permission: op
+    trigger:
+        broadcast "&e[Debug] Starting ticket generation..."
+        # Try parsing as item from string key if direct type fails?
+        set {_item} to "wandering_trader_spawn_egg" parsed as item
+        if {_item} is not set:
+            broadcast "&c[Error] Could not parse item 'wandering_trader_spawn_egg'"
+            stop
+        broadcast "&e[Debug] Item set: %{_item}%"
+            
+        set name of {_item} to "&f&l取引券"
+        set lore of {_item} to "&7交易に使用します"
+        
+        # Test 1: Simple NBT
+        set {_nbt1} to "{custom_data:{itemType:""tradeTicket""}}"
+        add nbt compound from {_nbt1} to nbt of {_item}
+        broadcast "&e[Debug] Stage 1 (CustomData) OK"
+        
+        # Test 2: EntityTag
+        # Trying without quotes around keys just in case, though standard SNBT uses them often.
+        set {_nbt2} to "{EntityTag:{id:""minecraft:area_effect_cloud"",Duration:1,invulnerable:1b}}"
+        add nbt compound from {_nbt2} to nbt of {_item}
+        broadcast "&e[Debug] Stage 2 (EntityTag) OK"
+        
+        # Test 3: Glint
+        set {_nbt3} to "{enchantment_glint_override:1b}"
+        add nbt compound from {_nbt3} to nbt of {_item}
+        broadcast "&e[Debug] Stage 3 (Glint) OK"
+            
+        set {_snbt} to full nbt of {_item}
+        broadcast "&e[Debug] Full NBT: %{_snbt}%"
+            
+        give {_item} to player
+        broadcast "&a[Success] Created!"
+            
+command /test-recipe-gen:
+    permission: op
+    trigger:
+        set {_buy_item} to wandering trader spawn egg
+        set {_nbt_str} to "{enchantment_glint_override:1b,EntityTag:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},custom_data:{itemType:""tradeTicket""}}"
+        add nbt compound from {_nbt_str} to nbt of {_buy_item}
+        set {_buy_snbt} to full nbt of {_buy_item}
+        
+        set {_sell_item} to paper
+        set {_sell_snbt} to full nbt of {_sell_item}
+        
+        set {_recipe} to "{buy:%{_buy_snbt}%,sell:%{_sell_snbt}%,rewardExp:0b,uses:0,maxUses:2147483647}"
+        broadcast "&e[Debug] Recipe: %{_recipe}%"
