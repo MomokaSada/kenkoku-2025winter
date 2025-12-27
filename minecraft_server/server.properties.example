@@ -1,5 +1,5 @@
 #Minecraft server properties
-#Wed Dec 24 15:58:47 JST 2025
+#Sun Dec 21 23:24:40 UTC 2025
 accepts-transfers=false
 allow-flight=true
 broadcast-console-to-ops=true
@@ -50,7 +50,7 @@ prevent-proxy-connections=false
 pvp=false
 query.port=25565
 rate-limit=0
-rcon.password=85d1a74e7b28a645160dd035
+rcon.password=2984bb4f6671b76a0145493f
 rcon.port=25575
 region-file-compression=deflate
 require-resource-pack=false

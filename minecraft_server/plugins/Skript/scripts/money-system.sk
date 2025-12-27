@@ -3,20 +3,7 @@
 # money: プレイヤーの所持金スコアボード（表示用）
 # ----------------
 
-command /getwallet:
-    permission: op
-    trigger:
-        execute console command "give %player% leather_horse_armor[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'item.armor.equip_leather'},custom_data={itemType:'wallet'},item_name='&6お財布'] 1"
-        send "&6お財布を入手しました！"
 
-command /getbill <number> [<number>]:
-    permission: op
-    trigger:
-        set {_amount} to arg-2
-        if {_amount} is not set:
-            set {_amount} to 1
-        execute console command "give %player% paper[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'entity.experience_orb.pickup'},custom_data={itemType:'bill',value:%arg-1%},item_name='&6%arg-1%G'] %{_amount}%"
-        send "&6%arg-1%Gを入手しました！"
 
 on tab complete of "/money":
     set tab completions for position 1 to "add", "remove" and "set"
@@ -34,7 +21,8 @@ command /money <text> <player> <number>:
             set metadata "money" of arg-2 to {_new}
             
             set {_m} to metadata "money" of arg-2
-            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+            broadcast "&e[Debug] Money Update: UUID=%{_uuid}%, NewAmount=%{_m}%"
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
             wait 1 tick
             set {_err} to last sql error
             if {_err} is set:
@@ -48,7 +36,7 @@ command /money <text> <player> <number>:
             set metadata "money" of arg-2 to {_new}
 
             set {_m} to metadata "money" of arg-2
-            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
             wait 1 tick
             set {_err} to last sql error
             if {_err} is set:
@@ -58,7 +46,7 @@ command /money <text> <player> <number>:
             set metadata "money" of arg-2 to arg-3
             
             set {_m} to metadata "money" of arg-2
-            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
             wait 1 tick
             set {_err} to last sql error
             if {_err} is set:
@@ -121,7 +109,7 @@ on consume of leather horse armor:
                 
                 set {_uuid} to "%uuid of player%"
                 set {_m} to metadata "money" of player
-                execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+                execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
                 wait 1 tick
                 set {_err} to last sql error
                 if {_err} is set:
@@ -131,7 +119,16 @@ on consume of leather horse armor:
                 updateSidebar(player)
                 
                 # アイテム付与
-                execute console command "give %player% paper[consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:'entity.experience_orb.pickup'},custom_data={itemType:'bill',value:%{_amount}%},item_name='&6%{_amount}%G'] 1"
+                set {_item} to paper
+                set name of {_item} to "&6%{_amount}%G"
+                
+                set {_nbt} to "{"
+                set {_nbt} to "%{_nbt}%consumable:{consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""entity.experience_orb.pickup""},"
+                set {_nbt} to "%{_nbt}%custom_data:{itemType:""bill"",value:%{_amount}%}"
+                set {_nbt} to "%{_nbt}%}"
+                
+                add nbt compound from {_nbt} to nbt of {_item}
+                give {_item} to player
                 
                 send "&a%{_amount}%Gを引き出しました。"
             else:
@@ -151,7 +148,7 @@ on consume of paper:
         
         set {_uuid} to "%uuid of player%"
         set {_m} to metadata "money" of player
-        execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+        execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
         set {_err} to last sql error
         if {_err} is set:
             send "&c[System] Bill deposit error for %player%: %{_err}%" to console
