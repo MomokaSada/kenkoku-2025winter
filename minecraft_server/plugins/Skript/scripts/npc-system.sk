@@ -636,65 +636,13 @@ on inventory click:
                             set {_len} to length of {_r_nbt}
                             set {_r_nbt} to subtext of {_r_nbt} from 2 to {_len} - 1
                     
-                    # Hybrid Parsing Logic (Single Trade Reward)
-                    if {_r_key} contains "[":
-                        set {_r_item} to {_r_key} parsed as item
-                    else if {_r_nbt} starts with "[":
-                        if {_r_item} is not set:
-                            set {_r_item} to {_r_key} parsed as item
-                            # Sanitize [k=v] to {k:v} for SkBee
-                            set {_len} to length of {_r_nbt}
-                            set {_inner} to subtext of {_r_nbt} from 2 to {_len} - 1
-                            set {_r_nbt_fixed} to "{%{_inner}%}"
-                            replace all "consumable=" with "consumable:" in {_r_nbt_fixed}
-                            replace all "custom_data=" with "custom_data:" in {_r_nbt_fixed}
-                            replace all "item_name=" with "item_name:" in {_r_nbt_fixed}
-                            replace all "custom_name=" with "custom_name:" in {_r_nbt_fixed}
-                            replace all "rarity=" with "rarity:" in {_r_nbt_fixed}
-                            # replace all "'" with """" in {_r_nbt_fixed}
-                            add nbt from {_r_nbt_fixed} to nbt of {_r_item}
-                            
-                            if name of {_r_item} is not set:
-                                if {_r_nbt_fixed} contains "text:""":
-                                    set {_parts::*} to {_r_nbt_fixed} split at "text:"""
-                                    set {_name_part} to {_parts::2}
-                                    set {_subparts::*} to {_name_part} split at """"
-                                    set {_manual_name} to {_subparts::1}
-                                    set name of {_r_item} to {_manual_name}
-
-                    # Execution Logic (Decoupled)
-                    if {_r_item} is set:
-                        # Skriptでの生成成功
-                        if {_r_is_orig} is true:
-                            if {_r_nbt} is set:
-                                # Only apply if NOT already handled by Hybrid Logic (i.e. not Skript NBT)
-                                if {_r_nbt} does not start with "[":
-                                    if {_r_nbt} starts with """":
-                                        set {_len} to length of {_r_nbt}
-                                        set {_r_nbt} to subtext of {_r_nbt} from 2 to {_len} - 1
-                                    add nbt compound from {_r_nbt} to nbt of {_r_item}
-                        
-                        give {_r_qty} of {_r_item} to {_player}
-                        
-                    else:
-                        # Skriptでの生成失敗 (Complex Componentsなど) -> コマンドでGive
-                        set {_cmd_nbt} to ""
-                        if {_r_is_orig} is true:
-                            if {_r_nbt} is set:
-                                if {_r_nbt} is not "{}":
-                                    if {_r_key} contains "[":
-                                        set {_cmd_nbt} to {_r_nbt}
-                                    else:
-                                        set {_cmd_nbt} to {_r_nbt}
-                        
-                        if {_cmd_nbt} is not "":
-                            if {_cmd_nbt} starts with """":
-                                set {_len} to length of {_cmd_nbt}
-                                set {_cmd_nbt} to subtext of {_cmd_nbt} from 2 to {_len} - 1
-                            
-                            execute console command "give %{_player}% %{_r_key}%%{_cmd_nbt}% %{_r_qty}%"
+                    if {_r_nbt} is set:
+                        if {_r_nbt} is not "{}":
+                            execute console command "minecraft:give %{_player}% %{_r_key}%%{_r_nbt}% %{_r_qty}%"
                         else:
-                            execute console command "give %{_player}% %{_r_key}% %{_r_qty}%"
+                            execute console command "minecraft:give %{_player}% %{_r_key}% %{_r_qty}%"
+                    else:
+                        execute console command "minecraft:give %{_player}% %{_r_key}% %{_r_qty}%"
 
                     if {_r_is_orig} is true:
                         send "&a+ %{_r_key}%(Custom) x%{_r_qty}%" to {_player}
@@ -1147,14 +1095,14 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
                                 else:
                                     set {_cmd_nbt} to {_r_nbt}
                     
-                    if {_cmd_nbt} is not "":
-                        if {_cmd_nbt} starts with """":
-                            set {_len} to length of {_cmd_nbt}
-                            set {_cmd_nbt} to subtext of {_cmd_nbt} from 2 to {_len} - 1
-                        
-                        execute console command "give %{_p}% %{_r_key}%%{_cmd_nbt}% %{_r_qty}%"
+                    if {_r_nbt} is set:
+                        if {_r_nbt} is not "{}":
+                            execute console command "minecraft:give %{_p}% %{_r_key}%%{_r_nbt}% %{_r_qty}%"
+                        else:
+                            execute console command "minecraft:give %{_p}% %{_r_key}% %{_r_qty}%"
                     else:
-                        execute console command "give %{_p}% %{_r_key}% %{_r_qty}%"
+                        execute console command "minecraft:give %{_p}% %{_r_key}% %{_r_qty}%"
+
                 
             # リワード付与 (お金)
             loop {-trade_rewards::price::*}:
