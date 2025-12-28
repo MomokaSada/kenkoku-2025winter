@@ -125,3 +125,5 @@ minecraft_server/plugins/FastAsyncWorldEdit/history/
 minecraft_server/server.properties
 minecraft_server/ops.json
 minecraft_server/server.properties.example
+minecraft_server/banned-players.json
+minecraft_server/banned-ips.json
