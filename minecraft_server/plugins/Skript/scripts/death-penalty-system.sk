@@ -1,0 +1,4 @@
+on respawn:
+    wait 1 tick
+    set player's food level to 0
+    send "&c蘇生後遺症により、非常に空腹です..." to player
