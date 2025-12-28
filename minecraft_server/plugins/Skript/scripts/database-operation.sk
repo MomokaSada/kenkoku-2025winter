@@ -99,56 +99,7 @@ command /insert-all-items:
         else:
             send "&c[System] リクエスト失敗 (HTTP %{_code}%)" to console
 # オリジナルアイテムを個別に登録するコマンド
-# /insert-original-item <UniqueName(name)> <BaseItem(key)> <NBT>
-command /insert-original-item <text> <text> <text>:
-    permission: op
-    usage: /insert-original-item <UniqueName(name)> <BaseItem(key)> <nbt>
-    trigger:
-        set {_unique_name} to arg-1
-        set {_base_key} to arg-2
-        set {_nbt} to arg-3
-        
-        send "&e[System] オリジナルアイテムの登録を開始します: %{_unique_name}% (Base: %{_base_key}%)"
-        send "&e[Debug] Arg Check: Name=%{_unique_name}%, Base=%{_base_key}%, NBT=%{_nbt}%" to console
-        
-        # 存在チェック (Unique Nameでチェック, NULL除外)
-        delete {-check::*}
-        execute "SELECT id FROM items WHERE `name` = %{_unique_name}% AND `name` IS NOT NULL LIMIT 1" in {kenkoku_db} and store the result in {-check::*}
-        
-        send "&e[Debug] Check Result: %{-check::id::1}%" to console
-        
-        if {-check::id::1} is set:
-            # 更新 (UPDATE)
-            # is_original = TRUE を強制する
-            execute "UPDATE items SET `key` = %{_base_key}%, is_original = TRUE, nbt = %{_nbt}%, updated_at = NOW() WHERE `name` = %{_unique_name}%" in {kenkoku_db}
-            set {_action} to "更新"
-            send "&e[Debug] Action: Update" to console
-        else:
-            # 新規登録 (INSERT)
-            # KEY = BaseItem(key), NAME = UniqueName(name)
-            execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) VALUES (%{_base_key}%, %{_unique_name}%, TRUE, %{_nbt}%, NOW(), NOW())" in {kenkoku_db}
-            set {_action} to "新規登録"
-            send "&e[Debug] Action: Insert" to console
-        
-        set {_last_error} to last sql error
-        if {_last_error} is set:
-            send "&c[Error] %{_action}%に失敗しました: %{_last_error}%"
-            send "&c[Debug] SQL Error: %{_last_error}%" to console
-        else:
-            send "&a[System] オリジナルアイテムを%{_action}%しました。"
 
-# サーバーロード時に補完リストをキャッシュ作成
-on load:
-    clear {-all_items_cache::*}
-    loop all itemtypes:
-        add "%namespaced key of loop-value%" to {-all_items_cache::*}
-
-# コマンドのタブ補完
-on tab complete of "/insert-original-item":
-    # position 1 はユニークキー（自由入力）
-    # position 2 はベースアイテムID（リストから補完）
-    set tab completions for position 2 to {-all_items_cache::*}
-    set tab completions for position 3 to "{display:{Name:'""名前""'}}"
 
 
 # 村人の設定（職業・バイオーム）をDBに登録する処理

@@ -1,0 +1,563 @@
+# original-item-system.sk
+# オリジナルアイテムの登録・取得関連コマンド
+
+# キャッシュ作成 (サーバー起動時 & リロード時)
+on load:
+    # 1. バニラアイテムのキャッシュ (Base用)
+    clear {-all_items_cache::*}
+    loop all itemtypes:
+        add "%namespaced key of loop-value%" to {-all_items_cache::*}
+    
+    # 2. オリジナルアイテム名のキャッシュ (Get用)
+    # これだけだと非同期で取れないので、初回は空でもいいが、定期更新やコマンド実行後に更新すると良い
+    # ここでは簡易的にロード時にDBから取得する（同期実行になるためデータ量が多いとラグの原因になるが、現状は許容）
+    clear {-original_names_cache::*}
+    execute "SELECT name FROM items WHERE is_original = TRUE AND name IS NOT NULL" in {kenkoku_db} and store the result in {-db_originals::*}
+    loop {-db_originals::name::*}:
+        add loop-value to {-original_names_cache::*}
+
+# -------------------------------------------------------------------------
+# 1. オリジナルアイテム登録コマンド
+# /insert-original-item <UniqueName(name)> <BaseItem(key)> <NBT>
+# -------------------------------------------------------------------------
+command /insert-original-item <text> <text> <text>:
+    permission: op
+    usage: /insert-original-item <UniqueName(name)> <BaseItem(key)> <nbt>
+    trigger:
+        set {_unique_name} to arg-1
+        set {_base_key} to arg-2
+        set {_nbt} to arg-3
+        
+        # Sanitize quoted NBT string just in case
+        if {_nbt} starts with """":
+            set {_len} to length of {_nbt}
+            set {_nbt} to subtext of {_nbt} from 2 to {_len} - 1
+        
+        send "&e[System] オリジナルアイテムの登録を開始します: %{_unique_name}% (Base: %{_base_key}%)"
+        
+        # 存在チェック (Unique Nameでチェック, NULL除外)
+        delete {-check::*}
+        execute "SELECT id FROM items WHERE `name` = %{_unique_name}% AND `name` IS NOT NULL LIMIT 1" in {kenkoku_db} and store the result in {-check::*}
+        
+        if {-check::id::1} is set:
+            # 更新 (UPDATE)
+            execute "UPDATE items SET `key` = %{_base_key}%, is_original = TRUE, nbt = %{_nbt}%, updated_at = NOW() WHERE `name` = %{_unique_name}%" in {kenkoku_db}
+            set {_action} to "更新"
+        else:
+            # 新規登録 (INSERT)
+            execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) VALUES (%{_base_key}%, %{_unique_name}%, TRUE, %{_nbt}%, NOW(), NOW())" in {kenkoku_db}
+            set {_action} to "新規登録"
+            # キャッシュに追加
+            add {_unique_name} to {-original_names_cache::*}
+        
+        set {_last_error} to last sql error
+        if {_last_error} is set:
+            send "&c[Error] %{_action}%に失敗しました: %{_last_error}%"
+        else:
+            send "&a[System] オリジナルアイテムを%{_action}%しました。"
+
+on tab complete of "/insert-original-item":
+    # position 1: Unique Name (自由入力だが、既存のものを更新したい場合のためにキャッシュを出すのもあり)
+    # ここでは自由入力優先とするが、キャッシュも出して損はない
+    set tab completions for position 1 to {-original_names_cache::*}
+    
+    # position 2: Base Item (バニラアイテム)
+    set tab completions for position 2 to {-all_items_cache::*}
+    
+    # position 3: NBT (Template)
+    set tab completions for position 3 to "{display:{Name:'""名前""'}}"
+
+
+command /getwallet:
+    permission: op
+    trigger:
+        set {_item} to leather horse armor
+        
+        # 1. Standard Skript (Name/Color)
+        set name of {_item} to "&6お財布"
+        
+        # 2. Complex Components (SkBee)
+        set {_nbt} to "{"
+        set {_nbt} to "%{_nbt}%consumable:{consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""item.armor.equip_leather""},"
+        set {_nbt} to "%{_nbt}%custom_data:{itemType:""wallet""}"
+        set {_nbt} to "%{_nbt}%}"
+        
+        add nbt compound from {_nbt} to nbt of {_item}
+        give {_item} to player
+        send "&6お財布を入手しました！"
+
+command /getbill <number> [<number>]:
+    permission: op
+    trigger:
+        set {_val} to arg-1
+        set {_amount} to arg-2
+        if {_amount} is not set:
+            set {_amount} to 1
+            
+        set {_item} to paper
+        
+        # 1. Standard Skript
+        set name of {_item} to "&6%{_val}%G"
+        
+        # 2. Complex Components
+        set {_nbt} to "{"
+        set {_nbt} to "%{_nbt}%consumable:{consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""entity.experience_orb.pickup""},"
+        set {_nbt} to "%{_nbt}%custom_data:{itemType:""bill"",value:%{_val}%}"
+        set {_nbt} to "%{_nbt}%}"
+        
+        add nbt compound from {_nbt} to nbt of {_item}
+        give {_amount} of {_item} to player
+        send "&6%{_val}%Gを入手しました！"
+
+# 取引券アイテムを取得する関数
+function getTradeTicket() :: item:
+    set {_item} to wandering trader spawn egg
+    
+    # 1. Standard Skript
+    set name of {_item} to "&l取引券"
+    set lore of {_item} to "&7交易に使用します"
+    
+    # 2. Complex Components
+    set {_nbt} to "{"
+    set {_nbt} to "%{_nbt}%enchantment_glint_override:1b,"
+    set {_nbt} to "%{_nbt}%rarity:""uncommon"","
+    set {_nbt} to "%{_nbt}%entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},"
+    set {_nbt} to "%{_nbt}%custom_data:{itemType:""tradeTicket""}"
+    set {_nbt} to "%{_nbt}%}"
+    
+    add nbt compound from {_nbt} to nbt of {_item}
+    return {_item}
+
+command /get-trading-right [<number>]:
+    permission: op
+    trigger:
+        set {_amount} to arg-1
+        if {_amount} is not set:
+            set {_amount} to 1
+            
+        set {_item} to getTradeTicket()
+        give {_amount} of {_item} to player
+        send "&a[System] 取引権 x%{_amount}% を入手しました。"
+
+# -------------------------------------------------------------------------
+# オリジナルアイテム取得コマンド (統合版)
+# /get-original-item <type> [<level>]
+# -------------------------------------------------------------------------
+command /get-original-item <text> [<integer>]:
+    permission: op
+    usage: /get-original-item <type> [<level>]
+    trigger:
+        set {_type} to arg-1
+        set {_level} to arg-2
+        if {_level} is not set:
+            set {_level} to 1
+        
+        set {_is_accessory} to false
+        set {_has_level} to false
+        set {_is_consumable} to false
+        set {_accType} to ""
+
+        # --- アクセサリー系 ---
+        if {_type} is "healthBoost":
+            set {_item} to sniffer spawn egg
+            set {_health} to {_level} * 10
+            set name of {_item} to "&l体力増強(%{_health}%)"
+            set lore of {_item} to "&7ホットバーにある時体力が%{_health}%増える"
+            set {_accType} to "healthBoost"
+            set {_nbt_base} to "minecraft:sniffer_spawn_egg"
+            set {_is_accessory} to true
+            set {_has_level} to true
+            if {_level} is 1:
+                set {_rarity} to "uncommon"
+            else if {_level} is 2:
+                set {_rarity} to "rare"
+            else if {_level} is 3:
+                set {_rarity} to "epic"
+            else:
+                set {_rarity} to "common"
+
+        else if {_type} is "speedBoost":
+            set {_item} to horse spawn egg
+            if {_level} is 1:
+                set {_lv_roman} to "Ⅰ"
+            else if {_level} is 2:
+                set {_lv_roman} to "Ⅱ"
+            else if {_level} is 3:
+                set {_lv_roman} to "Ⅲ"
+            else:
+                set {_lv_roman} to "%{_level}%"
+            set name of {_item} to "&lスピード(%{_lv_roman}%)"
+            set lore of {_item} to "&7ホットバーにある時俊敏(%{_level}%)が付与されます"
+            set {_rarity} to "uncommon"
+            set {_accType} to "speedBoost"
+            set {_nbt_base} to "minecraft:horse_spawn_egg"
+            set {_is_accessory} to true
+            set {_has_level} to true
+
+        else if {_type} is "hasteBoost":
+            set {_item} to creeper spawn egg
+            if {_level} is 1:
+                set {_lv_roman} to "Ⅰ"
+            else if {_level} is 2:
+                set {_lv_roman} to "Ⅱ"
+            else if {_level} is 3:
+                set {_lv_roman} to "Ⅲ"
+            else:
+                set {_lv_roman} to "%{_level}%"
+            set name of {_item} to "&l採掘速度(%{_lv_roman}%)"
+            set lore of {_item} to "&7ホットバーにある時採掘速度上昇(%{_level}%)が付与される"
+            set {_rarity} to "uncommon"
+            set {_accType} to "hasteBoost"
+            set {_nbt_base} to "minecraft:creeper_spawn_egg"
+            set {_is_accessory} to true
+            set {_has_level} to true
+
+        else if {_type} is "jumpBoost":
+            set {_item} to frog spawn egg
+            if {_level} is 1:
+                set {_lv_roman} to "Ⅰ"
+            else if {_level} is 2:
+                set {_lv_roman} to "Ⅱ"
+            else if {_level} is 3:
+                set {_lv_roman} to "Ⅲ"
+            else:
+                set {_lv_roman} to "%{_level}%"
+            set name of {_item} to "&lジャンプ(%{_lv_roman}%)"
+            set lore of {_item} to "&7ホットバーにある時ジャンプブースト(%{_level}%)が付与される"
+            set {_rarity} to "uncommon"
+            set {_accType} to "jumpBoost"
+            set {_nbt_base} to "minecraft:frog_spawn_egg"
+            set {_is_accessory} to true
+            set {_has_level} to true
+
+        else if {_type} is "slowFalling":
+            set {_item} to chicken spawn egg
+            set name of {_item} to "&l低速落下"
+            set lore of {_item} to "&7ホットバーにある時低速落下が付与される"
+            set {_rarity} to "uncommon"
+            set {_accType} to "slowFalling"
+            set {_nbt_base} to "minecraft:chicken_spawn_egg"
+            set {_is_accessory} to true
+
+        else if {_type} is "fireResistance":
+            set {_item} to magma cube spawn egg
+            set name of {_item} to "&l火炎耐性"
+            set lore of {_item} to "&7ホットバーにある時火炎耐性が付与される"
+            set {_rarity} to "epic"
+            set {_accType} to "fireResistance"
+            set {_nbt_base} to "minecraft:magma_cube_spawn_egg"
+            set {_is_accessory} to true
+
+        else if {_type} is "nightVision":
+            set {_item} to bat spawn egg
+            set name of {_item} to "&l暗視"
+            set lore of {_item} to "&7ホットバーにある時暗視が付与される"
+            set {_rarity} to "epic"
+            set {_accType} to "nightVision"
+            set {_nbt_base} to "minecraft:bat_spawn_egg"
+            set {_is_accessory} to true
+
+        # --- 特殊アイテム系 (itemTypeに直接指定) ---
+        else if {_type} is "infinitePearl":
+            set {_item} to ender pearl item
+            set name of {_item} to "&l無限エンパ"
+            set lore of {_item} to "&7投げても消費されないエンパ"
+            set {_rarity} to "rare"
+            set {_is_accessory} to false 
+            # itemTypeとして直接使用するため、_accTypeはセットしない
+            set {_nbt_base} to "minecraft:ender_pearl"
+
+        else if {_type} is "petaPeta":
+            set {_item} to slime ball
+            set name of {_item} to "&lぺたぺたくん"
+            set lore of {_item} to "&7壁に向かって持つと壁にくっつける"
+            set {_rarity} to "rare"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:slime_ball"
+
+        else if {_type} is "jumpKun":
+            set {_item} to feather
+            set name of {_item} to "&lジャンプくん"
+            set lore of {_item} to "&7使用すると上方向に飛ぶ"
+            set {_rarity} to "rare"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:feather"
+
+        else if {_type} is "sidebarToggle":
+            set {_item} to end crystal item
+            set name of {_item} to "&b&l表示切替 (スコアボード)"
+            set lore of {_item} to "&7右クリックで使用してスコアボードの表示/非表示を切り替えます"
+            set {_rarity} to "rare"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:end_crystal"
+            set {_is_consumable} to true
+
+        else if {_type} is "wallet":
+            set {_item} to leather horse armor
+            set name of {_item} to "&6お財布"
+            set lore of {_item} to "&7右クリックで所持金を確認します"
+            set {_rarity} to "common"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:leather_horse_armor"
+            set {_is_consumable} to true
+
+        else:
+            send "&c[Error] 無効なアイテムタイプです。"
+            stop
+
+        # NBT設定
+        set {_nbt} to "{"
+        set {_nbt} to "%{_nbt}%enchantment_glint_override:true,"
+        set {_nbt} to "%{_nbt}%rarity:""%{_rarity}%"","
+        if {_is_consumable} is true:
+            set {_nbt} to "%{_nbt}%consumable:{consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""},"
+        
+        # custom_data
+        if {_is_accessory} is true:
+            set {_cd} to "itemType:""accessory"",accessoryType:""%{_accType}%"""
+            if {_has_level} is true:
+                set {_cd} to "%{_cd}%,level:%{_level}%"
+        else:
+            # 特殊アイテムは itemType に直接タイプ名を入れる
+            set {_cd} to "itemType:""%{_type}%"""
+            
+        set {_nbt} to "%{_nbt}%custom_data:{%{_cd}%},"
+        
+        set {_nbt} to "%{_nbt}%max_stack_size:1"
+        if {_accType} is "healthBoost":
+            set {_nbt} to "%{_nbt}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
+        set {_nbt} to "%{_nbt}%}"
+        
+        add nbt compound from {_nbt} to nbt of {_item}
+        give {_item} to player
+        send "&a[System] アイテムを取得しました: %name of {_item}%"
+        
+        # コピー可能なgiveコマンドを表示
+        set {_display_name} to uncolored name of {_item}
+        set {_lore_text} to uncolored line 1 of lore of {_item}
+        
+        # Component Syntax: key=value
+        # custom_data keeps internal NBT syntax (key:value)
+        set {_give_nbt} to "enchantment_glint_override=true,rarity=%{_rarity}%,custom_name={""extra"":[{""bold"":true,""text"":""%{_display_name}%""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""%{_lore_text}%""}],""text"":""""}],custom_data={%{_cd}%},max_stack_size=1"
+        if {_is_consumable} is true:
+            set {_give_nbt} to "%{_give_nbt}%,consumable={consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""}"
+        if {_accType} is "healthBoost":
+            set {_give_nbt} to "%{_give_nbt}%,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
+            
+        set {_give_cmd} to "/minecraft:give %player% %{_nbt_base}%[%{_give_nbt}%]"
+        send formatted "<tooltip:クリックでコピー><copy:%{_give_cmd}%>&e[Click to Copy] &7%{_give_cmd}%"
+
+on tab complete of "/get-original-item":
+    set {_types::*} to "healthBoost", "speedBoost", "hasteBoost", "jumpBoost", "slowFalling", "fireResistance", "nightVision", "infinitePearl", "petaPeta", "jumpKun", "sidebarToggle" and "wallet"
+    set tab completions for position 1 to {_types::*}
+    if tab arg-1 is "healthBoost" or "speedBoost" or "hasteBoost" or "jumpBoost":
+        set tab completions for position 2 to "1", "2" and "3"
+
+# -------------------------------------------------------------------------
+# 3. アクセサリーシステム (パッシブ効果 & 無限アイテム)
+# -------------------------------------------------------------------------
+
+# 定期実行: 体力増強の実装
+every 1 second:
+    loop all players:
+        delete {_effects::*}
+        
+        # ホットバー (0-8) をチェック
+        loop 9 times:
+            # Skriptのホットバーは slot 0 to 8
+            set {_slot} to loop-number - 1
+            set {_item} to slot {_slot} of loop-player
+            
+            # NBTチェック
+            set {_nbt} to custom nbt of {_item}
+            set {_type} to string tag "itemType" of {_nbt}
+            if {_type} is "accessory":
+                set {_accType} to string tag "accessoryType" of {_nbt}
+                set {_level} to int tag "level" of {_nbt}
+                if {_level} is not set:
+                    set {_level} to 1
+
+                if {_accType} is "healthBoost":
+                    # レベルに応じて加算 (level * 10)
+                    add ({_level} * 10) to {_bonus_health}
+                else if {_accType} is "speedBoost":
+                    if {_effects::speed} is not set:
+                        set {_effects::speed} to {_level}
+                    else if {_level} > {_effects::speed}:
+                        set {_effects::speed} to {_level}
+                else if {_accType} is "hasteBoost":
+                    if {_effects::haste} is not set:
+                        set {_effects::haste} to {_level}
+                    else if {_level} > {_effects::haste}:
+                        set {_effects::haste} to {_level}
+                else if {_accType} is "jumpBoost":
+                    if {_effects::jump} is not set:
+                        set {_effects::jump} to {_level}
+                    else if {_level} > {_effects::jump}:
+                        set {_effects::jump} to {_level}
+                else if {_accType} is "slowFalling":
+                    set {_effects::slowFalling} to 1
+                else if {_accType} is "fireResistance":
+                    set {_effects::fireResistance} to 1
+                else if {_accType} is "nightVision":
+                    set {_effects::nightVision} to 1
+        
+        # 最大体力の計算 (基本10ハート = 20HP)
+        # Skriptの max health はハート数(10がデフォルト)
+        # ボーナスはHP値で来るので、ハートに換算 (/2)
+        set {_base_hearts} to 10
+        set {_bonus_hearts} to {_bonus_health}
+        set {_new_max} to {_base_hearts} + {_bonus_hearts}
+        
+        if max health of loop-player is not {_new_max}:
+            set max health of loop-player to {_new_max}
+
+        # ポーション効果系
+        if {_effects::speed} is set:
+            apply speed {_effects::speed} without particles to loop-player for 2 seconds
+        else:
+            remove speed from loop-player
+            
+        if {_effects::haste} is set:
+            apply haste {_effects::haste} without particles to loop-player for 2 seconds
+        else:
+            remove haste from loop-player
+
+        if {_effects::jump} is set:
+            apply jump boost {_effects::jump} without particles to loop-player for 2 seconds
+        else:
+            remove jump boost from loop-player
+
+        if {_effects::slowFalling} is set:
+            apply slow falling 1 without particles to loop-player for 2 seconds
+        else:
+            remove slow falling from loop-player
+
+        if {_effects::fireResistance} is set:
+            apply fire resistance 1 without particles to loop-player for 2 seconds
+        else:
+            remove fire resistance from loop-player
+
+        if {_effects::nightVision} is set:
+            apply night vision 1 without particles to loop-player for 2 seconds
+        else:
+            remove night vision from loop-player
+
+# ぺたぺたくんロジック (判定修正版)
+every 5 ticks:
+    loop all players:
+        set {_tool} to loop-player's tool
+        set {_off} to loop-player's offhand tool
+        set {_has} to false
+        
+        # メインハンド
+        set {_nbt} to custom nbt of {_tool}
+        if string tag "itemType" of {_nbt} is "petaPeta":
+            set {_has} to true
+        
+        # オフハンド
+        if {_has} is false:
+            set {_nbt} to custom nbt of {_off}
+            if string tag "itemType" of {_nbt} is "petaPeta":
+                set {_has} to true
+        
+        if {_has} is true:
+            # アイレベル (目の前) で判定
+            set {_loc} to eye location of loop-player
+            set {_front} to location 1.5 meters in front of {_loc}
+            if block at {_front} is solid:
+                apply levitation 3 without particles to loop-player for 1 second
+
+# 消費防止: ディスペンサー
+on dispense:
+    set {_nbt} to custom nbt of event-item
+    set {_type} to string tag "itemType" of {_nbt}
+    if {_type} is "accessory" or "tradeTicket" or "infinitePearl" or "petaPeta" or "jumpKun" or "sidebarToggle":
+        cancel event
+
+# 消費防止: 右クリック (スポーンエッグの使用など) / 取引券の破棄機能
+on rightclick:
+    set {_item} to player's tool
+    set {_nbt} to custom nbt of {_item}
+    set {_type} to string tag "itemType" of {_nbt}
+    
+    if {_type} is "tradeTicket":
+        # NPCを右クリックした時は配布処理等を優先するため中断
+        if clicked entity is villager:
+            if scoreboard tags of clicked entity contains "kenkoku_npc":
+                stop
+        
+        # 空気や地面を右クリックした場合は破棄
+        cancel event
+        set {_count} to 0
+        loop all items in player's inventory:
+            set {_loop_nbt} to custom nbt of loop-item
+            set {_loop_type} to string tag "itemType" of {_loop_nbt}
+            if {_loop_type} is "tradeTicket":
+                add item amount of loop-item to {_count}
+                remove loop-item from player's inventory
+        
+        if {_count} > 0:
+            send "&a[System] インベントリ内の取引券 (x%{_count}%) を全て破棄しました。" to player
+            play sound "entity.item.break" with volume 0.5 to player
+            
+    else if {_type} is "infinitePearl":
+        cancel event
+        # クールダウンチェック (3秒)
+        set {_waited} to difference between {cooldown::infinitePearl::%player%} and now
+        if {_waited} < 3 seconds:
+            set {_left} to 3 seconds
+            subtract {_waited} from {_left}
+            send "&c[System] クールダウン中です (あと %{_left}%)" to player
+            stop
+        
+        set {cooldown::infinitePearl::%player%} to now
+        shoot ender pearl from player at speed 1.5
+        play sound "entity.ender_pearl.throw" with volume 0.5 to player
+        
+    else if {_type} is "jumpKun":
+        cancel event
+        # クールダウンチェック (5秒)
+        set {_waited} to difference between {cooldown::jumpKun::%player%} and now
+        if {_waited} < 5 seconds:
+            set {_left} to 5 seconds
+            subtract {_waited} from {_left}
+            send "&c[System] クールダウン中です (あと %{_left}%)" to player
+            stop
+        
+        set {cooldown::jumpKun::%player%} to now
+        push player upwards at speed 1.5
+        push player forward at speed 0.5
+        play sound "entity.firework_rocket.launch" with volume 0.5 to player
+        show 10 cloud at location of player
+        
+    else if {_type} is "sidebarToggle":
+        # consumable設定により on consume で処理
+        stop
+        
+    else if {_type} is "accessory":
+        # 通常のアクセサリー等は右クリック無効(スポーンエッグ使用防止)
+        cancel event
+
+# スコアボード切り替え処理 (お財布と同様の consumable 形式)
+on consume of end crystal:
+    set {_nbt} to custom nbt of event-item
+    if string tag "itemType" of {_nbt} is "sidebarToggle":
+        cancel event
+        if {sidebar_hidden::%player%} is not set:
+            set {sidebar_hidden::%player%} to true
+            clear fastboard of player
+            send "&c[System] スコアボードを非表示にしました。"
+        else:
+            delete {sidebar_hidden::%player%}
+            # sidebar.sk の updateSidebar を呼び出す
+            updateSidebar(player)
+            send "&a[System] スコアボードを表示しました。"
+
+# 消費防止: 設置 (もしブロックなら)
+on place:
+    set {_item} to player's tool
+    set {_nbt} to custom nbt of {_item}
+    set {_type} to string tag "itemType" of {_nbt}
+    if {_type} is "accessory" or "tradeTicket" or "infinitePearl" or "petaPeta" or "jumpKun" or "sidebarToggle":
+        cancel event
