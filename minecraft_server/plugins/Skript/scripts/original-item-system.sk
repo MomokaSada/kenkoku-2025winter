@@ -292,6 +292,15 @@ command /get-original-item <text> [<integer>]:
             set {_nbt_base} to "minecraft:end_crystal"
             set {_is_consumable} to true
 
+        else if {_type} is "wallet":
+            set {_item} to leather horse armor
+            set name of {_item} to "&6お財布"
+            set lore of {_item} to "&7右クリックで所持金を確認します"
+            set {_rarity} to "common"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:leather_horse_armor"
+            set {_is_consumable} to true
+
         else:
             send "&c[Error] 無効なアイテムタイプです。"
             stop
@@ -327,17 +336,19 @@ command /get-original-item <text> [<integer>]:
         set {_display_name} to uncolored name of {_item}
         set {_lore_text} to uncolored line 1 of lore of {_item}
         
-        set {_give_nbt} to "enchantment_glint_override=true,rarity=%{_rarity}%,custom_name='{""text"":""%{_display_name}%"",""bold"":true}',lore=['{""text"":""%{_lore_text}%"",""color"":""gray""}'],custom_data={%{_cd}%},max_stack_size=1"
+        # Component Syntax: key=value
+        # custom_data keeps internal NBT syntax (key:value)
+        set {_give_nbt} to "enchantment_glint_override=true,rarity=%{_rarity}%,custom_name={""extra"":[{""bold"":true,""text"":""%{_display_name}%""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""%{_lore_text}%""}],""text"":""""}],custom_data={%{_cd}%},max_stack_size=1"
         if {_is_consumable} is true:
-            set {_give_nbt} to "%{_give_nbt}%,consumable={consume_seconds:0.1,animation:eat,has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""}"
+            set {_give_nbt} to "%{_give_nbt}%,consumable={consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""}"
         if {_accType} is "healthBoost":
-            set {_give_nbt} to "%{_give_nbt}%,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01,Invulnerable:1b}"
+            set {_give_nbt} to "%{_give_nbt}%,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
             
-        set {_give_cmd} to "/give %player% %{_nbt_base}%[%{_give_nbt}%]"
+        set {_give_cmd} to "/minecraft:give %player% %{_nbt_base}%[%{_give_nbt}%]"
         send formatted "<tooltip:クリックでコピー><copy:%{_give_cmd}%>&e[Click to Copy] &7%{_give_cmd}%"
 
 on tab complete of "/get-original-item":
-    set {_types::*} to "healthBoost", "speedBoost", "hasteBoost", "jumpBoost", "slowFalling", "fireResistance", "nightVision", "infinitePearl", "petaPeta", "jumpKun" and "sidebarToggle"
+    set {_types::*} to "healthBoost", "speedBoost", "hasteBoost", "jumpBoost", "slowFalling", "fireResistance", "nightVision", "infinitePearl", "petaPeta", "jumpKun", "sidebarToggle" and "wallet"
     set tab completions for position 1 to {_types::*}
     if tab arg-1 is "healthBoost" or "speedBoost" or "hasteBoost" or "jumpBoost":
         set tab completions for position 2 to "1", "2" and "3"
