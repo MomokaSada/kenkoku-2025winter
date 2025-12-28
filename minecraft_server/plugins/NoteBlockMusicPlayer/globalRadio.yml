@@ -1,0 +1,23 @@
+worldradios:
+  world_radio:
+    enable: false # only one server radio can be enabled at same time
+    world: world # only one world radio can be enabled for one world at same time
+    repeat: true # repeat playlist?
+    random: false # choose random next song from playlist?
+    actionbar: true
+    playlist: test_playlist
+    delay: 0 # delay between songs in seconds (float)
+    volume: 100
+
+
+
+serverradios:
+  server_radio:
+    enable: false # only one server radio can be enabled at same time
+    repeat: true # repeat playlist?
+    random: false # choose random next song from playlist?
+    actionbar: true
+    playlist: test_playlist
+    delay: 0 # delay between songs in seconds (float)
+    volume: 100
+
