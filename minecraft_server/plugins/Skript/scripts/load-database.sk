@@ -13,7 +13,11 @@ on load:
     if {_password} is not set:
         set {_password} to "password" # フォールバック
 
-    set {-db_url} to "mysql://160.251.209.80:3306/dev?user=root"
+    set {_host} to System.getenv("MYSQL_HOST")
+    if {_host} is not set:
+        set {_host} to "db"
+
+    set {-db_url} to "mysql://%{_host}%:3306/dev?user=root"
     set {-db_url} to "%{-db_url}%%{_and}%password=%{_password}%"
     set {-db_url} to "%{-db_url}%%{_and}%autoReconnect=true"
     set {-db_url} to "%{-db_url}%%{_and}%allowPublicKeyRetrieval=true"
@@ -91,7 +95,10 @@ command /reconnect:
         set {_password} to System.getenv("MYSQL_ROOT_PASSWORD")
         if {_password} is not set:
             set {_password} to "password"
-        set {-db_url} to "mysql://160.251.209.80:3306/dev?user=root"
+        set {_host} to System.getenv("MYSQL_HOST")
+        if {_host} is not set:
+            set {_host} to "db"
+        set {-db_url} to "mysql://%{_host}%:3306/dev?user=root"
         set {-db_url} to "%{-db_url}%%{_and}%password=%{_password}%"
         set {-db_url} to "%{-db_url}%%{_and}%autoReconnect=true"
         set {-db_url} to "%{-db_url}%%{_and}%allowPublicKeyRetrieval=true"

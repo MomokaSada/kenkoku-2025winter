@@ -1,0 +1,198 @@
+# lottery-system.sk
+# ガチャシステムのスクリプト
+# データベース (lotteries, rarities, lottery_items, items) を使用して抽選を行います
+
+# -------------------------------------------------------------------------
+# Admin Command: ガチャチケット取得
+# -------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+# Admin Command: ガチャチケット取得
+# /get-lottery-ticket <name> [<count>] [<amount>]
+# -------------------------------------------------------------------------
+command /get-lottery-ticket <text> [<integer>] [<integer>]:
+    permission: op
+    description: 指定した名前のガチャチケットを取得します
+    usage: /get-lottery-ticket <lotteryName> [<count>] [<amount>]
+    trigger:
+        set {_name} to arg-1
+        set {_count} to arg-2
+        if {_count} is not set:
+            set {_count} to 1
+        
+        set {_amount} to arg-3
+        if {_amount} is not set:
+            set {_amount} to 1
+        
+        # データベースに存在するかチェック
+        delete {_check::*}
+        execute "SELECT id FROM lotteries WHERE name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_check::*}
+        
+        if {_check::id::1} is not set:
+            send "&c[Error] ガチャ '%{_name}%' はデータベースに存在しません。"
+            stop
+            
+        set {_item} to allay spawn egg
+        if {_count} > 1:
+            set name of {_item} to "&b&l%{_name}%ガチャ (%{_count}%連)"
+        else:
+            set name of {_item} to "&b&l%{_name}%ガチャ"
+            
+        set lore of {_item} to "&7右クリックでガチャを引く"
+        
+        # NBTデータを設定 (Accessory-like)
+        set {_nbt} to "{"
+        set {_nbt} to "%{_nbt}%enchantment_glint_override:true,"
+        set {_nbt} to "%{_nbt}%rarity:""rare"","
+        set {_nbt} to "%{_nbt}%entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},"
+        set {_nbt} to "%{_nbt}%custom_data:{itemType:""lottery_ticket"",lotteryName:""%{_name}%"",count:%{_count}%}"
+        set {_nbt} to "%{_nbt}%}"
+        
+        add nbt compound from {_nbt} to nbt of {_item}
+        
+        give {_amount} of {_item} to player
+        send "&a%{_name}%ガチャのチケット(x%{_amount}%, %{_count}%連)を入手しました。"
+        
+        # Copyable Give Command Generation
+        set {_display_name} to uncolored name of {_item}
+        set {_lore_text} to uncolored line 1 of lore of {_item}
+        
+        # Component Syntax: [custom_name=..., lore=..., custom_data=...]
+        set {_give_nbt} to "enchantment_glint_override=true,rarity=rare,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={""extra"":[{""bold"":true,""text"":""&b&l%{_display_name}%""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""%{_lore_text}%""}],""text"":""""}],custom_data={itemType:""lottery_ticket"",lotteryName:""%{_name}%"",count:%{_count}%}"
+        
+        set {_give_cmd} to "/minecraft:give %player% allay_spawn_egg[%{_give_nbt}%]"
+        send formatted "<tooltip:クリックでコピー><copy:%{_give_cmd}%>&e[Click to Copy] &7%{_give_cmd}%"
+
+# -------------------------------------------------------------------------
+# Event: ガチャチケット使用 (右クリック)
+# -------------------------------------------------------------------------
+on rightclick:
+    set {_item} to player's tool
+    set {_nbt} to custom nbt of {_item}
+    set {_type} to string tag "itemType" of {_nbt}
+    
+    set {_lotteryName} to ""
+    set {_count} to 1
+    
+    # 1. NBT判定 (推奨)
+    if {_type} is "lottery_ticket":
+        cancel event
+        set {_lotteryName} to string tag "lotteryName" of {_nbt}
+        set {_c} to int tag "count" of {_nbt}
+        if {_c} is set:
+            set {_count} to {_c}
+    
+    # 2. 名前判定 (NBTがない場合のフォールバック / 既存アイテム対応 - 紙のみ)
+    else if {_item} is paper:
+        set {_tempName} to uncolored name of {_item}
+        if {_tempName} ends with "ガチャ":
+            set {_len} to length of {_tempName}
+            # "ガチャ" は3文字なので、長さが3より大きい場合のみ処理
+            if {_len} > 3:
+                cancel event
+                set {_lotteryName} to subtext of {_tempName} from 1 to {_len} - 3
+                
+    # ガチャ名が取得できなければ処理しない
+    if {_lotteryName} is "":
+        stop
+    
+    # イベントキャンセル (紙を置いたり使用したりしない)
+    cancel event
+    
+    # create_lotteries_table の name を参照して「〇〇ガチャ」の「〇〇」を取得
+    # ID取得 (ループ外)
+    delete {_l_row::*}
+    execute "SELECT id FROM lotteries WHERE name = %{_lotteryName}% LIMIT 1" in {kenkoku_db} and store the result in {_l_row::*}
+    
+    if {_l_row::id::1} is not set:
+        send "&c[System] ガチャ '%{_lotteryName}%' のデータが見つかりません。" to player
+        stop
+        
+    set {_lid} to {_l_row::id::1}
+    
+    # レアリティ取得 (ループ外)
+    delete {_rarities::*}
+    execute "SELECT id, name, probability FROM rarities WHERE lottery_id = %{_lid}% ORDER BY probability ASC" in {kenkoku_db} and store the result in {_rarities::*}
+
+    # チケット消費
+    remove 1 of {_item} from player
+    play sound "ui.button.click" with volume 1.0 to player
+    
+    # -----------------------------------------------------------
+    # 抽選ループ開始
+    # -----------------------------------------------------------
+    loop {_count} times:
+        
+        # 確率抽選 (0-1000)
+        set {_roll} to random integer between 0 and 1000
+        
+        set {_selected_rid} to -1
+        set {_selected_rname} to ""
+        set {_cumulative} to 0
+        set {_found} to false
+        
+        # 累積確率による重み付け抽選
+        loop {_rarities::id::*}:
+            set {_prob} to {_rarities::probability::%loop-index%}
+            add {_prob} to {_cumulative}
+            
+            if {_roll} <= {_cumulative}:
+                set {_selected_rid} to loop-value-2
+                set {_selected_rname} to {_rarities::name::%loop-index%}
+                set {_found} to true
+                exit loop
+                
+        if {_found} is false:
+            send "&c[Error] ガチャの抽選に失敗しました (Roll: %{_roll}%, Max: %{_cumulative}%)。設定を確認してください。" to player
+            # 失敗時はチケット返却 (1枚) - ただしループ中に失敗すると面倒なのでログだけ出して継続か、中断か
+            # ここでは中断して1枚返す
+            # 本当は消費した分だけ処理などを考えるべきだが、簡易的に1枚返す
+            give 1 of {_item} to player
+            stop
+
+        # アイテム選定 (選ばれたレアリティの中からランダムに1つ)
+        delete {_i_row::*}
+        execute "SELECT item_id FROM lottery_items WHERE lottery_id = %{_lid}% AND rarity_id = %{_selected_rid}% ORDER BY RAND() LIMIT 1" in {kenkoku_db} and store the result in {_i_row::*}
+        
+        if {_i_row::item_id::1} is not set:
+            send "&c[System] %{_selected_rname}% (%{_lotteryName}%) に当選しましたが、アイテムが設定されていません。" to player
+            # 今回はエラーでも止めず次へ
+            continue
+            
+        set {_item_id} to {_i_row::item_id::1}
+        
+        # アイテムデータ取得
+        delete {_data::*}
+        execute "SELECT `key`, `name`, `nbt` FROM items WHERE id = %{_item_id}% LIMIT 1" in {kenkoku_db} and store the result in {_data::*}
+        
+        set {_key} to {_data::key::1}
+        set {_dname} to {_data::name::1}
+        set {_dnbt} to {_data::nbt::1}
+        
+        if {_key} is not set:
+            send "&c[Error] アイテム定義 (ID: %{_item_id}%) の取得に失敗しました。" to player
+            continue
+            
+        # アイテム生成 (表示用のみ)
+        set {_reward_item} to {_key} parsed as item
+
+        # プレイヤーに付与 (Execute console command with raw DB strings)
+        if {_dnbt} is set:
+            if {_dnbt} is not "{}":
+                execute console command "minecraft:give %player% %{_key}%%{_dnbt}%"
+            else:
+                execute console command "minecraft:give %player% %{_key}%"
+        else:
+            # DBのnbtカラムがnullの場合はNBTなしで付与
+            execute console command "minecraft:give %player% %{_key}%"
+        
+        # 名前表示 (名前がない場合はキーを表示)
+        set {_disp} to name of {_reward_item}
+        if {_disp} is not set:
+            set {_disp} to {_key}
+        
+        # 演出 (ループ中は控えめにしてもいいが、要望通り出す)
+        play sound "entity.player.levelup" with volume 0.5 to player
+        send "&a[%{_lotteryName}%] &e%{_selected_rname}%当選! &f%{_disp}% &7(ID: %{_item_id}%) &aを手に入れました！" to player
+        
+        # ループ時のwait (負荷対策)
+        # wait 1 tick
