@@ -8,16 +8,32 @@ on load:
     # Skript-DBの標準的な接続文字列フォーマットを使用
     # アンパサンドを変数に入れてから結合することでSkriptのカラーコード解析を回避
     set {_and} to "&"
+    
+    # 環境変数から設定を読み込み
     # skript-reflect: JavaのSystem.getenv()を直接使用
-    set {_password} to System.getenv("MYSQL_ROOT_PASSWORD")
+    
+    # 1. ユーザー (デフォルト: minecraft_user)
+    set {_user} to System.getenv("MYSQL_USER")
+    if {_user} is not set:
+        set {_user} to "minecraft_user"
+        
+    # 2. パスワード (デフォルト: password)
+    set {_password} to System.getenv("MYSQL_PASSWORD")
     if {_password} is not set:
-        set {_password} to "password" # フォールバック
+        set {_password} to "password" 
 
+    # 3. ホスト (デフォルト: db) - 本番環境では必ず設定が必要
     set {_host} to System.getenv("MYSQL_HOST")
     if {_host} is not set:
         set {_host} to "db"
+        send "&e[Database] WARNING: MYSQL_HOST env var is not set. Defaulting to 'db'. If not using Docker, please set this." to console
 
-    set {-db_url} to "mysql://%{_host}%:3306/dev?user=root"
+    # 4. データベース名 (デフォルト: dev)
+    set {_dbname} to System.getenv("MYSQL_DATABASE")
+    if {_dbname} is not set:
+        set {_dbname} to "dev"
+
+    set {-db_url} to "mysql://%{_host}%:3306/%{_dbname}%?user=%{_user}%"
     set {-db_url} to "%{-db_url}%%{_and}%password=%{_password}%"
     set {-db_url} to "%{-db_url}%%{_and}%autoReconnect=true"
     set {-db_url} to "%{-db_url}%%{_and}%allowPublicKeyRetrieval=true"
@@ -27,39 +43,51 @@ on load:
     set {-db_url} to "%{-db_url}%%{_and}%connectionCollation=utf8mb4_unicode_ci"
     
     # データソースを作成し、グローバル変数に保存（他のスクリプトから参照するため）
-    set {kenkoku_db} to the database {-db_url}
+    # 接続リトライ機能を追加 (最大5回)
+    set {_retry} to 0
+    set {_connected} to false
     
-    # 接続プールが初期化されるのを少し待つ（念のため）
-    wait 1 tick
-    
-    # 文字コードを確実に設定
-    execute "SET NAMES utf8mb4" in {kenkoku_db}
-    
-    # 接続テスト
-    execute "SELECT 1" in {kenkoku_db} and store the result in {-result}
-    
-    if {-result} is set:
-        send "&a[Database] DB接続に成功しました！(Datasource: %{kenkoku_db}%)" to console
-        
-        # サーバー情報の更新 (id=1)
-        # server_infosテーブルにサーバー情報を保存
-        set {_name} to "2025冬-建国鯖"
-        set {_version} to minecraft version
-        set {_max} to max players
-        
-        # INSERT ... ON DUPLICATE KEY UPDATE
-        # Use embedded variables for automatic parameter binding (no quotes!)
-        execute "INSERT INTO server_infos (id, name, version, max_players, created_at, updated_at) VALUES (1, %{_name}%, %{_version}%, %{_max}%, NOW(), NOW()) ON DUPLICATE KEY UPDATE name = VALUES(name), version = VALUES(version), max_players = VALUES(max_players), updated_at = NOW()" in {kenkoku_db}
-        set {_err} to last sql error
-        if {_err} is set:
-            send "&c[Database] Update Error: %{_err}%" to console
-        else:
-            send "&a[Database] サーバー情報を更新しました。" to console
-    else:
-        send "&c[Database] DB接続に失敗しました。" to console
-        # 詳細なエラー理由を表示
-        set {_error} to last sql error
-        send "&c[Reason] %{_error}%" to console
+    loop 5 times:
+        if {_connected} is false:
+            add 1 to {_retry}
+            if {_retry} > 1:
+                send "&e[Database] Retrying connection (%{_retry}%/5)..." to console
+                
+            set {kenkoku_db} to the database {-db_url}
+            
+            # 接続プールが初期化されるのを少し待つ
+            wait 20 ticks
+            
+            # 接続テスト
+            delete {-result}
+            execute "SELECT 1" in {kenkoku_db} and store the result in {-result}
+            
+            if {-result} is set:
+                set {_connected} to true
+                send "&a[Database] DB接続に成功しました！(Host: %{_host}%, User: %{_user}%)" to console
+                
+                # 文字コードを確実に設定
+                execute "SET NAMES utf8mb4" in {kenkoku_db}
+                
+                # サーバー情報の更新 (id=1)
+                set {_name} to "2025冬-建国鯖"
+                set {_version} to minecraft version
+                set {_max} to max players
+                
+                execute "INSERT INTO server_infos (id, name, version, max_players, created_at, updated_at) VALUES (1, %{_name}%, %{_version}%, %{_max}%, NOW(), NOW()) ON DUPLICATE KEY UPDATE name = VALUES(name), version = VALUES(version), max_players = VALUES(max_players), updated_at = NOW()" in {kenkoku_db}
+                set {_err} to last sql error
+                if {_err} is set:
+                    send "&c[Database] Update Error: %{_err}%" to console
+                else:
+                    send "&a[Database] サーバー情報を更新しました。" to console
+            else:
+                set {_err} to last sql error
+                send "&c[Database] Connection failed (Attempt %{_retry}%/5): %{_err}%" to console
+                if {_retry} < 5:
+                    wait 5 seconds
+
+    if {_connected} is false:
+        send "&4[Database] CRITICAL: Could not connect to database after 5 attempts. Check MYSQL_HOST and credentials." to console
 
 # サーバー停止時に接続を閉じる処理は、Skript-DBが自動管理するため通常は不要ですが、
 # 明示的に変数を削除する場合は以下のようにします
@@ -91,14 +119,25 @@ command /reconnect:
     permission: op
     trigger:
         delete {kenkoku_db}
+        send "&e[Database] Reconnecting..."
+        
         set {_and} to "&"
-        set {_password} to System.getenv("MYSQL_ROOT_PASSWORD")
+        set {_user} to System.getenv("MYSQL_USER")
+        if {_user} is not set:
+            set {_user} to "minecraft_user"
+        set {_password} to System.getenv("MYSQL_PASSWORD")
         if {_password} is not set:
             set {_password} to "password"
         set {_host} to System.getenv("MYSQL_HOST")
         if {_host} is not set:
             set {_host} to "db"
-        set {-db_url} to "mysql://%{_host}%:3306/dev?user=root"
+            send "&e[Database] Warning: MYSQL_HOST not set, using 'db'"
+            
+        set {_dbname} to System.getenv("MYSQL_DATABASE")
+        if {_dbname} is not set:
+            set {_dbname} to "dev"
+            
+        set {-db_url} to "mysql://%{_host}%:3306/%{_dbname}%?user=%{_user}%"
         set {-db_url} to "%{-db_url}%%{_and}%password=%{_password}%"
         set {-db_url} to "%{-db_url}%%{_and}%autoReconnect=true"
         set {-db_url} to "%{-db_url}%%{_and}%allowPublicKeyRetrieval=true"
@@ -107,13 +146,15 @@ command /reconnect:
         set {-db_url} to "%{-db_url}%%{_and}%characterEncoding=UTF-8"
         set {-db_url} to "%{-db_url}%%{_and}%connectionCollation=utf8mb4_unicode_ci"
         set {kenkoku_db} to the database {-db_url}
-        wait 1 tick
+        
+        wait 20 ticks
         execute "SET NAMES utf8mb4" in {kenkoku_db}
         execute "SELECT 1" in {kenkoku_db} and store the result in {-result}
         if {-result} is set:
-            send "&a[Database] Reconnected successfully!"
+            send "&a[Database] Reconnected successfully! (Host: %{_host}%)"
         else:
-            send "&c[Database] Reconnect failed."
+            set {_err} to last sql error
+            send "&c[Database] Reconnect failed: %{_err}%"
 
 command /insertdata <number>:
     permission: op
@@ -126,6 +167,32 @@ command /insertdata <number>:
         else:
             send "&a[Database] Inserted momoka_sada data."
 
-
-
+# -------------------------------------------------------------------------
+# 統合セットアップコマンド
+# /kenkoku-setup - 初期セットアップに必要な全てのコマンドを順番に実行
+# -------------------------------------------------------------------------
+command /kenkoku-setup:
+    permission: op
+    trigger:
+        send "&e[Setup] ======================================"
+        send "&e[Setup] 建国鯖 初期セットアップを開始します..."
+        send "&e[Setup] ======================================"
+        
+        # 1. 全バニラアイテムのDB登録
+        send "&e[Setup] [1/3] 全アイテムをDBに登録中..."
+        execute player command "/insert-all-items"
+        wait 3 seconds
+        
+        # 2. 村人設定（職業・バイオーム）の登録
+        send "&e[Setup] [2/3] 村人設定をDBに登録中..."
+        execute player command "/insert-villager-settings"
+        wait 1 second
+        
+        # 3. NPCリストの更新
+        send "&e[Setup] [3/3] NPCリストを更新中..."
+        execute player command "/npc-refresh"
+        
+        send "&a[Setup] ======================================"
+        send "&a[Setup] 初期セットアップが完了しました！"
+        send "&a[Setup] ======================================"
 
