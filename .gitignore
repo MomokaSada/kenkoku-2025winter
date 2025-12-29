@@ -112,6 +112,7 @@ minecraft_server/plugins/spark/.gitignore
 minecraft_server/plugins/Skript/scripts/-examples/
 minecraft_server/plugins/Skript/scripts/-- *
 minecraft_server/plugins/MyCommand/commands/examples.yml
+minecraft_server/plugins/FastAsyncWorldEdit/clipboard/
 
 # 7. Ignore sensitive configuration files
 
