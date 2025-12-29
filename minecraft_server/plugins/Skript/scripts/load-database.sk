@@ -27,14 +27,14 @@ on load:
         set {_path} to {_env_file}.toPath()
         set {_charset} to StandardCharsets.UTF_8
         
-        # Read as single string to avoid List conversion issues
+        # Read as single string
         set {_content} to Files.readString({_path}, {_charset})
         
-        # Normalize newlines to ensure splitting works for CRLF and LF
-        replace all "\r\n" with "\n" in {_content}
-        replace all "\r" with "\n" in {_content}
+        # Use Java's split method for reliable newline handling
+        set {_lines_array} to {_content}.split("\r?\n")
+        set {_lines::*} to ...{_lines_array}
         
-        set {_lines::*} to {_content} split at "\n"
+        send "&e[Database] Read %size of {_lines::*}% lines from .env" to console
         
         send "&e[Database] Read %size of {_lines::*}% lines from .env" to console
         
