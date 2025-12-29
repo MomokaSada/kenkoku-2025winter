@@ -13,45 +13,10 @@ on load:
     set {_and} to "&"
     
     # 環境変数から設定を読み込み
-    # Dockerを使用していない場合、プロセスに環境変数が渡されないことがあるため、
-    # .envファイルを直接読み込んで解析する処理を追加
+    # skript-reflect: JavaのSystem.getenv()を直接使用
     
-    set {_server_dir} to System.getProperty("user.dir")
-    set {_env_file} to new File("%{_server_dir}%/.env")
-    set {_from_file_host} to ""
-    set {_from_file_user} to ""
-    set {_from_file_pass} to ""
-    set {_from_file_db} to ""
-    
-    if {_env_file}.exists() is true:
-        send "&e[Database] Found .env file at %{_env_file}.getAbsolutePath()%. parsing..." to console
-        set {_path} to {_env_file}.toPath()
-        set {_charset} to StandardCharsets.UTF_8
-        set {_lines} to Files.readAllLines({_path}, {_charset})
-        
-        loop {_lines}:
-            set {_line} to loop-value
-            # コメント行や空行をスキップ
-            if {_line} matches "^\\s*#.*" or "^\\s*$":
-                continue
-                
-            if {_line} starts with "MYSQL_HOST=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_host} to {_parts::2}
-            else if {_line} starts with "MYSQL_USER=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_user} to {_parts::2}
-            else if {_line} starts with "MYSQL_PASSWORD=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_pass} to {_parts::2}
-            else if {_line} starts with "MYSQL_DATABASE=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_db} to {_parts::2}
-
-    # 1. ユーザー (優先順位: .envファイル > 環境変数 > デフォルト)
-    set {_user} to {_from_file_user}
-    if {_user} is "":
-        set {_user} to System.getenv("MYSQL_USER")
+    # 1. ユーザー (デフォルト: minecraft_user)
+    set {_user} to System.getenv("MYSQL_USER")
     if {_user} is not set:
         set {_user} to "minecraft_user"
         
