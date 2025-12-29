@@ -2,6 +2,9 @@
 # 必須アドオン: Skript-DB, skript-reflect
 import:
     java.lang.System
+    java.io.File
+    java.nio.file.Files
+    java.nio.charset.StandardCharsets
 
 on load:
     # 接続設定 (mysql://host:port/database?options)
@@ -10,26 +13,67 @@ on load:
     set {_and} to "&"
     
     # 環境変数から設定を読み込み
-    # skript-reflect: JavaのSystem.getenv()を直接使用
+    # Dockerを使用していない場合、プロセスに環境変数が渡されないことがあるため、
+    # .envファイルを直接読み込んで解析する処理を追加
     
-    # 1. ユーザー (デフォルト: minecraft_user)
-    set {_user} to System.getenv("MYSQL_USER")
+    set {_server_dir} to System.getProperty("user.dir")
+    set {_env_file} to new File("%{_server_dir}%/.env")
+    set {_from_file_host} to ""
+    set {_from_file_user} to ""
+    set {_from_file_pass} to ""
+    set {_from_file_db} to ""
+    
+    if {_env_file}.exists() is true:
+        send "&e[Database] Found .env file at %{_env_file}.getAbsolutePath()%. parsing..." to console
+        set {_path} to {_env_file}.toPath()
+        set {_charset} to StandardCharsets.UTF_8
+        set {_lines} to Files.readAllLines({_path}, {_charset})
+        
+        loop {_lines}:
+            set {_line} to loop-value
+            # コメント行や空行をスキップ
+            if {_line} matches "^\\s*#.*" or "^\\s*$":
+                continue
+                
+            if {_line} starts with "MYSQL_HOST=":
+                set {_parts::*} to {_line} split at "="
+                set {_from_file_host} to {_parts::2}
+            else if {_line} starts with "MYSQL_USER=":
+                set {_parts::*} to {_line} split at "="
+                set {_from_file_user} to {_parts::2}
+            else if {_line} starts with "MYSQL_PASSWORD=":
+                set {_parts::*} to {_line} split at "="
+                set {_from_file_pass} to {_parts::2}
+            else if {_line} starts with "MYSQL_DATABASE=":
+                set {_parts::*} to {_line} split at "="
+                set {_from_file_db} to {_parts::2}
+
+    # 1. ユーザー (優先順位: .envファイル > 環境変数 > デフォルト)
+    set {_user} to {_from_file_user}
+    if {_user} is "":
+        set {_user} to System.getenv("MYSQL_USER")
     if {_user} is not set:
         set {_user} to "minecraft_user"
         
-    # 2. パスワード (デフォルト: password)
-    set {_password} to System.getenv("MYSQL_PASSWORD")
+    # 2. パスワード
+    set {_password} to {_from_file_pass}
+    if {_password} is "":
+        set {_password} to System.getenv("MYSQL_PASSWORD")
     if {_password} is not set:
         set {_password} to "password" 
 
-    # 3. ホスト (デフォルト: db) - 本番環境では必ず設定が必要
-    set {_host} to System.getenv("MYSQL_HOST")
+    # 3. ホスト
+    set {_host} to {_from_file_host}
+    if {_host} is "":
+        set {_host} to System.getenv("MYSQL_HOST")
     if {_host} is not set:
         set {_host} to "db"
-        send "&e[Database] WARNING: MYSQL_HOST env var is not set. Defaulting to 'db'. If not using Docker, please set this." to console
+        send "&e[Database] WARNING: MYSQL_HOST env var is not set definition found in .env file. Defaulting to 'db'." to console
 
-    # 4. データベース名 (デフォルト: dev)
-    set {_dbname} to System.getenv("MYSQL_DATABASE")
+    # 4. データベース名
+    set {_dbname} to {_from_file_db}
+    if {_dbname} is "":
+        set {_dbname} to System.getenv("MYSQL_DATABASE")
     if {_dbname} is not set:
         set {_dbname} to "dev"
 
