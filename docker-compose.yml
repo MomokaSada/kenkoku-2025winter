@@ -10,7 +10,8 @@ services:
       EULA: "TRUE"
       TYPE: "CUSTOM"
       CUSTOM_SERVER: "server.jar"
-      MEMORY: "8G"
+      MEMORY: "5G"
+      USE_AIKAR_FLAGS: "true"
       OPS: "momoka_sada"
       MYSQL_HOST: db
       MYSQL_PORT: 3306
@@ -38,4 +39,3 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-minecraft_password}
     ports:
       - "3306:3306"
-

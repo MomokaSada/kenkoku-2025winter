@@ -1,5 +1,9 @@
 # ----- サイドバー管理 -----
 
+# OOM対策: サーバー起動時に全てのサイドバー非表示フラグをリセット
+on load:
+    delete {sidebar_hidden::*}
+
 # サイドバーを更新する関数
 function updateSidebar(p: player):
     # 管理者が非表示にしている場合は更新しない
@@ -59,8 +63,8 @@ command /adminsidebar:
             updateSidebar(player)
             send "&a[System] カスタムサイドバーを表示しました。"
 
-# 定期更新 (1秒ごと)
-every 1 second:
+# 定期更新 (10秒ごと) - OOM対策のため頻度を削減
+every 10 seconds:
     loop all players:
         updateSidebar(loop-player)
 
