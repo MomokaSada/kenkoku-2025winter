@@ -1,0 +1,9 @@
+command /debug-db-nbt:
+    permission: op
+    trigger:
+        send "&e[Debug] Start Check" to console
+        execute "SELECT name, nbt FROM items LIMIT 5" in {kenkoku_db} and store the result in {-debug_items::*}
+        loop {-debug_items::name::*}:
+            set {_n} to loop-value
+            set {_nbt} to {-debug_items::nbt::%loop-index%}
+            send "&eItem: %{_n}% | NBT: '%{_nbt}%'" to console

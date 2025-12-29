@@ -3,6 +3,7 @@
 minecraft_server/plugins/CoreProtect/config.yml
 minecraft_server/plugins/DiscordSRV/config.yml
 minecraft_server/plugins/LWC/core.yml
+minecraft_server/plugins/FastAsyncWorldEdit/config.yml
 
 # Keep common generated files ignored
 .DS_Store
@@ -20,11 +21,11 @@ mysql_data/
 # --- Minecraft Server (Whitelist Strategy) ---
 # 1. Ignore everything by default
 minecraft_server/*
+minecraft_server/ops.json
 
 # 2. Allow specific configuration files in the server root
 !minecraft_server/*.yml
-!minecraft_server/*.json
-!minecraft_server/*.properties
+!minecraft_server/*.examples
 !minecraft_server/*.txt
 
 # 3. Explicitly ignore generated/heavy data
@@ -82,6 +83,7 @@ minecraft_server/plugins/**/*.csv
 minecraft_server/plugins/**/contexts.json
 minecraft_server/plugins/**/_schemaVersion
 minecraft_server/plugins/**/upgrades-done.yml
+minecraft_server/plugins/ImageFrame/language_hashas.json
 
 # 6. Ignore specific plugin directories and files
 minecraft_server/plugins/.paper-remapped/
@@ -118,3 +120,10 @@ minecraft_server/plugins/floodgate/key.pem
 
 # 8. Ignore History/Backup data
 minecraft_server/plugins/FastAsyncWorldEdit/history/
+
+!minecraft_server/.env.example
+minecraft_server/server.properties
+minecraft_server/ops.json
+minecraft_server/server.properties.example
+minecraft_server/banned-players.json
+minecraft_server/banned-ips.json
