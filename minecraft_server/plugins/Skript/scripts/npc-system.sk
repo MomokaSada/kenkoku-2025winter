@@ -1,16 +1,7 @@
 # NPC管理システム
 
-# 定期的にNPCリストを更新する（補完用）
-every 5 minutes:
-    execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
-    clear {-npc_list_cache::*}
-    if {-npc_names_result::*} is set:
-        set {_row} to first element of {-npc_names_result::*}
-        set {_str} to "%{_row}%"
-        replace "names: " with "" in {_str}
-        set {_list::*} to split {_str} at "|"
-        loop {_list::*}:
-            add loop-value to {-npc_list_cache::*}
+# OOM対策: 定期ポーリングを削除し、on loadのみでNPCリストをキャッシュ
+# 必要な場合は /npc-refresh コマンドで手動更新
 
 on load:
     execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
@@ -22,6 +13,24 @@ on load:
         set {_list::*} to split {_str} at "|"
         loop {_list::*}:
             add loop-value to {-npc_list_cache::*}
+    # OOM対策: DB結果変数を即座にクリア
+    delete {-npc_names_result::*}
+
+# NPC手動更新コマンド（OOM対策のため定期ポーリングを廃止）
+command /npc-refresh:
+    permission: op
+    trigger:
+        execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
+        clear {-npc_list_cache::*}
+        if {-npc_names_result::*} is set:
+            set {_row} to first element of {-npc_names_result::*}
+            set {_str} to "%{_row}%"
+            replace "names: " with "" in {_str}
+            set {_list::*} to split {_str} at "|"
+            loop {_list::*}:
+                add loop-value to {-npc_list_cache::*}
+        delete {-npc_names_result::*}
+        send "&a[System] NPCリストを更新しました。"
 
 # NPCを召喚するコマンド
 # NPC召喚関数 (再利用可能)

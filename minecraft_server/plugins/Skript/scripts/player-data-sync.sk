@@ -17,6 +17,8 @@ on join:
     if {-result::money::1} is set:
         # DBにデータがある場合 -> ロード
         set metadata "money" of player to {-result::money::1}
+        # OOM対策: DB結果変数を即座にクリア
+        delete {-result::*}
         # 名前が変わっている可能性があるため更新しておく
         execute "UPDATE player_information SET player_name = '%{_name}%', updated_at = NOW() WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
         set {_err} to last sql error
@@ -26,6 +28,8 @@ on join:
         set {_m} to metadata "money" of player
         send "&a[System] 所持金をロードしました: %{_m}%G" to console
     else:
+        # OOM対策: DB結果変数を即座にクリア
+        delete {-result::*}
         # DBにデータがない場合 -> 新規作成 (0円)
         set metadata "money" of player to 0
         execute "INSERT INTO player_information (player_uuid, player_name, money, created_at, updated_at) VALUES ('%{_uuid}%', '%{_name}%', 0, NOW(), NOW())" in {kenkoku_db}
