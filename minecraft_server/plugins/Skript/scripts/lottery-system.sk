@@ -137,6 +137,10 @@ on rightclick:
         
     set {_lid} to {_l_row::id::1}
     
+    # レアリティ取得 (ループ外)
+    delete {_rarities::*}
+    execute "SELECT id, name, probability FROM rarities WHERE lottery_id = %{_lid}% ORDER BY probability ASC" in {kenkoku_db} and store the result in {_rarities::*}
+
     # レアリティの合計確率を事前に計算
     set {_total_prob} to 0
     loop {_rarities::probability::*}:
