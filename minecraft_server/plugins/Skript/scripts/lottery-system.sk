@@ -109,9 +109,14 @@ on rightclick:
         
     set {_lid} to {_l_row::id::1}
     
-    # レアリティ取得 (ループ外)
-    delete {_rarities::*}
-    execute "SELECT id, name, probability FROM rarities WHERE lottery_id = %{_lid}% ORDER BY probability ASC" in {kenkoku_db} and store the result in {_rarities::*}
+    # レアリティの合計確率を事前に計算
+    set {_total_prob} to 0
+    loop {_rarities::probability::*}:
+        add loop-value to {_total_prob}
+    
+    if {_total_prob} <= 0:
+        send "&c[Error] ガチャ '%{_lotteryName}%' の確率設定が不正です (合計: %{_total_prob}%)。" to player
+        stop
 
     # チケット消費
     remove 1 of {_item} from player
@@ -122,8 +127,8 @@ on rightclick:
     # -----------------------------------------------------------
     loop {_count} times:
         
-        # 確率抽選 (0-1000)
-        set {_roll} to random integer between 0 and 1000
+        # 確率抽選 (1-合計確率)
+        set {_roll} to random integer between 1 and {_total_prob}
         
         set {_selected_rid} to -1
         set {_selected_rname} to ""
@@ -143,9 +148,7 @@ on rightclick:
                 
         if {_found} is false:
             send "&c[Error] ガチャの抽選に失敗しました (Roll: %{_roll}%, Max: %{_cumulative}%)。設定を確認してください。" to player
-            # 失敗時はチケット返却 (1枚) - ただしループ中に失敗すると面倒なのでログだけ出して継続か、中断か
-            # ここでは中断して1枚返す
-            # 本当は消費した分だけ処理などを考えるべきだが、簡易的に1枚返す
+            # 失敗時はチケット返却 (1枚)
             give 1 of {_item} to player
             stop
 
