@@ -32,6 +32,14 @@ command /insert-original-item <text> <text> <text>:
         if {_nbt} starts with """":
             set {_len} to length of {_nbt}
             set {_nbt} to subtext of {_nbt} from 2 to {_len} - 1
+
+        # Spawn Eggの特別処理: entity_dataがなければ付与
+        if {_base_key} contains "spawn_egg":
+            if {_nbt} does not contain "entity_data":
+                if {_nbt} ends with "}":
+                    set {_len} to length of {_nbt}
+                    set {_nbt_pre} to subtext of {_nbt} from 1 to {_len} - 1
+                    set {_nbt} to "%{_nbt_pre}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01,Invulnerable:1b}}"
         
         send "&e[System] オリジナルアイテムの登録を開始します: %{_unique_name}% (Base: %{_base_key}%)"
         
@@ -324,7 +332,7 @@ command /get-original-item <text> [<integer>]:
         set {_nbt} to "%{_nbt}%custom_data:{%{_cd}%},"
         
         set {_nbt} to "%{_nbt}%max_stack_size:1"
-        if {_accType} is "healthBoost":
+        if {_is_accessory} is true:
             set {_nbt} to "%{_nbt}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
         set {_nbt} to "%{_nbt}%}"
         
@@ -341,7 +349,7 @@ command /get-original-item <text> [<integer>]:
         set {_give_nbt} to "enchantment_glint_override=true,rarity=%{_rarity}%,custom_name={""extra"":[{""bold"":true,""text"":""%{_display_name}%""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""%{_lore_text}%""}],""text"":""""}],custom_data={%{_cd}%},max_stack_size=1"
         if {_is_consumable} is true:
             set {_give_nbt} to "%{_give_nbt}%,consumable={consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""}"
-        if {_accType} is "healthBoost":
+        if {_is_accessory} is true:
             set {_give_nbt} to "%{_give_nbt}%,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
             
         set {_give_cmd} to "/minecraft:give %player% %{_nbt_base}%[%{_give_nbt}%]"
@@ -477,9 +485,22 @@ on dispense:
 
 # 消費防止: 右クリック (スポーンエッグの使用など) / 取引券の破棄機能
 on rightclick:
+    # 手に持っているアイテムを特定 (Main Hand優先, Offhand Fallback)
     set {_item} to player's tool
     set {_nbt} to custom nbt of {_item}
     set {_type} to string tag "itemType" of {_nbt}
+    
+    # メインハンドがオリジナルアイテムでない場合、オフハンドをチェック
+    if {_type} is not set:
+        set {_off} to player's offhand tool
+        set {_nbt_off} to custom nbt of {_off}
+        set {_type_off} to string tag "itemType" of {_nbt_off}
+        
+        # オフハンドがオリジナルアイテムなら、それを対象にする
+        if {_type_off} is set:
+            set {_item} to {_off}
+            set {_nbt} to {_nbt_off}
+            set {_type} to {_type_off}
     
     if {_type} is "tradeTicket":
         # NPCを右クリックした時は配布処理等を優先するため中断
@@ -532,6 +553,12 @@ on rightclick:
         show 10 cloud at location of player
         
     else if {_type} is "sidebarToggle":
+        # 岩盤・黒曜石への設置防止 (End Crystalの仕様対策)
+        if clicked block is bedrock or obsidian:
+            cancel event
+            # send "&c[System] 岩盤や黒曜石には使用できません。" to player
+            stop
+        
         # consumable設定により on consume で処理
         stop
         
