@@ -1,0 +1,11 @@
+language: en
+config_Playlists: playlists.yml
+config_WorldRadio: globalRadio.yml
+config_ServerRadio: globalRadio.yml
+config_PositionRadio: positionRadio.yml
+config_Holograms: holograms.yml
+
+defaultPlayerVolume: 100
+savePlayerVolumes: false
+use10OctaveRange: false
+

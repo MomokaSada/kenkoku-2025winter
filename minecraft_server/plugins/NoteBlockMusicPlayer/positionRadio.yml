@@ -1,0 +1,17 @@
+positionradios:
+  test_radio:
+    enable: false
+    world: world
+    x: 0
+    y: 100
+    z: 0
+    radius: 16 # in this radius will player be able to hear music
+    hologram: example_hologram
+    hologramOP: example_OP_hologram
+    repeat: true # repeat playlist?
+    random: false # choose random next song from playlist?
+    actionbar: true
+    delay: 0 # delay between songs in seconds (float)
+    playlist: test_playlist
+    volume: 100
+
