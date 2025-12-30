@@ -19,9 +19,9 @@ command /test-ticket-gen:
         
         # Test 2: EntityTag
         # Trying without quotes around keys just in case, though standard SNBT uses them often.
-        set {_nbt2} to "{EntityTag:{id:""minecraft:area_effect_cloud"",Duration:1,invulnerable:1b}}"
+        set {_nbt2} to "{entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Invulnerable:1b}}"
         add nbt compound from {_nbt2} to nbt of {_item}
-        broadcast "&e[Debug] Stage 2 (EntityTag) OK"
+        broadcast "&e[Debug] Stage 2 (entity_data) OK"
         
         # Test 3: Glint
         set {_nbt3} to "{enchantment_glint_override:1b}"
@@ -38,7 +38,7 @@ command /test-recipe-gen:
     permission: op
     trigger:
         set {_buy_item} to wandering trader spawn egg
-        set {_nbt_str} to "{enchantment_glint_override:1b,EntityTag:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},custom_data:{itemType:""tradeTicket""}}"
+        set {_nbt_str} to "{enchantment_glint_override:1b,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},custom_data:{itemType:""tradeTicket""}}"
         add nbt compound from {_nbt_str} to nbt of {_buy_item}
         set {_buy_snbt} to full nbt of {_buy_item}
         

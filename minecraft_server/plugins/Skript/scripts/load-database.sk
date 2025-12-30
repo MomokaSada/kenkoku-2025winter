@@ -12,43 +12,74 @@ on load:
     # アンパサンドを変数に入れてから結合することでSkriptのカラーコード解析を回避
     set {_and} to "&"
     
-    # 環境変数から設定を読み込み
-    # Dockerを使用していない場合、プロセスに環境変数が渡されないことがあるため、
-    # .envファイルを直接読み込んで解析する処理を追加
-    
-    set {_server_dir} to System.getProperty("user.dir")
-    set {_env_file} to new File("%{_server_dir}%/.env")
+    # 変数初期化
     set {_from_file_host} to ""
     set {_from_file_user} to ""
     set {_from_file_pass} to ""
     set {_from_file_db} to ""
+
+    # .envファイルの読み込みと解析
+    set {_server_dir} to System.getProperty("user.dir")
+    set {_env_file} to new File("%{_server_dir}%/.env")
     
     if {_env_file}.exists() is true:
-        send "&e[Database] Found .env file at %{_env_file}.getAbsolutePath()%. parsing..." to console
+        send "&e[Database] Found .env file at %{_env_file}.getAbsolutePath()%. Parsing..." to console
         set {_path} to {_env_file}.toPath()
         set {_charset} to StandardCharsets.UTF_8
-        set {_lines} to Files.readAllLines({_path}, {_charset})
         
-        loop {_lines}:
+        # Read as single string
+        set {_content} to Files.readString({_path}, {_charset})
+        
+        # Use Java's split method for reliable newline handling
+        set {_lines_array} to {_content}.split("\r?\n")
+        set {_lines::*} to ...{_lines_array}
+        
+        send "&e[Database] Read %size of {_lines::*}% lines from .env" to console
+        
+        send "&e[Database] Read %size of {_lines::*}% lines from .env" to console
+        
+        loop {_lines::*}:
             set {_line} to loop-value
-            # コメント行や空行をスキップ
-            if {_line} matches "^\\s*#.*" or "^\\s*$":
+            replace all "\r" with "" in {_line} # Remove Carriage Return
+            
+            # Debug log (optional)
+            if {_line} contains "MYSQL_":
+                send "&7[Database Debug] Found config line: %{_line}%" to console
+
+            # Skip comments
+            if {_line} starts with "#":
                 continue
                 
-            if {_line} starts with "MYSQL_HOST=":
+            # Parse lines
+            if {_line} contains "MYSQL_HOST":
                 set {_parts::*} to {_line} split at "="
-                set {_from_file_host} to {_parts::2}
-            else if {_line} starts with "MYSQL_USER=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_user} to {_parts::2}
-            else if {_line} starts with "MYSQL_PASSWORD=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_pass} to {_parts::2}
-            else if {_line} starts with "MYSQL_DATABASE=":
-                set {_parts::*} to {_line} split at "="
-                set {_from_file_db} to {_parts::2}
+                if {_parts::1} contains "MYSQL_HOST":
+                    set {_from_file_host} to {_parts::2}
+                    replace all " " with "" in {_from_file_host}
+                    send "&a[Database] Loaded MYSQL_HOST from .env: %{_from_file_host}%" to console
 
-    # 1. ユーザー (優先順位: .envファイル > 環境変数 > デフォルト)
+            else if {_line} contains "MYSQL_USER":
+                set {_parts::*} to {_line} split at "="
+                if {_parts::1} contains "MYSQL_USER":
+                    set {_from_file_user} to {_parts::2}
+                    replace all " " with "" in {_from_file_user}
+
+            else if {_line} contains "MYSQL_PASSWORD":
+                set {_parts::*} to {_line} split at "="
+                if {_parts::1} contains "MYSQL_PASSWORD":
+                    set {_from_file_pass} to {_parts::2}
+                    replace all " " with "" in {_from_file_pass}
+
+            else if {_line} contains "MYSQL_DATABASE":
+                set {_parts::*} to {_line} split at "="
+                if {_parts::1} contains "MYSQL_DATABASE":
+                    set {_from_file_db} to {_parts::2}
+                    replace all " " with "" in {_from_file_db}
+
+    # 環境変数から設定を読み込み、.envファイルの設定を優先
+    # skript-reflect: JavaのSystem.getenv()を直接使用
+    
+    # 1. ユーザー (デフォルト: minecraft_user)
     set {_user} to {_from_file_user}
     if {_user} is "":
         set {_user} to System.getenv("MYSQL_USER")
