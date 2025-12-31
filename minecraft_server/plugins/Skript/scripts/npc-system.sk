@@ -364,18 +364,18 @@ function openTradeMenu(p: player, npc: entity, page: number):
     loop {_total_trades} times:
         if loop-number >= {_start_idx}:
             if loop-number <= {_end_idx}:
-                set {_tid} to {_trades::id::%loop-number%}
-                set {_content} to {_trades::content::%loop-number%}
-                set {_view_item_key} to {_trades::view_item_key::%loop-number%}
-                set {_npc_type} to {_trades::npc_type::%loop-number%}
+                set {_current_tid} to {_trades::id::%loop-number%}
+                set {_current_content} to {_trades::content::%loop-number%}
+                set {_current_view_key} to {_trades::view_item_key::%loop-number%}
+                set {_current_npc_type} to {_trades::npc_type::%loop-number%}
                 
                 # view_item_idからアイテムを作成（minecraft:プレフィックスを除去）
-                if {_view_item_key} is set:
+                if {_current_view_key} is set:
                     # minecraft:を削除
-                    if {_view_item_key} contains "minecraft:":
-                        replace "minecraft:" with "" in {_view_item_key}
+                    if {_current_view_key} contains "minecraft:":
+                        replace "minecraft:" with "" in {_current_view_key}
                     
-                    set {_trade_item} to {_view_item_key} parsed as item type
+                    set {_trade_item} to {_current_view_key} parsed as item type
                 
                 # パース失敗時はフォールバック
                 if {_trade_item} is not set:
@@ -385,32 +385,32 @@ function openTradeMenu(p: player, npc: entity, page: number):
                 set {_is_completed} to false
                 
                 # デバッグ: npc_typeの値を確認
-                broadcast "&7[Debug] Trade ID: %{_tid}%, NPC Type: '%{_npc_type}%', Content: %{_content}%"
+                broadcast "&7[Debug] Trade ID: %{_current_tid}%, NPC Type: '%{_current_npc_type}%', Content: %{_current_content}%"
                 
-                if {_npc_type} is "quest":
-                    if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_tid}%":
+                if {_current_npc_type} is "quest":
+                    if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_current_tid}%":
                         set {_is_completed} to true
                 
                 # アイテム名とLoreを設定
                 if {_is_completed} is true:
-                    set name of {_trade_item} to "&7&l[完了] %{_content}%"
+                    set name of {_trade_item} to "&7&l[完了] %{_current_content}%"
                     set lore of {_trade_item} to "&8このクエストは完了済みです"
                 else:
-                    if {_npc_type} is "quest":
-                        set name of {_trade_item} to "&e&l[クエスト] %{_content}%"
+                    if {_current_npc_type} is "quest":
+                        set name of {_trade_item} to "&e&l[クエスト] %{_current_content}%"
                         set lore of {_trade_item} to "&7クリックで詳細を表示"
-                    else if {_npc_type} is "pawnshop":
-                        set name of {_trade_item} to "&6&l[買取] %{_content}%"
+                    else if {_current_npc_type} is "pawnshop":
+                        set name of {_trade_item} to "&6&l[買取] %{_current_content}%"
                         set lore of {_trade_item} to "&7クリックで売却"
-                    else if {_npc_type} is "shop":
-                        set name of {_trade_item} to "&b&l[ショップ] %{_content}%"
+                    else if {_current_npc_type} is "shop":
+                        set name of {_trade_item} to "&b&l[ショップ] %{_current_content}%"
                         set lore of {_trade_item} to "&7クリックで購入"
                     else:
-                        set name of {_trade_item} to "&e&l%{_content}%"
-                        set lore of {_trade_item} to "&7クリックで詳細を表示 (Type: %{_npc_type}%)"
+                        set name of {_trade_item} to "&e&l%{_current_content}%"
+                        set lore of {_trade_item} to "&7クリックで詳細を表示 (Type: %{_current_npc_type}%)"
                 
                 # カスタムNBTでトレードID埋め込み
-                set {_nbt} to "{custom_data:{tradeId:%{_tid}%,npcId:%{_npc_id}%}}"
+                set {_nbt} to "{custom_data:{tradeId:%{_current_tid}%,npcId:%{_npc_id}%}}"
                 add nbt compound from {_nbt} to nbt of {_trade_item}
                 
                 set slot {_slot} of {_p}'s current inventory to {_trade_item}
