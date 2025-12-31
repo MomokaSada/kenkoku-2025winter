@@ -312,7 +312,9 @@ on player trade:
         set {_player} to player
         
         # 取引結果アイテムからトレードIDを取得
-        set {_result_item} to result item
+        # on player tradeではスロットから直接取得
+        wait 1 tick
+        set {_result_item} to slot 2 of current inventory of {_player}
         set {_nbt_str} to "%nbt of {_result_item}%"
         
         # トレードID取得
