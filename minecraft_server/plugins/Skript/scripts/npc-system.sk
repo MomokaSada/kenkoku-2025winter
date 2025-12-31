@@ -513,24 +513,36 @@ on inventory click:
                 set {_val} to {_parts::2}
                 set {_sub::*} to split {_val} at ","
                 set {_tid_str} to {_sub::1}
+                
+                # 不要な文字を除去（}やスペース）
+                replace "}" with "" in {_tid_str}
+                replace " " with "" in {_tid_str}
+                
                 set {_tid} to {_tid_str} parsed as number
                 
                 # デバッグ: NBT解析確認
                 broadcast "&d[NBT Debug] Raw: %{_nbt_str}%"
-                broadcast "&d[NBT Debug] Parsed TID String: '%{_tid_str}%', Number: %{_tid}%"
+                broadcast "&d[NBT Debug] Cleaned TID String: '%{_tid_str}%', Number: %{_tid}%"
                 
                 # NPC IDも取得（GUI再表示用）
                 set {_parts2::*} to split {_nbt_str} at "npcId:"
                 set {_val2} to {_parts2::2}
-                set {_sub2::*} to split {_val2} at "}"
-                set {_npc_id} to {_sub2::1} parsed as number
+                set {_sub2::*} to split {_val2} at ","
+                set {_nid_str} to {_sub2::1}
+                
+                # 不要な文字を除去
+                replace "}" with "" in {_nid_str}
+                replace " " with "" in {_nid_str}
+                
+                set {_npc_id} to {_nid_str} parsed as number
                 
                 # NPCエンティティを取得
-                loop all entities in radius 10 of player:
-                    loop scoreboard tags of loop-entity:
-                        if loop-value-2 is "npc_id_%{_npc_id}%":
-                            set {_npc_entity} to loop-entity
-                            stop
+                if {_npc_id} is set:
+                    loop all entities in radius 10 of player:
+                        loop scoreboard tags of loop-entity:
+                            if loop-value-2 is "npc_id_%{_npc_id}%":
+                                set {_npc_entity} to loop-entity
+                                stop
                 
                 # 取引実行してGUI再表示
                 if {_tid} is set:
