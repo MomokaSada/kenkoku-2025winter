@@ -73,7 +73,7 @@ function spawnNpc(name: text, loc: location, p: player):
     set display name of {_npc} to {_name}
     
     # NBT設定 (基本)
-    set {_base_nbt} to "{VillagerData:{profession:""minecraft:%{_profession}%"",type:""minecraft:%{_biome}%"",level:%{_level}%},NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b,Silent:1b,Offers:{Recipes:[]}}"
+    set {_base_nbt} to "{VillagerData:{profession:""minecraft:%{_profession}%"",type:""minecraft:%{_biome}%"",level:%{_level}%},NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b,Silent:1b}"
     add nbt compound from {_base_nbt} to nbt of {_npc}
     
     # タグ設定
