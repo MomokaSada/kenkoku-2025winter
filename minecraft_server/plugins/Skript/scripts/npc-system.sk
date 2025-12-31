@@ -332,6 +332,15 @@ function openTradeMenu(p: player, npc: entity, page: number):
     delete {_trades::*}
     execute "SELECT t.id, t.content, vi.key as view_item_key, nt.name as npc_type FROM trades t LEFT JOIN items vi ON t.view_item_id = vi.id JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
     
+    # デバッグ: SQL結果を確認
+    broadcast "&c[SQL Debug] Total trades: %size of {_trades::id::*}%"
+    loop {_trades::id::*}:
+        set {_debug_tid} to loop-value
+        set {_debug_content} to {_trades::content::%loop-index%}
+        set {_debug_view} to {_trades::view_item_key::%loop-index%}
+        set {_debug_type} to {_trades::npc_type::%loop-index%}
+        broadcast "&c[SQL Debug %loop-index%] ID:%{_debug_tid}%, Type:'%{_debug_type}%', View:%{_debug_view}%, Content:%{_debug_content}%"
+    
     if {_trades::id::*} is not set:
         send "&c[Error] このNPCには取引がありません。" to {_p}
         stop
@@ -537,9 +546,8 @@ function executeTradeAndRefresh(p: player, tid: number, npc: entity):
 
 # 取引実行関数
 function executeTrade(p: player, tid: number):
-    # パラメータをローカル変数に代入
-    set {_p} to {_p}
-    set {_tid} to {_tid}
+    # デバッグ: パラメータ確認
+    broadcast "&b[Param Debug] Received tid: %{_tid}%"
     
     # Trade IDからNPCタイプを取得
     execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
