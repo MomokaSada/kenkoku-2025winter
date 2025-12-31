@@ -383,6 +383,10 @@ function openTradeMenu(p: player, npc: entity, page: number):
                 
                 # クエスト完了済みかチェック
                 set {_is_completed} to false
+                
+                # デバッグ: npc_typeの値を確認
+                broadcast "&7[Debug] Trade ID: %{_tid}%, NPC Type: '%{_npc_type}%', Content: %{_content}%"
+                
                 if {_npc_type} is "quest":
                     if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_tid}%":
                         set {_is_completed} to true
@@ -395,9 +399,15 @@ function openTradeMenu(p: player, npc: entity, page: number):
                     if {_npc_type} is "quest":
                         set name of {_trade_item} to "&e&l[クエスト] %{_content}%"
                         set lore of {_trade_item} to "&7クリックで詳細を表示"
+                    else if {_npc_type} is "pawnshop":
+                        set name of {_trade_item} to "&6&l[買取] %{_content}%"
+                        set lore of {_trade_item} to "&7クリックで売却"
+                    else if {_npc_type} is "shop":
+                        set name of {_trade_item} to "&b&l[ショップ] %{_content}%"
+                        set lore of {_trade_item} to "&7クリックで購入"
                     else:
                         set name of {_trade_item} to "&e&l%{_content}%"
-                        set lore of {_trade_item} to "&7クリックで詳細を表示"
+                        set lore of {_trade_item} to "&7クリックで詳細を表示 (Type: %{_npc_type}%)"
                 
                 # カスタムNBTでトレードID埋め込み
                 set {_nbt} to "{custom_data:{tradeId:%{_tid}%,npcId:%{_npc_id}%}}"
@@ -534,6 +544,9 @@ function executeTrade(p: player, tid: number):
     # Trade IDからNPCタイプを取得
     execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
     set {_npc_type} to {-trade_info::npc_type::1}
+    
+    # デバッグ: 取引実行時のnpc_type確認
+    broadcast "&7[Debug Execute] Trade ID: %{_tid}%, NPC Type: '%{_npc_type}%'"
     
     # クエストの重複受領チェック
     if {_npc_type} is "quest":
