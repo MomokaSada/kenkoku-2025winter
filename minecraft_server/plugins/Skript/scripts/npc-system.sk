@@ -716,12 +716,20 @@ function executeTrade(p: player, tid: number, amount: number = 1):
     
     # リワード付与
     loop {_trade_rewards::item_key::*}:
+        set {_r_key} to loop-value
+        set {_r_qty} to {_trade_rewards::quantity::%loop-index%} * {_amount}
+        set {_r_nbt} to {_trade_rewards::nbt::%loop-index%}
+        set {_r_is_orig} to {_trade_rewards::is_original::%loop-index%}
+
+        if {_r_is_orig} is true:
             if {_r_nbt} is not "{}":
                 execute console command "minecraft:give %{_p}% %{_r_key}%%{_r_nbt}% %{_r_qty}%"
             else:
                 execute console command "minecraft:give %{_p}% %{_r_key}% %{_r_qty}%"
         else:
-            execute console command "minecraft:give %{_p}% %{_r_key}% %{_r_qty}%"
+            # 通常アイテム付与
+            set {_item} to {_r_key} parsed as item type
+            give {_r_qty} of {_item} to {_p}
 
         if {_r_is_orig} is true:
             send "&a+ %{_r_key}%(Custom) x%{_r_qty}%" to {_p}
