@@ -370,9 +370,12 @@ function openTradeMenu(p: player, npc: entity, page: number):
                 set {_npc_type} to {_trades::npc_type::%loop-number%}
                 
                 # view_item_idからアイテムを作成
-                set {_trade_item} to {_view_item_key} parsed as item
+                if {_view_item_key} is set:
+                    set {_trade_item} to {_view_item_key} parsed as item type
+                
+                # パース失敗時はフォールバック
                 if {_trade_item} is not set:
-                    set {_trade_item} to paper  # フォールバック
+                    set {_trade_item} to paper
                 
                 # クエスト完了済みかチェック
                 set {_is_completed} to false
@@ -506,15 +509,24 @@ on inventory click:
 
 # 取引実行してGUI再表示する関数
 function executeTradeAndRefresh(p: player, tid: number, npc: entity):
-    executeTrade({_p}, {_tid})
+    # パラメータをローカル変数に明示的に代入
+    set {_player} to {_p}
+    set {_trade_id} to {_tid}
+    set {_npc_entity} to {_npc}
+    
+    executeTrade({_player}, {_trade_id})
     
     # 取引成功後、GUIを再表示
     wait 1 tick
-    if {_npc} is set:
-        openTradeMenu({_p}, {_npc}, 1)
+    if {_npc_entity} is set:
+        openTradeMenu({_player}, {_npc_entity}, 1)
 
 # 取引実行関数
 function executeTrade(p: player, tid: number):
+    # パラメータをローカル変数に代入
+    set {_p} to {_p}
+    set {_tid} to {_tid}
+    
     # Trade IDからNPCタイプを取得
     execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
     set {_npc_type} to {-trade_info::npc_type::1}
