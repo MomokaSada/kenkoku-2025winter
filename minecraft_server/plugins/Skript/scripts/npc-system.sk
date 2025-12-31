@@ -562,6 +562,10 @@ on inventory click:
                 
                 set {_tid} to {_tid_str} parsed as number
                 
+                # Debug: Check if TID is parsed
+                # broadcast "&d[Debug] Clicked Trade. Raw NBT: %{_nbt_str}%"
+                # broadcast "&d[Debug] Parsed TID: %{_tid}%"
+                
                 # NPC IDも取得（GUI再表示用）
                 set {_parts2::*} to split {_nbt_str} at "npcId:"
                 set {_val2} to {_parts2::2}
@@ -571,6 +575,7 @@ on inventory click:
                 # 不要な文字を除去
                 replace "}" with "" in {_nid_str}
                 replace " " with "" in {_nid_str}
+                replace "]" with "" in {_nid_str}
                 
                 set {_npc_id} to {_nid_str} parsed as number
                 
@@ -580,22 +585,26 @@ on inventory click:
                         loop scoreboard tags of loop-entity:
                             if loop-value-2 is "npc_id_%{_npc_id}%":
                                 set {_npc_entity} to loop-entity
-                                stop
+                                stop loop
                 
                 # 取引実行してGUI再表示
                 if {_tid} is set:
+                    # broadcast "&d[Debug] Calling executeTradeAndRefresh with TID: %{_tid}%, Amount: %{-trade_amount::%player%}%"
                     executeTradeAndRefresh(player, {_tid}, {_npc_entity}, {-trade_amount::%player%})
                 else:
                     send "&c[Error] 取引IDの取得に失敗しました。" to player
 
 # 取引実行してGUI再表示する関数
 function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: number = 1):
+    # broadcast "&d[Debug] Inside executeTradeAndRefresh. TID: %{_tid}%, Amount: %{_amount}%"
+    
     # パラメータをローカル変数に明示的に代入
     set {_player} to {_p}
     set {_trade_id} to {_tid}
     set {_npc_entity} to {_npc}
+    set {_amt} to {_amount}
     
-    executeTrade({_player}, {_trade_id}, {_amount})
+    executeTrade({_player}, {_trade_id}, {_amt})
     
     # 取引成功後、GUIを再表示
     wait 1 tick
@@ -604,6 +613,8 @@ function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: num
 
 # 取引実行関数
 function executeTrade(p: player, tid: number, amount: number = 1):
+    # broadcast "&d[Debug] Inside executeTrade. TID: %{_tid}%, Amount: %{_amount}%"
+    
     # パラメータをローカル変数にセット
     set {_p} to {_p}
     set {_tid} to {_tid}
