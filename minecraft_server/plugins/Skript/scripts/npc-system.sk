@@ -222,13 +222,13 @@ function giveNpcSpawner(p: player, name: text):
     # 名前などはJson Component Syntaxが必要
     
     # 表示名 (Yellow & No Italic)
-    set {_display_json} to "{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""yellow"",""text"":""%{_item_name}%""}],""text"":""""}"
+    set {_display_json} to "[{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""yellow"",""text"":""%{_item_name}%""}],""text"":""""}]"
     
     # Lore (Gray)
     set {_lore_json} to "[{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""gray"",""text"":""右クリックでNPCを召喚します""}],""text"":""""}]"
     
     # Command String Construction
-    set {_give_nbt} to "enchantment_glint_override=1b,rarity=rare,custom_name='%{_display_json}%',lore=%{_lore_json}%,custom_data={itemType:npcSpawner,npcName:""%{_name}%""},entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
+    set {_give_nbt} to "enchantment_glint_override=1b,rarity=rare,custom_name=%{_display_json}%,lore=%{_lore_json}%,custom_data={itemType:npcSpawner,npcName:""%{_name}%""},entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
     
     set {_command} to "/minecraft:give @p villager_spawn_egg[%{_give_nbt}%] 1"
     
