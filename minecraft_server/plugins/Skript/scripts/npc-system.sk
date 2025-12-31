@@ -431,6 +431,18 @@ function openTradeMenu(p: player, npc: entity, page: number):
         add nbt compound from {_nbt_next} to nbt of {_next_btn}
         set slot 53 of {_p}'s current inventory to {_next_btn}
     
+    # 一括取引量の初期化
+    if {-trade_amount::%p%} is not set:
+        set {-trade_amount::%p%} to 1
+    
+    # 一括取引切り替えボタン
+    set {_bulk_btn} to gold nugget
+    set name of {_bulk_btn} to "&e&l一括取引: &f&lx%{-trade_amount::%p%}%"
+    set lore of {_bulk_btn} to "&7クリックで取引量を変更" and "&7(1 -> 16 -> 32 -> 48 -> 64)"
+    set {_nbt_bulk} to "{custom_data:{action:""toggle_amount"",npcId:%{_npc_id}%,page:%{_page}%}}"
+    add nbt compound from {_nbt_bulk} to nbt of {_bulk_btn}
+    set slot 52 of {_p}'s current inventory to {_bulk_btn}
+    
     # 閉じるボタン
     set {_close_btn} to barrier
     set name of {_close_btn} to "&c&l閉じる"
@@ -498,6 +510,43 @@ on inventory click:
                             openTradeMenu(player, loop-entity, {_page} + 1)
                             stop
                             
+            else if {_nbt_str} contains "toggle_amount":
+                # 取引量切り替え
+                if {-trade_amount::%player%} is 1:
+                    set {-trade_amount::%player%} to 16
+                else if {-trade_amount::%player%} is 16:
+                    set {-trade_amount::%player%} to 32
+                else if {-trade_amount::%player%} is 32:
+                    set {-trade_amount::%player%} to 48
+                else if {-trade_amount::%player%} is 48:
+                    set {-trade_amount::%player%} to 64
+                else:
+                    set {-trade_amount::%player%} to 1
+                
+                # サウンド再生
+                play sound "ui.button.click" with volume 0.5 to player
+                
+                # リロード用情報の取得
+                set {_parts::*} to split {_nbt_str} at "npcId:"
+                set {_val} to {_parts::2}
+                set {_sub::*} to split {_val} at ","
+                set {_npc_id} to {_sub::1} parsed as number
+                
+                set {_parts2::*} to split {_nbt_str} at "page:"
+                set {_val2} to {_parts2::2}
+                set {_sub2::*} to split {_val2} at "}"
+                set {_page} to {_sub2::1} parsed as number
+                
+                close player's inventory
+                wait 1 tick
+                
+                # GUI再表示
+                loop all entities in radius 10 of player:
+                    loop scoreboard tags of loop-entity:
+                        if loop-value-2 is "npc_id_%{_npc_id}%":
+                            openTradeMenu(player, loop-entity, {_page})
+                            stop
+            
             else if {_nbt_str} contains "tradeId:":
                 # 取引実行（GUIは開いたまま）
                 set {_parts::*} to split {_nbt_str} at "tradeId:"
@@ -535,18 +584,18 @@ on inventory click:
                 
                 # 取引実行してGUI再表示
                 if {_tid} is set:
-                    executeTradeAndRefresh(player, {_tid}, {_npc_entity})
+                    executeTradeAndRefresh(player, {_tid}, {_npc_entity}, {-trade_amount::%player%})
                 else:
                     send "&c[Error] 取引IDの取得に失敗しました。" to player
 
 # 取引実行してGUI再表示する関数
-function executeTradeAndRefresh(p: player, tid: number, npc: entity):
+function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: number = 1):
     # パラメータをローカル変数に明示的に代入
     set {_player} to {_p}
     set {_trade_id} to {_tid}
     set {_npc_entity} to {_npc}
     
-    executeTrade({_player}, {_trade_id})
+    executeTrade({_player}, {_trade_id}, {_amount})
     
     # 取引成功後、GUIを再表示
     wait 1 tick
@@ -554,13 +603,19 @@ function executeTradeAndRefresh(p: player, tid: number, npc: entity):
         openTradeMenu({_player}, {_npc_entity}, 1)
 
 # 取引実行関数
-function executeTrade(p: player, tid: number):
+function executeTrade(p: player, tid: number, amount: number = 1):
+    # 一括取引の制限（デフォルト1）
+    if {_amount} < 1:
+        set {_amount} to 1
+    
     # Trade IDからNPCタイプを取得
     execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {_trade_info::*}
     set {_npc_type} to {_trade_info::npc_type::1}
     
-    # クエストの重複受領チェック
+    # クエストの場合、一括取引は無効化（常に1回）
     if {_npc_type} is "quest":
+        set {_amount} to 1
+        # クエストの重複受領チェック
         if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_tid}%":
             send "&c[System] このクエストは既に完了しています。" to {_p}
             stop
@@ -584,7 +639,8 @@ function executeTrade(p: player, tid: number):
         set {_is_orig} to {_trade_reqs::is_original::%loop-index%}
         set {_req_name} to {_trade_reqs::item_name::%loop-index%}
         
-        set {_amount} to 0
+        set {_req_total_qty} to {_req_qty} * {_amount}
+        set {_amount_inv} to 0
         
         if {_is_orig} is true:
             # カスタムアイテム：名前マッチング
@@ -592,105 +648,74 @@ function executeTrade(p: player, tid: number):
             loop all items in {_p}'s inventory:
                 set {_stripped_inv} to uncoloured name of loop-item
                 if {_stripped_inv} is {_stripped_req}:
-                    add item amount of loop-item to {_amount}
+                    add item amount of loop-item to {_amount_inv}
         else:
-            # バニラアイテム
-            set {_req_item} to {_req_key} parsed as item
-            if {_req_item} is set:
-                set {_amount} to amount of {_req_item} in {_p}'s inventory
+            # 通常アイテム
+            set {_item} to {_req_key} parsed as item type
+            set {_amount_inv} to amount of {_item} in {_p}'s inventory
         
-        if {_amount} < {_req_qty}:
+        if {_amount_inv} < {_req_total_qty}:
             set {_can_afford} to false
-            set {_err_msg} to "&cアイテムが足りません: %{_req_key}% x%{_req_qty}%"
+            set {_err_msg} to "&c[System] アイテムが足りません (必要: %{_req_name}% x%{_req_total_qty}%)"
             stop loop
-    
+            
     # お金チェック
     if {_can_afford} is true:
         loop {_trade_reqs::price::*}:
             set {_price} to loop-value
-            if {_price} > 0:
-                set {_m} to metadata "money" of {_p}
-                if {_m} is not set:
-                    set {_m} to 0
-                if {_m} < {_price}:
-                    set {_can_afford} to false
-                    set {_err_msg} to "&cお金が足りません: %{_price}%G"
-                    stop loop
+            set {_total_price} to {_price} * {_amount}
+            if {_p}'s balance < {_total_price}:
+                set {_can_afford} to false
+                set {_err_msg} to "&c[System] お金が足りません (必要: %{_total_price}%G)"
+                stop loop
     
-    # コスト不足の場合は中止
+    # エラーがあれば表示して終了
     if {_can_afford} is false:
         send {_err_msg} to {_p}
-        send "&c[System] 条件を満たしていないため、取引を実行できませんでした。" to {_p}
+        play sound "entity.villager.no" to {_p}
         stop
     
-    # コスト徴収 (アイテム)
+    # コスト消費（実行）
+    # アイテム消費
     loop {_trade_reqs::item_key::*}:
         set {_req_key} to loop-value
         set {_req_qty} to {_trade_reqs::quantity::%loop-index%}
         set {_is_orig} to {_trade_reqs::is_original::%loop-index%}
-        set {_req_nbt} to {_trade_reqs::nbt::%loop-index%}
         set {_req_name} to {_trade_reqs::item_name::%loop-index%}
         
-        # Strip Quotes
-        if {_req_nbt} is set:
-            if {_req_nbt} starts with """":
-                set {_len} to length of {_req_nbt}
-                set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
+        set {_req_total_qty} to {_req_qty} * {_amount}
         
-        # アイテム削除処理（簡略化版）
         if {_is_orig} is true:
-            # カスタムアイテムの場合は名前マッチング
-            set {_total_remove} to {_req_qty}
-            set {_removed_count} to 0
-            set {_stripped_req_rem} to uncoloured {_req_name}
+            # カスタムアイテム消費
+            set {_stripped_req} to uncoloured {_req_name}
+            set {_remaining} to {_req_total_qty}
             loop all items in {_p}'s inventory:
-                if {_removed_count} < {_total_remove}:
-                    set {_stripped_inv_rem} to uncoloured name of loop-item
-                    if {_stripped_inv_rem} is {_stripped_req_rem}:
-                        set {_chunk_amt} to item amount of loop-item
-                        set {_needed} to {_total_remove} - {_removed_count}
-                        if {_chunk_amt} <= {_needed}:
-                            remove loop-item from {_p}'s inventory
-                            add {_chunk_amt} to {_removed_count}
+                if {_remaining} > 0:
+                    set {_stripped_inv} to uncoloured name of loop-item
+                    if {_stripped_inv} is {_stripped_req}:
+                        if item amount of loop-item >= {_remaining}:
+                            remove {_remaining} of loop-item from {_p}'s inventory
+                            set {_remaining} to 0
                         else:
-                            remove {_needed} of loop-item from {_p}'s inventory
-                            add {_needed} to {_removed_count}
-            send "&c- %{_req_key}%(Custom) x%{_req_qty}%" to {_p}
+                            set {_amt} to item amount of loop-item
+                            remove loop-item from {_p}'s inventory
+                            remove {_amt} from {_remaining}
         else:
-            # バニラアイテム
-            set {_req_item} to {_req_key} parsed as item
-            remove {_req_qty} of {_req_item} from {_p}
-            send "&c- %{_req_key}% x%{_req_qty}%" to {_p}
+            # 通常アイテム消費
+            set {_item} to {_req_key} parsed as item type
+            remove {_req_total_qty} of {_item} from {_p}'s inventory
+        send "&c[System] %{_req_name}% x%{_req_total_qty}% を消費しました。" to {_p}
     
-    # コスト徴収 (お金)
+    # お金消費
     loop {_trade_reqs::price::*}:
         set {_price} to loop-value
-        if {_price} > 0:
-            set {_m} to metadata "money" of {_p}
-            subtract {_price} from {_m}
-            set metadata "money" of {_p} to {_m}
-            
-            # DB更新
-            set {_uuid} to "%uuid of {_p}%"
-            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
-            updateSidebar({_p})
-            
-            send "&c- %{_price}%G" to {_p}
+        set {_total_price} to {_price} * {_amount}
+        if {_total_price} > 0:
+            remove {_total_price} from {_p}'s balance
+            send "&c[System] %{_total_price}%G を支払いました。" to {_p}
     
-    # リワード付与 (アイテム)
+    # リワード付与
     loop {_trade_rewards::item_key::*}:
-        set {_r_key} to loop-value
-        set {_r_qty} to {_trade_rewards::quantity::%loop-index%}
-        set {_r_is_orig} to {_trade_rewards::is_original::%loop-index%}
-        set {_r_nbt} to {_trade_rewards::nbt::%loop-index%}
-        
-        # Strip Quotes
-        if {_r_nbt} is set:
-            if {_r_nbt} starts with """":
-                set {_len} to length of {_r_nbt}
-                set {_r_nbt} to subtext of {_r_nbt} from 2 to {_len} - 1
-        
-        if {_r_nbt} is set:
             if {_r_nbt} is not "{}":
                 execute console command "minecraft:give %{_p}% %{_r_key}%%{_r_nbt}% %{_r_qty}%"
             else:
