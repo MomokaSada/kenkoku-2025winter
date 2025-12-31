@@ -304,8 +304,8 @@ on rightclick on villager:
             send "&a[System] 取引に必要な分の取引券 (x64) を受け取りました。" to {_p}
             play sound "entity.experience_orb.pickup" with volume 0.5 to {_p}
 
-# 取引実行時の処理 (on trade event)
-on trade:
+# 取引実行時の処理 (on villager trade event)
+on villager trade:
     # NPCとの取引かチェック
     if event-entity has scoreboard tag "kenkoku_npc":
         set {_player} to player
@@ -488,6 +488,501 @@ on inventory click:
                     # IDが取れない場合
                     send "&c[System] 取引情報を取得できませんでした (ErrorCode: NBT_PARSE_FAIL)" to {_player}
 
+    # ---------------------------------------------------------
+    # Merchant Inventory のチェック
+    # ---------------------------------------------------------
+    if "%event-inventory's type%" contains "merchant":
+        # 結果スロット(2)をクリックしたかチェック
+        if index of event-slot is 2:
+            # プレイヤー情報の確保
+            set {_player} to player
+            
+            # Shift-Click (一括取引)
+            if "%click type%" contains "SHIFT":
+                cancel event
+                
+                # NBT解析 (Index 2からID取得)
+                set {_target_item} to slot 2 of event-inventory
+                set {_nbt_str} to "%nbt of {_target_item}%"
+                
+                if {_nbt_str} contains "KenkokuTradeId:":
+                    set {_parts::*} to split {_nbt_str} at "KenkokuTradeId:"
+                    set {_val_part} to {_parts::2}
+                    set {_sub_parts::*} to split {_val_part} at "}"
+                    set {_raw_id} to {_sub_parts::1}
+                    set {_sub_parts_2::*} to split {_raw_id} at ","
+                    set {_raw_id} to {_sub_parts_2::1}
+                    replace all " " with "" in {_raw_id}
+                    replace all "}" with "" in {_raw_id}
+                    replace all "," with "" in {_raw_id}
+                    set {_tid} to {_raw_id} parsed as number
+                
+                if {_tid} is set:
+                    # チケット数確認 (Slot 0)
+                    set {_ticket_item} to slot 0 of event-inventory
+                    set {_ticket_count} to item amount of {_ticket_item}
+                    if {_ticket_item} is air:
+                        set {_ticket_count} to 0
+                    
+                    processBulkTrade({_player}, {_tid}, {_ticket_count})
+                else:
+                    # IDが取れない場合 (仮想アイテム等)
+                    send "&c[System] 取引情報を取得できませんでした (ErrorCode: NBT_PARSE_FAIL)" to {_player}
+                
+                stop
+            
+
+
+# その他のコマンドは変更なし
+            wait 1 tick
+            
+            set {_cursor_item} to cursor slot of player
+            # カーソルになければ、インベントリに入った可能性もある（シフトクリック等）
+            # ここでは簡単のためカーソル優先、なければ直近で増えたアイテムを探すロジックが必要だが
+            # まずはカーソルチェック
+            
+            set {_nbt} to nbt of {_cursor_item}
+            
+            # ID取得試行 (文字列解析による最終手段)
+            # SkBeeのNBTオブジェクト操作が不安定なため、確実にログに出ている文字列からパースする
+            set {_nbt_str} to "%{_nbt}%"
+            # 例: "... KenkokuTradeId:22} ..." または "... KenkokuTradeId:22, ..."
+            
+            if {_nbt_str} contains "KenkokuTradeId:":
+                set {_parts::*} to split {_nbt_str} at "KenkokuTradeId:"
+                # _parts::2 は "22}" や "22," で始まる文字列
+                set {_val_part} to {_parts::2}
+                
+                # 数字の後の区切り文字（} または ,）を探す
+                # Skriptの split は簡単だが、汎用的にやるなら文字ループが必要。
+                # ここでは簡易的に、"}" と "," の両方で split を試みる
+                
+                # まず "}" で区切る (JSON/SNBTの閉じカッコ)
+                set {_sub_parts::*} to split {_val_part} at "}"
+                set {_raw_id} to {_sub_parts::1}
+                
+                # さらに "," で区切る (複数のタグがある場合)
+                set {_sub_parts_2::*} to split {_raw_id} at ","
+                set {_raw_id} to {_sub_parts_2::1}
+                
+                # 空白除去 (念のため)
+                replace all " " with "" in {_raw_id}
+                replace all "}" with "" in {_raw_id}
+                replace all "," with "" in {_raw_id}
+                
+                # 数値変換
+                set {_tid} to {_raw_id} parsed as number
+            
+            # もし取得できなかった場合の処理
+            if {_tid} is not set:
+                # 古い形式(ルート直下)も念のため確認
+                set {_tid} to {_nbt::KenkokuTradeId}
+                if {_tid} is not set:
+                    stop
+            
+            # アイテムが見つかったので、変数にセットして後続処理へ
+            set {_item} to {_cursor_item}
+            
+            wait 1 tick
+            
+            # ---------------------------------------------------------
+            # ロジック変更: 取引結果の「地図」を即座に「取引権(紙)」に戻す
+            # これにより、取引権は消費されず、結果(とコスト)だけが処理される
+            # ---------------------------------------------------------
+            
+            # プレイヤーの手持ち(カーソル)またはインベントリにある地図を探す
+            set {_found_loc} to "none"
+            if cursor slot of {_player} is {_item}:
+                set {_found_loc} to "cursor"
+            else if {_player} has {_item}:
+                set {_found_loc} to "inventory"
+            
+            # 取引権アイテムの返還 (Hybrid Method)
+            set {_refund_item} to wandering trader spawn egg
+            
+            # 1. Standard Skript
+            set name of {_refund_item} to "&l取引券"
+            set lore of {_refund_item} to "&7交易に使用します"
+            
+            # 2. Complex Components
+            set {_nbt} to "{"
+            set {_nbt} to "%{_nbt}%enchantment_glint_override:1b,"
+            set {_nbt} to "%{_nbt}%rarity:""uncommon"","
+            set {_nbt} to "%{_nbt}%entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},"
+            set {_nbt} to "%{_nbt}%custom_data:{itemType:""tradeTicket""}"
+            set {_nbt} to "%{_nbt}%}"
+            
+            add nbt compound from {_nbt} to nbt of {_refund_item}
+            
+            set amount of {_refund_item} to item amount of {_item}
+            
+            if {_found_loc} is "cursor":
+                set cursor slot of {_player} to {_refund_item}
+            else if {_found_loc} is "inventory":
+                remove {_item} from {_player}
+                give {_refund_item} to {_player}
+            else:
+                stop
+                
+            # ---------------------------------------------------------
+            # DB照会 & コストチェック
+            # ---------------------------------------------------------
+            set {_can_afford} to true
+            set {_err_msg} to ""
+            
+            # Trade IDからNPCタイプを取得してクエストかどうか判定
+            execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
+            set {_npc_type} to {-trade_info::npc_type::1}
+            
+            # クエストの重複受領チェック
+            if {_npc_type} is "quest":
+                if scoreboard tags of {_player} contains "kenkoku_quest_completed_%{_tid}%":
+                    send "&c[System] このクエストは既に完了しています。" to {_player}
+                    stop
+            
+            # 1. コスト情報 (Cost Items + Money)
+            delete {-trade_reqs::*}
+            execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+
+            # 2. リワード情報 (Reward Items + Money)
+            delete {-trade_rewards::*}
+            execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+            
+            # 3. 所持チェック
+            loop {-trade_reqs::item_key::*}:
+                set {_req_key} to loop-value
+                set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
+                set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
+                set {_req_nbt} to {-trade_reqs::nbt::%loop-index%}
+                set {_req_name} to {-trade_reqs::item_name::%loop-index%}
+                
+                # Strip Quotes
+                if {_req_nbt} is set:
+                    if {_req_nbt} starts with """":
+                        set {_len} to length of {_req_nbt}
+                        set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
+                
+                # Hybrid Parsing Logic (Removal Step)
+                if {_req_key} contains "[":
+                    set {_req_item} to {_req_key} parsed as item
+                else if {_req_nbt} starts with "[":
+                    # set {_req_item} to "%{_req_key}%%{_req_nbt}%" parsed as item
+                    # Skipping direct parse for Component Strings to avoid SkBee Errors
+                    if {_req_item} is not set:
+                        set {_req_item} to {_req_key} parsed as item
+                        # Sanitize [k=v] to {k:v} for SkBee
+                        set {_len} to length of {_req_nbt}
+                        set {_inner} to subtext of {_req_nbt} from 2 to {_len} - 1
+                        set {_nbt_fixed} to "{%{_inner}%}"
+                        replace all "consumable=" with "consumable:" in {_nbt_fixed}
+                        replace all "custom_data=" with "custom_data:" in {_nbt_fixed}
+                        replace all "item_name=" with "item_name:" in {_nbt_fixed}
+                        replace all "custom_name=" with "ignore_name:" in {_nbt_fixed}
+                        replace all "rarity=" with "rarity:" in {_nbt_fixed}
+                        # replace all "'" with """" in {_nbt_fixed}
+                        # add nbt from {_nbt_fixed} to nbt of {_req_item}
+                        
+                        # Manual Name Extraction Fallback
+                        if name of {_req_item} is not set:
+                            if {_nbt_fixed} contains "text:""":
+                                set {_parts::*} to {_nbt_fixed} split at "text:"""
+                                set {_name_part} to {_parts::2}
+                                set {_subparts::*} to {_name_part} split at """"
+                                set {_manual_name} to {_subparts::1}
+                                set name of {_req_item} to {_manual_name}
+                else:
+                    set {_req_item} to {_req_key} parsed as item
+                    if {_is_orig} is true:
+                         # Strict Match Fallback Logic (Only applied if strict match path used)
+                        if {_req_nbt} is set:
+                            if {_req_nbt} starts with """":
+                                set {_len} to length of {_req_nbt}
+                                set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
+                            add nbt compound from {_req_nbt} to nbt of {_req_item}
+                
+                if {_req_item} is set:
+                    # Relaxed Condition Check (Single)
+                    if {_is_orig} is true:
+                        set {_nbt_compound} to nbt compound of {_req_item}
+                        # Custom Data Logic
+                        set {_target_type} to ""
+                        # Full custom_data Extraction
+                        # Full custom_data Extraction (Total Cleanup Strategy)
+                        set {_target_custom_data} to ""
+                        if {_nbt_fixed} contains "custom_data":
+                            set {_nbt_fixed_clean} to "%{_nbt_fixed}%"
+                            set {_q} to """"
+                            replace all "[" with "" in {_nbt_fixed_clean}
+                            replace all "]" with "" in {_nbt_fixed_clean}
+                            replace all " " with "" in {_nbt_fixed_clean}
+                            replace all {_q} with "" in {_nbt_fixed_clean}
+                            replace all "'" with "" in {_nbt_fixed_clean}
+                            replace all "minecraft:" with "" in {_nbt_fixed_clean}
+                            replace all "=" with ":" in {_nbt_fixed_clean}
+                            
+                            set {_parts::*} to {_nbt_fixed_clean} split at "custom_data:{"
+                            if size of {_parts::*} > 1:
+                                set {_val_part} to {_parts::2}
+                                set {_subparts::*} to {_val_part} split at "}"
+                                set {_target_custom_data} to {_subparts::1}
+                        
+                        if {_target_custom_data} is not "":
+                            set {_amount} to 0
+                            loop all items in {_player}'s inventory:
+                                set {_req_nbt_check_raw} to full nbt of loop-item
+                                set {_nbt_check_clean} to "%{_req_nbt_check_raw}%"
+                                set {_q} to """"
+                                replace all "[" with "" in {_nbt_check_clean}
+                                replace all "]" with "" in {_nbt_check_clean}
+                                replace all " " with "" in {_nbt_check_clean}
+                                replace all {_q} with "" in {_nbt_check_clean}
+                                replace all "'" with "" in {_nbt_check_clean}
+                                replace all "minecraft:" with "" in {_nbt_check_clean}
+                                replace all "=" with ":" in {_nbt_check_clean}
+                                
+                                if {_nbt_check_clean} contains "custom_data:{":
+                                    set {_inv_parts::*} to {_nbt_check_clean} split at "custom_data:{"
+                                    if size of {_inv_parts::*} > 1:
+                                        set {_inv_val_part} to {_inv_parts::2}
+                                        set {_inv_subparts::*} to {_inv_val_part} split at "}"
+                                        set {_inv_custom_data} to {_inv_subparts::1}
+                                        
+                                        if {_inv_custom_data} is {_target_custom_data}:
+                                            add item amount of loop-item to {_amount}
+                                else if "%{_req_nbt_check_raw}%" is not "{}":
+                                    continue
+                        else:
+                            # Fallback to Name Comparison (Strip Color) if no itemType found
+                            set {_amount} to 0
+                            set {_stripped_req} to uncoloured {_req_name}
+                            loop all items in {_player}'s inventory:
+                                set {_stripped_inv} to uncoloured name of loop-item
+                                if {_stripped_inv} is {_stripped_req}:
+                                    add item amount of loop-item to {_amount}
+                    else:
+                        set {_amount} to amount of {_req_item} in {_player}'s inventory
+                    
+                    if {_amount} < {_req_qty}:
+                        set {_can_afford} to false
+                        if {_is_orig} is true:
+                            set {_err_msg} to "&cアイテムが足りません: %{_req_key}%(Custom) x%{_req_qty}%"
+                        else:
+                            set {_err_msg} to "&cアイテムが足りません: %{_req_key}% x%{_req_qty}%"
+                else:
+                    # Parsing Failed
+                    set {_can_afford} to false
+                    set {_err_msg} to "&c[System] エラー: 要求アイテムの定義が無効です (%{_req_key}%)"
+                        
+            loop {-trade_reqs::price::*}:
+                set {_price} to loop-value
+                if {_price} > 0:
+                    set {_m} to metadata "money" of {_player}
+                    if {_m} is not set:
+                        set {_m} to 0
+                    if {_m} < {_price}:
+                        set {_can_afford} to false
+                        set {_err_msg} to "&cお金が足りません: %{_price}%G"
+            
+            # 4. 取引実行
+            if {_can_afford} is true:
+                # コスト徴収 (アイテム)
+                loop {-trade_reqs::item_key::*}:
+                    delete {_req_item}
+                    delete {_nbt_fixed}
+                    set {_req_key} to loop-value
+                    set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
+                    set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
+                    set {_req_nbt} to {-trade_reqs::nbt::%loop-index%}
+                    set {_req_name} to {-trade_reqs::item_name::%loop-index%}
+                    
+                    # Strip Quotes
+                    if {_req_nbt} is set:
+                        if {_req_nbt} starts with """":
+                            set {_len} to length of {_req_nbt}
+                            set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
+                    
+                    # Hybrid Parsing Logic (Removal Step)
+                    if {_req_key} contains "[":
+                        set {_req_item} to {_req_key} parsed as item
+                    else if {_req_nbt} starts with "[":
+                        # set {_req_item} to "%{_req_key}%%{_req_nbt}%" parsed as item
+                        if {_req_item} is not set:
+                            set {_req_item} to {_req_key} parsed as item
+                            # Sanitize [k=v] to {k:v} for SkBee
+                            set {_len} to length of {_req_nbt}
+                            set {_inner} to subtext of {_req_nbt} from 2 to {_len} - 1
+                            set {_nbt_fixed} to "{%{_inner}%}"
+                            replace all "consumable=" with "consumable:" in {_nbt_fixed}
+                            replace all "custom_data=" with "custom_data:" in {_nbt_fixed}
+                            replace all "item_name=" with "item_name:" in {_nbt_fixed}
+                            replace all "custom_name=" with "custom_name:" in {_nbt_fixed}
+                            replace all "rarity=" with "rarity:" in {_nbt_fixed}
+                            replace all "'" with """" in {_nbt_fixed}
+                            # add nbt from {_nbt_fixed} to nbt of {_req_item}
+                    else:
+                        set {_req_item} to {_req_key} parsed as item
+                        if {_is_orig} is true:
+                             # Strict Match Fallback Logic (Only applied if strict match path used)
+                            if {_req_nbt} is set:
+                                if {_req_nbt} starts with """":
+                                    set {_len} to length of {_req_nbt}
+                                    set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
+                                add nbt compound from {_req_nbt} to nbt of {_req_item}
+                    
+                    # Removal Logic (Decoupled)
+                        # Removal Logic (Decoupled & Relaxed)
+                    set {_target_custom_data_rem} to ""
+                    set {_nbt_to_clean} to ""
+                    if {_nbt_fixed} is not "":
+                        set {_nbt_to_clean} to {_nbt_fixed}
+                    else:
+                        set {_nbt_to_clean} to "%{_req_nbt}%"
+                        
+                    if {_nbt_to_clean} contains "custom_data":
+                        set {_nbt_fixed_clean} to "%{_nbt_to_clean}%"
+                        set {_q} to """"
+                        replace all "[" with "" in {_nbt_fixed_clean}
+                        replace all "]" with "" in {_nbt_fixed_clean}
+                        replace all " " with "" in {_nbt_fixed_clean}
+                        replace all {_q} with "" in {_nbt_fixed_clean}
+                        replace all "'" with "" in {_nbt_fixed_clean}
+                        replace all "minecraft:" with "" in {_nbt_fixed_clean}
+                        replace all "=" with ":" in {_nbt_fixed_clean}
+                        
+                        set {_parts::*} to {_nbt_fixed_clean} split at "custom_data:{"
+                        if size of {_parts::*} > 1:
+                            set {_val_part} to {_parts::2}
+                            set {_subparts::*} to {_val_part} split at "}"
+                            set {_target_custom_data_rem} to {_subparts::1}
+                    
+                    set {_removed_by_custom} to false
+                    if {_target_custom_data_rem} is not "":
+                        set {_to_remove} to {_req_qty}
+                        loop all items in {_player}'s inventory:
+                            if {_to_remove} > 0:
+                                set {_req_nbt_check_raw} to full nbt of loop-item
+                                if {_req_nbt_check_raw} is not set:
+                                    continue
+                                set {_nbt_check_clean} to "%{_req_nbt_check_raw}%"
+                                set {_q} to """"
+                                replace all "[" with "" in {_nbt_check_clean}
+                                replace all "]" with "" in {_nbt_check_clean}
+                                replace all " " with "" in {_nbt_check_clean}
+                                replace all {_q} with "" in {_nbt_check_clean}
+                                replace all "'" with "" in {_nbt_check_clean}
+                                replace all "minecraft:" with "" in {_nbt_check_clean}
+                                replace all "=" with ":" in {_nbt_check_clean}
+                                
+                                if {_nbt_check_clean} contains "custom_data:{":
+                                    set {_inv_parts::*} to {_nbt_check_clean} split at "custom_data:{"
+                                    if size of {_inv_parts::*} > 1:
+                                        set {_inv_val_part} to {_inv_parts::2}
+                                        set {_inv_subparts::*} to {_inv_val_part} split at "}"
+                                        set {_inv_custom_data} to {_inv_subparts::1}
+                                        if {_inv_custom_data} is {_target_custom_data_rem}:
+                                            set {_count} to item amount of loop-item
+                                            if {_count} <= {_to_remove}:
+                                                remove loop-item from {_player}'s inventory
+                                                subtract {_count} from {_to_remove}
+                                            else:
+                                                set item amount of loop-item to ({_count} - {_to_remove})
+                                                set {_to_remove} to 0
+                        if {_to_remove} <= 0:
+                            set {_removed_by_custom} to true
+                    
+                    if {_removed_by_custom} is false:
+                        if {_is_orig} is true:
+                            set {_total_remove} to {_req_qty}
+                            set {_removed_count} to 0
+                            set {_stripped_req_rem} to uncoloured {_req_name}
+                            loop all items in {_player}'s inventory:
+                                if {_removed_count} < {_total_remove}:
+                                    set {_stripped_inv_rem} to uncoloured name of loop-item
+                                    if {_stripped_inv_rem} is {_stripped_req_rem}:
+                                        set {_chunk_amt} to item amount of loop-item
+                                        set {_needed} to {_total_remove} - {_removed_count}
+                                        if {_chunk_amt} <= {_needed}:
+                                            remove loop-item from {_player}'s inventory
+                                            add {_chunk_amt} to {_removed_count}
+                                        else:
+                                            remove {_needed} of loop-item from {_player}'s inventory
+                                            add {_needed} to {_removed_count}
+                        else:
+                            # Vanilla Item
+                            remove {_req_qty} of {_req_item} from {_player}
+                            
+                    if {_is_orig} is true:
+                        send "&c- %{_req_key}%(Custom) x%{_req_qty}%" to {_player}
+                    else:
+                        send "&c- %{_req_key}% x%{_req_qty}%" to {_player}
+                
+                # コスト徴収 (お金)
+                loop {-trade_reqs::price::*}:
+                    set {_price} to loop-value
+                    if {_price} > 0:
+                        set {_m} to metadata "money" of {_player}
+                        subtract {_price} from {_m}
+                        set metadata "money" of {_player} to {_m}
+                        
+                        # DB更新
+                        set {_uuid} to "%uuid of {_player}%"
+                        execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+                        updateSidebar({_player})
+                        
+                        send "&c- %{_price}%G" to {_player}
+                
+                # リワード付与
+                loop {-trade_rewards::item_key::*}:
+                    set {_r_key} to loop-value
+                    set {_r_qty} to {-trade_rewards::quantity::%loop-index%}
+                    set {_r_is_orig} to {-trade_rewards::is_original::%loop-index%}
+                    set {_r_nbt} to {-trade_rewards::nbt::%loop-index%}
+                    
+                    # Strip Quotes
+                    if {_r_nbt} is set:
+                        if {_r_nbt} starts with """":
+                            set {_len} to length of {_r_nbt}
+                            set {_r_nbt} to subtext of {_r_nbt} from 2 to {_len} - 1
+                    
+                    if {_r_nbt} is set:
+                        if {_r_nbt} is not "{}":
+                            execute console command "minecraft:give %{_player}% %{_r_key}%%{_r_nbt}% %{_r_qty}%"
+                        else:
+                            execute console command "minecraft:give %{_player}% %{_r_key}% %{_r_qty}%"
+                    else:
+                        execute console command "minecraft:give %{_player}% %{_r_key}% %{_r_qty}%"
+
+                    if {_r_is_orig} is true:
+                        send "&a+ %{_r_key}%(Custom) x%{_r_qty}%" to {_player}
+                    else:
+                        send "&a+ %{_r_key}% x%{_r_qty}%" to {_player}
+                    
+                loop {-trade_rewards::price::*}:
+                    set {_r_price} to loop-value
+                    if {_r_price} > 0:
+                        set {_m} to metadata "money" of {_player}
+                        add {_r_price} to {_m}
+                        set metadata "money" of {_player} to {_m}
+                        
+                        # DB更新
+                        set {_uuid} to "%uuid of {_player}%"
+                        execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+                        updateSidebar({_player})
+                        
+                        send "&a+ %{_r_price}%G" to {_player}
+                
+                # クエスト完了タグの付与
+                if {_npc_type} is "quest":
+                    add "kenkoku_quest_completed_%{_tid}%" to scoreboard tags of {_player}
+                
+                send "&a[System] 取引成立！"
+                
+            else:
+                # 失敗時: メッセージのみ (アイテムは既に取引権に戻っている)
+                send {_err_msg} to {_player}
+                send "&c[System] 条件を満たしていないため、取引を実行できませんでした。"
+
+# その他のコマンドは変更なし
 on tab complete of "/spawn-npc":
     set tab completions for position 1 to {-npc_list_cache::*}
 
