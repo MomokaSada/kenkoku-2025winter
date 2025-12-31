@@ -68,7 +68,7 @@ function spawnNpc(name: text, loc: location, p: player):
     add "npc_name_%{_name}%" to scoreboard tags of {_npc}
     
     # 取引情報の取得と設定
-    execute "SELECT id, content FROM trades WHERE npc_id = %{_id}%" in {kenkoku_db} and store the result in {_npc_trades::*}
+    execute "SELECT t.id, t.content, i.key as v_key, i.nbt as v_nbt, i.is_original as v_is_orig FROM trades t LEFT JOIN items i ON t.view_item_id = i.id WHERE t.npc_id = %{_id}%" in {kenkoku_db} and store the result in {_npc_trades::*}
     
     # NBTでのレシピ構築
     # リスト変数をループしてレシピNBT文字列を作成
@@ -101,10 +101,31 @@ function spawnNpc(name: text, loc: location, p: player):
         # 3. Get Full SNBT for Recipe
         set {_buy_snbt} to full nbt of {_dummy_buy}
         
-        # 2. Sell Item (結果アイテム) - 紙に戻す
-        # 2. Sell Item (結果アイテム) - Hybrid Method
-        # Generate dummy item to safely handle name escaping and NBT
-        set {_dummy_sell} to paper
+        # 2. Sell Item (結果アイテム) - view_item_idがあればそれを使う。なければ紙
+        set {_v_key} to {_npc_trades::v_key::%loop-index%}
+        set {_v_nbt} to {_npc_trades::v_nbt::%loop-index%}
+        set {_v_is_orig} to {_npc_trades::v_is_orig::%loop-index%}
+
+        if {_v_key} is set:
+            set {_dummy_sell} to {_v_key} parsed as item
+            # NBTの適用 (オリジナルアイテムの場合)
+            if {_v_is_orig} is true:
+                if {_v_nbt} is set:
+                    # クォート除去
+                    set {_clean_v_nbt} to {_v_nbt}
+                    if {_clean_v_nbt} starts with """":
+                        set {_len} to length of {_clean_v_nbt}
+                        set {_clean_v_nbt} to subtext of {_clean_v_nbt} from 2 to {_len} - 1
+                    
+                    if {_clean_v_nbt} starts with "[":
+                        # Component Syntaxの場合は一度文字列として扱ってからパースする
+                        # (表示用なので簡易的な対応)
+                        set {_dummy_sell} to "%{_v_key}%%{_clean_v_nbt}%" parsed as item
+                    else:
+                        add nbt compound from {_clean_v_nbt} to nbt of {_dummy_sell}
+        else:
+            set {_dummy_sell} to paper
+
         set name of {_dummy_sell} to {_content}
         
         # Add Trade ID to Custom Data
