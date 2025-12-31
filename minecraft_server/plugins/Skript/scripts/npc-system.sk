@@ -304,8 +304,8 @@ on rightclick on villager:
             send "&a[System] 取引に必要な分の取引券 (x64) を受け取りました。" to {_p}
             play sound "entity.experience_orb.pickup" with volume 0.5 to {_p}
 
-# 取引実行時の処理 (on villager trade event)
-on villager trade:
+# 取引実行時の処理 (on player trade event)
+on player trade:
     # NPCとの取引かチェック
     if event-entity has scoreboard tag "kenkoku_npc":
         set {_player} to player
