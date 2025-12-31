@@ -328,9 +328,9 @@ function openTradeMenu(p: player, npc: entity, page: number):
         send "&c[Error] NPCのIDを取得できませんでした。" to {_p}
         stop
     
-    # NPCの取引リストを取得
+    # NPCの取引リストを取得（view_item_id と npc_type も取得）
     delete {_trades::*}
-    execute "SELECT t.id, t.content FROM trades t WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
+    execute "SELECT t.id, t.content, t.view_item_id, nt.name as npc_type FROM trades t JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
     
     if {_trades::id::*} is not set:
         send "&c[Error] このNPCには取引がありません。" to {_p}
@@ -366,11 +366,31 @@ function openTradeMenu(p: player, npc: entity, page: number):
             if loop-number <= {_end_idx}:
                 set {_tid} to {_trades::id::%loop-number%}
                 set {_content} to {_trades::content::%loop-number%}
+                set {_view_item_key} to {_trades::view_item_id::%loop-number%}
+                set {_npc_type} to {_trades::npc_type::%loop-number%}
                 
-                # 取引アイテム作成
-                set {_trade_item} to paper
-                set name of {_trade_item} to "&e&l%{_content}%"
-                set lore of {_trade_item} to "&7クリックで詳細を表示"
+                # view_item_idからアイテムを作成
+                set {_trade_item} to {_view_item_key} parsed as item
+                if {_trade_item} is not set:
+                    set {_trade_item} to paper  # フォールバック
+                
+                # クエスト完了済みかチェック
+                set {_is_completed} to false
+                if {_npc_type} is "quest":
+                    if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_tid}%":
+                        set {_is_completed} to true
+                
+                # アイテム名とLoreを設定
+                if {_is_completed} is true:
+                    set name of {_trade_item} to "&7&l[完了] %{_content}%"
+                    set lore of {_trade_item} to "&8このクエストは完了済みです"
+                else:
+                    if {_npc_type} is "quest":
+                        set name of {_trade_item} to "&e&l[クエスト] %{_content}%"
+                        set lore of {_trade_item} to "&7クリックで詳細を表示"
+                    else:
+                        set name of {_trade_item} to "&e&l%{_content}%"
+                        set lore of {_trade_item} to "&7クリックで詳細を表示"
                 
                 # カスタムNBTでトレードID埋め込み
                 set {_nbt} to "{custom_data:{tradeId:%{_tid}%,npcId:%{_npc_id}%}}"
@@ -462,15 +482,36 @@ on inventory click:
                             stop
                             
             else if {_nbt_str} contains "tradeId:":
-                # 取引実行
+                # 取引実行（GUIは開いたまま）
                 set {_parts::*} to split {_nbt_str} at "tradeId:"
                 set {_val} to {_parts::2}
                 set {_sub::*} to split {_val} at ","
                 set {_tid} to {_sub::1} parsed as number
                 
-                close player's inventory
-                wait 1 tick
-                executeTrade(player, {_tid})
+                # NPC IDも取得（GUI再表示用）
+                set {_parts2::*} to split {_nbt_str} at "npcId:"
+                set {_val2} to {_parts2::2}
+                set {_sub2::*} to split {_val2} at "}"
+                set {_npc_id} to {_sub2::1} parsed as number
+                
+                # NPCエンティティを取得
+                loop all entities in radius 10 of player:
+                    loop scoreboard tags of loop-entity:
+                        if loop-value-2 is "npc_id_%{_npc_id}%":
+                            set {_npc_entity} to loop-entity
+                            stop
+                
+                # 取引実行してGUI再表示
+                executeTradeAndRefresh(player, {_tid}, {_npc_entity})
+
+# 取引実行してGUI再表示する関数
+function executeTradeAndRefresh(p: player, tid: number, npc: entity):
+    executeTrade({_p}, {_tid})
+    
+    # 取引成功後、GUIを再表示
+    wait 1 tick
+    if {_npc} is set:
+        openTradeMenu({_p}, {_npc}, 1)
 
 # 取引実行関数
 function executeTrade(p: player, tid: number):
