@@ -312,7 +312,7 @@ on player trade:
         set {_player} to player
         
         # 取引結果アイテムからトレードIDを取得
-        set {_result_item} to the traded item
+        set {_result_item} to result item
         set {_nbt_str} to "%nbt of {_result_item}%"
         
         # トレードID取得
