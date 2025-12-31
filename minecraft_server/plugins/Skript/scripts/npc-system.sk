@@ -34,7 +34,7 @@ command /npc-refresh:
 
 # NPCを召喚するコマンド
 # NPC召喚関数 (再利用可能)
-function spawnNpc(name: text, loc: location):
+function spawnNpc(name: text, loc: location, p: player = air):
     # DB接続チェック
     if {kenkoku_db} is not set:
         broadcast "&c[Error] データベース接続変数 {kenkoku_db} が設定されていません！"
@@ -131,13 +131,30 @@ function spawnNpc(name: text, loc: location):
     set metadata value "trade_count" of {_npc} to {_trade_count}
         
     broadcast "&a[System] NPC (%{_name}%) を召喚しました！ (ID: %{_id}%, Trades: %{_trade_count}%)"
+    
+    # giveコマンドとスポーンエッグの生成
+    set {_escaped_name} to {_name}
+    replace all """" with "\"" in {_escaped_name}
+    set {_give_nbt} to "{VillagerData:{profession:""minecraft:%{_profession}%"",type:""minecraft:%{_biome}%"",level:%{_level}%},entity_data:{id:""minecraft:villager"",NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b,Silent:1b,CustomName:'{""text"":""%{_escaped_name}%""}',Offers:{Recipes:%{_recipes_nbt}%}},custom_data:{KenkokuNpcName:""%{_escaped_name}%""},item_name:'{""text"":""%{_escaped_name}%""}'}"
+    
+    set {_command} to "/minecraft:give @p villager_spawn_egg%{_give_nbt}% 1"
+    
+    if {_p} is not air:
+        # スポーンエッグを付与
+        execute console command "minecraft:give %{_p}% villager_spawn_egg%{_give_nbt}% 1"
+        
+        # チャット欄にコピー用メッセージを出力
+        send "&e[Click to Copy] &fNPC (%{_name}%) の召喚用コマンドを生成しました。" to {_p}
+        send formatted "<suggest command:%{_command}%>&7[ここをクリックしてコマンドを表示/コピー]&r" to {_p}
+
 
 # NPCを召喚するコマンド (Function呼び出し)
 command /spawn-npc <text>:
     permission: op
     usage: /spawn-npc <NPC名>
     trigger:
-        spawnNpc(arg-1, location of player)
+        spawnNpc(arg-1, location of player, player)
+
 
 # NPC一括更新コマンド
 command /npc-update:

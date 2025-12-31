@@ -189,6 +189,24 @@
         "updated_at": "2025-12-29T04:34:20.000000Z"
     },
     {
+        "id": 1533,
+        "name": "lotteryTicket1",
+        "key": "minecraft:allay_spawn_egg",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:1}]",
+        "created_at": "2025-12-30T09:16:05.000000Z",
+        "updated_at": "2025-12-30T09:16:05.000000Z"
+    },
+    {
+        "id": 1532,
+        "name": "lotteryTicket10",
+        "key": "minecraft:allay_spawn_egg",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+        "created_at": "2025-12-30T09:12:43.000000Z",
+        "updated_at": "2025-12-30T09:12:43.000000Z"
+    },
+    {
         "id": 494,
         "name": null,
         "key": "minecraft:allium",
@@ -603,15 +621,6 @@
         "updated_at": "2025-12-29T04:34:47.000000Z"
     },
     {
-        "id": 19,
-        "name": null,
-        "key": "minecraft:bat_spawn_egg",
-        "is_original": 0,
-        "nbt": null,
-        "created_at": "2025-12-29T04:34:21.000000Z",
-        "updated_at": "2025-12-29T04:34:21.000000Z"
-    },
-    {
         "id": 1504,
         "name": "night_vision",
         "key": "minecraft:bat_spawn_egg",
@@ -619,6 +628,15 @@
         "nbt": "[enchantment_glint_override=true,rarity=\"epic\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l暗視\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時暗視が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"nightVision\"},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
+    },
+    {
+        "id": 19,
+        "name": null,
+        "key": "minecraft:bat_spawn_egg",
+        "is_original": 0,
+        "nbt": null,
+        "created_at": "2025-12-29T04:34:21.000000Z",
+        "updated_at": "2025-12-29T04:34:21.000000Z"
     },
     {
         "id": 526,
@@ -2934,20 +2952,11 @@
         "updated_at": "2025-12-29T04:34:55.000000Z"
     },
     {
-        "id": 109,
-        "name": null,
-        "key": "minecraft:creeper_spawn_egg",
-        "is_original": 0,
-        "nbt": null,
-        "created_at": "2025-12-29T04:34:25.000000Z",
-        "updated_at": "2025-12-29T04:34:25.000000Z"
-    },
-    {
-        "id": 1508,
-        "name": "haste_boost_1",
+        "id": 1489,
+        "name": "haste_boost_2",
         "key": "minecraft:creeper_spawn_egg",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l採掘速度(Ⅰ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時採掘速度上昇(1)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"hasteBoost\",level:1},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l採掘速度(Ⅱ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時採掘速度上昇(2)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"hasteBoost\",level:2},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
@@ -2961,13 +2970,22 @@
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
     {
-        "id": 1489,
-        "name": "haste_boost_2",
+        "id": 1508,
+        "name": "haste_boost_1",
         "key": "minecraft:creeper_spawn_egg",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l採掘速度(Ⅱ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時採掘速度上昇(2)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"hasteBoost\",level:2},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l採掘速度(Ⅰ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時採掘速度上昇(1)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"hasteBoost\",level:1},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
+    },
+    {
+        "id": 109,
+        "name": null,
+        "key": "minecraft:creeper_spawn_egg",
+        "is_original": 0,
+        "nbt": null,
+        "created_at": "2025-12-29T04:34:25.000000Z",
+        "updated_at": "2025-12-29T04:34:25.000000Z"
     },
     {
         "id": 691,
@@ -3987,13 +4005,13 @@
         "updated_at": "2025-12-29T04:35:00.000000Z"
     },
     {
-        "id": 126,
-        "name": null,
+        "id": 1516,
+        "name": "efficiencyPick",
         "key": "minecraft:diamond_pickaxe",
-        "is_original": 0,
-        "nbt": null,
-        "created_at": "2025-12-29T04:34:26.000000Z",
-        "updated_at": "2025-12-29T04:34:26.000000Z"
+        "is_original": 1,
+        "nbt": "[enchantments={efficiency:6,unbreaking:5}]",
+        "created_at": "2025-12-30T04:34:55.000000Z",
+        "updated_at": "2025-12-30T04:34:55.000000Z"
     },
     {
         "id": 1515,
@@ -4005,22 +4023,13 @@
         "updated_at": "2025-12-30T04:30:51.000000Z"
     },
     {
-        "id": 1516,
-        "name": "efficiencyPick",
+        "id": 126,
+        "name": null,
         "key": "minecraft:diamond_pickaxe",
-        "is_original": 1,
-        "nbt": "[enchantments={efficiency:6,unbreaking:5}]",
-        "created_at": "2025-12-30T04:34:55.000000Z",
-        "updated_at": "2025-12-30T04:34:55.000000Z"
-    },
-    {
-        "id": 1518,
-        "name": "efficiencyShovel",
-        "key": "minecraft:diamond_shovel",
-        "is_original": 1,
-        "nbt": "[enchantments={efficiency:6,unbreaking:5}]",
-        "created_at": "2025-12-30T04:36:38.000000Z",
-        "updated_at": "2025-12-30T04:36:38.000000Z"
+        "is_original": 0,
+        "nbt": null,
+        "created_at": "2025-12-29T04:34:26.000000Z",
+        "updated_at": "2025-12-29T04:34:26.000000Z"
     },
     {
         "id": 127,
@@ -4032,22 +4041,13 @@
         "updated_at": "2025-12-29T04:34:26.000000Z"
     },
     {
-        "id": 128,
-        "name": null,
-        "key": "minecraft:diamond_sword",
-        "is_original": 0,
-        "nbt": null,
-        "created_at": "2025-12-29T04:34:26.000000Z",
-        "updated_at": "2025-12-29T04:34:26.000000Z"
-    },
-    {
-        "id": ,
-        "name": "knockbackSword",
-        "key": "minecraft:diamond_sword",
+        "id": 1518,
+        "name": "efficiencyShovel",
+        "key": "minecraft:diamond_shovel",
         "is_original": 1,
-        "nbt": "[enchantments={unbreaking:3,knockback:10}]",
-        "created_at": "2025-12-30T04:49:19.000000Z",
-        "updated_at": "2025-12-30T04:49:19.000000Z"
+        "nbt": "[enchantments={efficiency:6,unbreaking:5}]",
+        "created_at": "2025-12-30T04:36:38.000000Z",
+        "updated_at": "2025-12-30T04:36:38.000000Z"
     },
     {
         "id": 1521,
@@ -4066,6 +4066,24 @@
         "nbt": "[enchantments={unbreaking:3,bane_of_arthropods:6}]",
         "created_at": "2025-12-30T04:44:18.000000Z",
         "updated_at": "2025-12-30T04:44:18.000000Z"
+    },
+    {
+        "id": 1522,
+        "name": "knockbackSword",
+        "key": "minecraft:diamond_sword",
+        "is_original": 1,
+        "nbt": "[enchantments={unbreaking:3,knockback:10}]",
+        "created_at": "2025-12-30T04:49:19.000000Z",
+        "updated_at": "2025-12-30T04:49:19.000000Z"
+    },
+    {
+        "id": 128,
+        "name": null,
+        "key": "minecraft:diamond_sword",
+        "is_original": 0,
+        "nbt": null,
+        "created_at": "2025-12-29T04:34:26.000000Z",
+        "updated_at": "2025-12-29T04:34:26.000000Z"
     },
     {
         "id": 787,
@@ -4311,13 +4329,13 @@
         "updated_at": "2025-12-29T04:35:01.000000Z"
     },
     {
-        "id": 1526,
-        "name": "sharpness",
+        "id": 141,
+        "name": null,
         "key": "minecraft:enchanted_book",
-        "is_original": 1,
-        "nbt": "[stored_enchantments={sharpness:5}]",
-        "created_at": "2025-12-30T05:10:49.000000Z",
-        "updated_at": "2025-12-30T05:10:49.000000Z"
+        "is_original": 0,
+        "nbt": null,
+        "created_at": "2025-12-29T04:34:27.000000Z",
+        "updated_at": "2025-12-29T04:34:27.000000Z"
     },
     {
         "id": 1514,
@@ -4338,15 +4356,6 @@
         "updated_at": "2025-12-30T05:24:54.000000Z"
     },
     {
-        "id": 1525,
-        "name": "unbreaking",
-        "key": "minecraft:enchanted_book",
-        "is_original": 1,
-        "nbt": "[stored_enchantments={unbreaking:3}]",
-        "created_at": "2025-12-30T05:07:44.000000Z",
-        "updated_at": "2025-12-30T05:07:44.000000Z"
-    },
-    {
         "id": 1527,
         "name": "fortune",
         "key": "minecraft:enchanted_book",
@@ -4356,13 +4365,22 @@
         "updated_at": "2025-12-30T05:23:16.000000Z"
     },
     {
-        "id": 141,
-        "name": null,
+        "id": 1526,
+        "name": "sharpness",
         "key": "minecraft:enchanted_book",
-        "is_original": 0,
-        "nbt": null,
-        "created_at": "2025-12-29T04:34:27.000000Z",
-        "updated_at": "2025-12-29T04:34:27.000000Z"
+        "is_original": 1,
+        "nbt": "[stored_enchantments={sharpness:5}]",
+        "created_at": "2025-12-30T05:10:49.000000Z",
+        "updated_at": "2025-12-30T05:10:49.000000Z"
+    },
+    {
+        "id": 1525,
+        "name": "unbreaking",
+        "key": "minecraft:enchanted_book",
+        "is_original": 1,
+        "nbt": "[stored_enchantments={unbreaking:3}]",
+        "created_at": "2025-12-30T05:07:44.000000Z",
+        "updated_at": "2025-12-30T05:07:44.000000Z"
     },
     {
         "id": 142,
@@ -4959,11 +4977,11 @@
         "updated_at": "2025-12-29T04:34:28.000000Z"
     },
     {
-        "id": 1500,
-        "name": "jump_boost_1",
+        "id": 1506,
+        "name": "jump_boost_2",
         "key": "minecraft:frog_spawn_egg",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§lジャンプ(Ⅰ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時ジャンプブースト(1)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"jumpBoost\",level:1},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§lジャンプ(Ⅱ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時ジャンプブースト(2)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"jumpBoost\",level:2},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
@@ -4977,11 +4995,11 @@
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
     {
-        "id": 1506,
-        "name": "jump_boost_2",
+        "id": 1500,
+        "name": "jump_boost_1",
         "key": "minecraft:frog_spawn_egg",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§lジャンプ(Ⅱ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時ジャンプブースト(2)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"jumpBoost\",level:2},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§lジャンプ(Ⅰ)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時ジャンプブースト(1)が付与される\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"jumpBoost\",level:1},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
@@ -8883,31 +8901,13 @@
         "updated_at": "2025-12-29T04:34:36.000000Z"
     },
     {
-        "id": 1509,
-        "name": "losingTicket",
+        "id": 1513,
+        "name": "armorTicket",
         "key": "minecraft:paper",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ハズレ券\"}],text:\"\"},custom_data={itemType:losingTicket}]",
-        "created_at": "2025-12-30T01:23:54.000000Z",
-        "updated_at": "2025-12-30T01:23:54.000000Z"
-    },
-    {
-        "id": 1510,
-        "name": "toolTicket",
-        "key": "minecraft:paper",
-        "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ツールチケット\",color:gold}],text:\"\"},custom_data={itemType:toolTicket}]",
-        "created_at": "2025-12-30T01:45:55.000000Z",
-        "updated_at": "2025-12-30T01:45:55.000000Z"
-    },
-    {
-        "id": 1511,
-        "name": "mealTicket",
-        "key": "minecraft:paper",
-        "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"お食事券\",color:green}],text:\"\"},custom_data={itemType:mealTicket}]",
-        "created_at": "2025-12-30T03:03:06.000000Z",
-        "updated_at": "2025-12-30T03:03:06.000000Z"
+        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"防具チケット\",color:gold}],text:\"\"},custom_data={itemType:armorTicket}]",
+        "created_at": "2025-12-30T03:09:48.000000Z",
+        "updated_at": "2025-12-30T03:09:48.000000Z"
     },
     {
         "id": 1512,
@@ -8919,13 +8919,31 @@
         "updated_at": "2025-12-30T03:07:20.000000Z"
     },
     {
-        "id": 1513,
-        "name": "armorTicket",
+        "id": 1511,
+        "name": "mealTicket",
         "key": "minecraft:paper",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"防具チケット\",color:gold}],text:\"\"},custom_data={itemType:armorTicket}]",
-        "created_at": "2025-12-30T03:09:48.000000Z",
-        "updated_at": "2025-12-30T03:09:48.000000Z"
+        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"お食事券\",color:green}],text:\"\"},custom_data={itemType:mealTicket}]",
+        "created_at": "2025-12-30T03:03:06.000000Z",
+        "updated_at": "2025-12-30T03:03:06.000000Z"
+    },
+    {
+        "id": 1510,
+        "name": "toolTicket",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ツールチケット\",color:gold}],text:\"\"},custom_data={itemType:toolTicket}]",
+        "created_at": "2025-12-30T01:45:55.000000Z",
+        "updated_at": "2025-12-30T01:45:55.000000Z"
+    },
+    {
+        "id": 1509,
+        "name": "losingTicket",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ハズレ券\"}],text:\"\"},custom_data={itemType:losingTicket}]",
+        "created_at": "2025-12-30T01:23:54.000000Z",
+        "updated_at": "2025-12-30T01:23:54.000000Z"
     },
     {
         "id": 327,
@@ -11052,11 +11070,11 @@
         "updated_at": "2025-12-29T04:35:24.000000Z"
     },
     {
-        "id": 1496,
-        "name": "health_boost_3",
+        "id": 1490,
+        "name": "health_boost_2",
         "key": "minecraft:sniffer_spawn_egg",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,rarity=\"epic\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l体力増強(30)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時体力が30増える\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"healthBoost\",level:3},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "nbt": "[enchantment_glint_override=true,rarity=\"rare\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l体力増強(20)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時体力が20増える\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"healthBoost\",level:2},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
@@ -11070,11 +11088,11 @@
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
     {
-        "id": 1490,
-        "name": "health_boost_2",
+        "id": 1496,
+        "name": "health_boost_3",
         "key": "minecraft:sniffer_spawn_egg",
         "is_original": 1,
-        "nbt": "[enchantment_glint_override=true,rarity=\"rare\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l体力増強(20)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時体力が20増える\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"healthBoost\",level:2},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "nbt": "[enchantment_glint_override=true,rarity=\"epic\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l体力増強(30)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時体力が30増える\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"healthBoost\",level:3},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-29T04:38:54.000000Z",
         "updated_at": "2025-12-30T00:12:06.000000Z"
     },
