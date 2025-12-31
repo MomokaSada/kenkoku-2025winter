@@ -664,15 +664,20 @@ function executeTrade(p: player, tid: number, amount: number = 1):
             set {_err_msg} to "&c[System] アイテムが足りません (必要: %{_req_name}% x%{_req_total_qty}%)"
             stop loop
             
-    # お金チェック
+    
+    # お金チェック (Custom Economy)
     if {_can_afford} is true:
         loop {_trade_reqs::price::*}:
             set {_price} to loop-value
             set {_total_price} to {_price} * {_amount}
-            if {_p}'s balance < {_total_price}:
-                set {_can_afford} to false
-                set {_err_msg} to "&c[System] お金が足りません (必要: %{_total_price}%G)"
-                stop loop
+            if {_total_price} > 0:
+                set {_m} to metadata "money" of {_p}
+                if {_m} is not set:
+                    set {_m} to 0
+                if {_m} < {_total_price}:
+                    set {_can_afford} to false
+                    set {_err_msg} to "&c[System] お金が足りません (必要: %{_total_price}%G)"
+                    stop loop
     
     # エラーがあれば表示して終了
     if {_can_afford} is false:
@@ -711,12 +716,20 @@ function executeTrade(p: player, tid: number, amount: number = 1):
             remove {_req_total_qty} of {_item} from {_p}'s inventory
         send "&c[System] %{_req_name}% x%{_req_total_qty}% を消費しました。" to {_p}
     
-    # お金消費
+    # お金消費 (Custom Economy)
     loop {_trade_reqs::price::*}:
         set {_price} to loop-value
         set {_total_price} to {_price} * {_amount}
         if {_total_price} > 0:
-            remove {_total_price} from {_p}'s balance
+            set {_m} to metadata "money" of {_p}
+            subtract {_total_price} from {_m}
+            set metadata "money" of {_p} to {_m}
+            
+            # DB更新
+            set {_uuid} to "%uuid of {_p}%"
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+            updateSidebar({_p})
+            
             send "&c[System] %{_total_price}%G を支払いました。" to {_p}
     
     # リワード付与
