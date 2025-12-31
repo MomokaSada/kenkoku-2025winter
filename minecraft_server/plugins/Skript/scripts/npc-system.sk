@@ -43,15 +43,19 @@ function spawnNpc(name: text, loc: location, p: player):
     # NPC基本情報取得
     # NPC基本情報取得
     set {_is_number} to false
-    if {_name} matches "^[0-9]+$":
+    set {_check_id} to {_name} parsed as number
+    if {_check_id} is set:
         set {_is_number} to true
         
     if {_is_number} is true:
-        # IDまたは名前で検索 (完全一致)
-        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.id = %{_name}% OR n.name = '%{_name}%' LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
+        # IDまたは名前で検索
+        # SkriptのDB連携では変数が自動的にクオートされる可能性があるため、明示的なクオートを避けるか、
+        # あるいは文字列結合で対応する。
+        # ここではオリジナルが %{_name}% だったことを踏まえ、元に戻しつつID条件を加える。
+        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.id = %{_check_id}% OR n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
     else:
         # 名前で検索
-        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = '%{_name}%' LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
+        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
     
     if {_npc_data::id::*} is not set:
         broadcast "&c[Error] 指定されたNPC (%{_name}%) は見つかりませんでした。"
