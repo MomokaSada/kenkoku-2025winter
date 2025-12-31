@@ -328,9 +328,9 @@ function openTradeMenu(p: player, npc: entity, page: number):
         send "&c[Error] NPCのIDを取得できませんでした。" to {_p}
         stop
     
-    # NPCの取引リストを取得（view_item_id と npc_type も取得）
+    # NPCの取引リストを取得（view_item_idからitems.keyを取得、npc_typeも取得）
     delete {_trades::*}
-    execute "SELECT t.id, t.content, t.view_item_id, nt.name as npc_type FROM trades t JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
+    execute "SELECT t.id, t.content, vi.key as view_item_key, nt.name as npc_type FROM trades t LEFT JOIN items vi ON t.view_item_id = vi.id JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
     
     if {_trades::id::*} is not set:
         send "&c[Error] このNPCには取引がありません。" to {_p}
@@ -366,7 +366,7 @@ function openTradeMenu(p: player, npc: entity, page: number):
             if loop-number <= {_end_idx}:
                 set {_tid} to {_trades::id::%loop-number%}
                 set {_content} to {_trades::content::%loop-number%}
-                set {_view_item_key} to {_trades::view_item_id::%loop-number%}
+                set {_view_item_key} to {_trades::view_item_key::%loop-number%}
                 set {_npc_type} to {_trades::npc_type::%loop-number%}
                 
                 # view_item_idからアイテムを作成（minecraft:プレフィックスを除去）
