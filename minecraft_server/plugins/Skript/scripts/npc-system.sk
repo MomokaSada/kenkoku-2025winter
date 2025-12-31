@@ -297,12 +297,6 @@ on rightclick on villager:
                 set {_has_ticket} to true
                 stop loop
         
-        if {_has_ticket} is false:
-            # トレード数に関わらず一律64枚配布
-            set {_ticket} to getTradeTicket()
-            give 64 of {_ticket} to {_p}
-            send "&a[System] 取引に必要な分の取引券 (x64) を受け取りました。" to {_p}
-            play sound "entity.experience_orb.pickup" with volume 0.5 to {_p}
 
 # カスタムGUI取引システム
 # 村人の取引UIを廃止し、チェストGUIで実装
@@ -429,7 +423,7 @@ function openTradeMenu(p: player, npc: entity, page: number):
         set name of {_next_btn} to "&a&l次のページ →"
         set {_nbt_next} to "{custom_data:{action:""next_page"",npcId:%{_npc_id}%,page:%{_page}%}}"
         add nbt compound from {_nbt_next} to nbt of {_next_btn}
-        set slot 53 of {_p}'s current inventory to {_next_btn}
+        set slot 52 of {_p}'s current inventory to {_next_btn}
     
     # 一括取引量の初期化
     if {-trade_amount::%{_p}%} is not set:
@@ -441,7 +435,7 @@ function openTradeMenu(p: player, npc: entity, page: number):
     set lore of {_bulk_btn} to "&7クリックで取引量を変更" and "&7(1 -> 16 -> 32 -> 48 -> 64)"
     set {_nbt_bulk} to "{custom_data:{action:""toggle_amount"",npcId:%{_npc_id}%,page:%{_page}%}}"
     add nbt compound from {_nbt_bulk} to nbt of {_bulk_btn}
-    set slot 52 of {_p}'s current inventory to {_bulk_btn}
+    set slot 53 of {_p}'s current inventory to {_bulk_btn}
     
     # 閉じるボタン
     set {_close_btn} to barrier
@@ -464,6 +458,11 @@ on inventory click:
         set {_clicked} to event-slot
         if {_clicked} is not air:
             set {_nbt_str} to "%nbt of {_clicked}%"
+            
+            # 閉じるボタン
+            if name of {_clicked} contains "閉じる":
+                close player's inventory
+                stop
             
             # ページネーションボタン
             if {_nbt_str} contains "prev_page":
