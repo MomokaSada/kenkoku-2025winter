@@ -353,7 +353,61 @@ on player trade:
         delete {-trade_rewards::*}
         execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
         
+        # ========================================
+        # コスト所持チェック（事前確認）
+        # ========================================
+        set {_can_afford} to true
+        set {_err_msg} to ""
+        
+        # アイテムチェック
+        loop {-trade_reqs::item_key::*}:
+            set {_req_key} to loop-value
+            set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
+            set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
+            set {_req_name} to {-trade_reqs::item_name::%loop-index%}
+            
+            set {_amount} to 0
+            
+            if {_is_orig} is true:
+                # カスタムアイテム：名前マッチング
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_player}'s inventory:
+                    set {_stripped_inv} to uncoloured name of loop-item
+                    if {_stripped_inv} is {_stripped_req}:
+                        add item amount of loop-item to {_amount}
+            else:
+                # バニラアイテム
+                set {_req_item} to {_req_key} parsed as item
+                if {_req_item} is set:
+                    set {_amount} to amount of {_req_item} in {_player}'s inventory
+            
+            if {_amount} < {_req_qty}:
+                set {_can_afford} to false
+                set {_err_msg} to "&cアイテムが足りません: %{_req_key}% x%{_req_qty}%"
+                stop loop
+        
+        # お金チェック
+        if {_can_afford} is true:
+            loop {-trade_reqs::price::*}:
+                set {_price} to loop-value
+                if {_price} > 0:
+                    set {_m} to metadata "money" of {_player}
+                    if {_m} is not set:
+                        set {_m} to 0
+                    if {_m} < {_price}:
+                        set {_can_afford} to false
+                        set {_err_msg} to "&cお金が足りません: %{_price}%G"
+                        stop loop
+        
+        # コスト不足の場合は中止
+        if {_can_afford} is false:
+            send {_err_msg} to {_player}
+            send "&c[System] 条件を満たしていないため、取引を実行できませんでした。" to {_player}
+            stop
+        
+        # ========================================
         # コスト徴収 (アイテム)
+        # ========================================
         loop {-trade_reqs::item_key::*}:
             set {_req_key} to loop-value
             set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
