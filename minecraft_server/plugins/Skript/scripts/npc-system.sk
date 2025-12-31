@@ -392,11 +392,11 @@ on inventory click:
             
             # 1. コスト情報 (Cost Items + Money)
             delete {-trade_reqs::*}
-            execute "SELECT i.key as item_key, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+            execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
 
             # 2. リワード情報 (Reward Items + Money)
             delete {-trade_rewards::*}
-            execute "SELECT i.key as item_key, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+            execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
             
             # 3. 所持チェック
             loop {-trade_reqs::item_key::*}:
@@ -753,10 +753,10 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
 
     # DBからコスト・報酬取得
     delete {-trade_reqs::*}
-    execute "SELECT i.key as item_key, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+    execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
     
     delete {-trade_rewards::*}
-    execute "SELECT i.key as item_key, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+    execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
     
     # 2. 取引可能回数 (N) の計算
     
