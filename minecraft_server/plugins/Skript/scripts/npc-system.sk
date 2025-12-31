@@ -165,21 +165,75 @@ function spawnNpc(name: text, loc: location, p: player):
     set {_trade_count} to size of {_npc_trades::id::*}
     set metadata value "trade_count" of {_npc} to {_trade_count}
         
+    displayNpcSpawnSuccess({_name}, {_id}, {_trade_count})
+    
+    
+# NPC召喚成功メッセージの表示関数 (分離)
+function displayNpcSpawnSuccess(name: text, id: number, trade_count: number):
     broadcast "&a[System] NPC (%{_name}%) を召喚しました！ (ID: %{_id}%, Trades: %{_trade_count}%)"
-    
-    # giveコマンドとスポーンエッグの生成
-    set {_escaped_name} to {_name}
-    replace all """" with "\""" in {_escaped_name}
-    set {_give_nbt} to "{VillagerData:{profession:""minecraft:%{_profession}%"",type:""minecraft:%{_biome}%"",level:%{_level}%},entity_data:{id:""minecraft:villager"",NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b,Silent:1b,CustomName:'{""text"":""%{_escaped_name}%""}',Offers:{Recipes:%{_recipes_nbt}%}},custom_data:{KenkokuNpcName:""%{_escaped_name}%""},item_name:'{""text"":""%{_escaped_name}%""}'}"
-    
-    set {_command} to "/minecraft:give @p villager_spawn_egg%{_give_nbt}% 1"
-    
-    if {_p} is set:
-        # スポーンエッグを付与
-        execute console command "minecraft:give %{_p}% villager_spawn_egg%{_give_nbt}% 1"
+
+
+# NPC召喚用スポーンエッグを与える関数
+function giveNpcSpawner(p: player, name: text):
+    # 1. データベースから存在するNPCか確認 (ID or Name)
+    set {_is_number} to false
+    set {_check_id} to {_name} parsed as number
+    if {_check_id} is set:
+        set {_is_number} to true
         
-        # チャット欄にコピー用メッセージを出力
-        send formatted "<tooltip:クリックでコピー><copy:%{_command}%>&e[Click to Copy] &7%{_command}%" to {_p}
+    delete {_check_name}
+    if {_is_number} is true:
+        execute "SELECT name FROM npcs WHERE id = %{_check_id}% OR name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_check_res::*}
+    else:
+        execute "SELECT name FROM npcs WHERE name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_check_res::*}
+        
+    set {_check_name} to {_check_res::name::1}
+    
+    if {_check_name} is not set:
+        send "&c[Error] 指定されたNPC (%{_name}%) は存在しません。" to {_p}
+        stop
+    
+    # 正規の名称を使用
+    set {_name} to {_check_name}
+    set {_item_name} to "NPC召喚: %{_name}%"
+
+    # 2. スポーンエッグの生成
+    set {_item} to villager spawn egg
+    
+    # Skript Standard
+    set name of {_item} to "&e%{_item_name}%"
+    set lore of {_item} to "&7右クリックでNPCを召喚します"
+    
+    # NBT設定 (カスタムデータ埋め込み)
+    set {_nbt} to "{"
+    set {_nbt} to "%{_nbt}%enchantment_glint_override:1b,"
+    set {_nbt} to "%{_nbt}%rarity:""rare"","
+    set {_nbt} to "%{_nbt}%entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},"
+    set {_nbt} to "%{_nbt}%custom_data:{itemType:""npcSpawner"",npcName:""%{_name}%""}"
+    set {_nbt} to "%{_nbt}%}"
+    
+    add nbt compound from {_nbt} to nbt of {_item}
+    
+    # プレイヤーに付与
+    give {_item} to {_p}
+    
+    # 3. コピー用コマンドの生成 (1.20.5+ Syntax)
+    # custom_dataはNBT形式(key:value)だが、Componentのcustom_data={}内ではそれに従う
+    # 名前などはJson Component Syntaxが必要
+    
+    # 表示名 (Yellow & No Italic)
+    set {_display_json} to "{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""yellow"",""text"":""%{_item_name}%""}],""text"":""""}"
+    
+    # Lore (Gray)
+    set {_lore_json} to "[{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""gray"",""text"":""右クリックでNPCを召喚します""}],""text"":""""}]"
+    
+    # Command String Construction
+    set {_give_nbt} to "enchantment_glint_override=1b,rarity=rare,custom_name='%{_display_json}%',lore=%{_lore_json}%,custom_data={itemType:npcSpawner,npcName:""%{_name}%""},entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
+    
+    set {_command} to "/minecraft:give @p villager_spawn_egg[%{_give_nbt}%] 1"
+    
+    send "&a[System] NPC召喚エッグを入手しました。" to {_p}
+    send formatted "<tooltip:クリックでコピー><copy:%{_command}%>&e[Click to Copy] &7%{_command}%" to {_p}
 
 
 # NPCを召喚するコマンド (Function呼び出し)
@@ -187,7 +241,7 @@ command /spawn-npc <text>:
     permission: op
     usage: /spawn-npc <NPC名>
     trigger:
-        spawnNpc(arg-1, location of player, player)
+        giveNpcSpawner(player, arg-1)
 
 
 # NPC一括更新コマンド
@@ -756,6 +810,40 @@ command /kill-nearby-npc:
             if scoreboard tags of loop-entity contains "kenkoku_npc":
                 kill loop-entity
                 send "&c[System] 近くのNPCを削除しました。"
+
+# NPC Spawner Usage (Right Click Block)
+on rightclick with villager spawn egg:
+    set {_tool} to player's tool
+    set {_nbt} to custom nbt of {_tool}
+    set {_type} to string tag "itemType" of {_nbt}
+    
+    if {_type} is "npcSpawner":
+        cancel event
+        
+        set {_npcName} to string tag "npcName" of {_nbt}
+        if {_npcName} is not set:
+            send "&c[Error] NPC名が定義されていません。"
+            stop
+            
+        # ターゲット位置の特定
+        set {_loc} to event-location
+        if {_loc} is not set:
+            # ブロッククリックでなければターゲットブロックの上面
+            set {_target_block} to target block
+            if {_target_block} is set:
+                set {_loc} to location above {_target_block}
+            else:
+                set {_loc} to location of player
+                
+        # 向きをプレイヤーに向ける
+        set yaw of {_loc} to yaw of player * -1
+        
+        # 召喚実行
+        spawnNpc({_npcName}, {_loc}, player)
+        
+        # アイテム消費 (サバイバルのみ)
+        if gamemode of player is survival:
+            remove 1 of {_tool} from player
 
 # ------------------------------------------------------------------
 # Shift-Click (一括取引) 用の処理関数
