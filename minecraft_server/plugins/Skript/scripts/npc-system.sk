@@ -517,6 +517,11 @@ on player trade:
         
         send "&a[System] 取引成立！" to {_player}
 
+# Q長押し防止（マーチャントインベントリ）
+on drop:
+    if "%player's current inventory's type%" contains "merchant":
+        cancel event
+
 # 一括取引専用処理 (Inventory Click + Shift)
 on inventory click:
     if "%event-inventory's type%" contains "merchant":
@@ -1255,69 +1260,22 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
                     
                     set {_current_stock} to 0
                     if {_req_item_c} is set:
-                        set {_has_stock} to false
-                        
                         if {_is_orig_c} is true:
-                            # Custom Data String Check
-                            set {_current_stock} to 0
-                            
-                            # Parse expected ItemType from DB NBT (-trade_reqs::nbt::%loop-index%)
-                            # Since we don't have the parsed item yet properly, we parse the STRING nbt for itemType
-                            # Full custom_data Extraction (Bulk Check)
-                            set {_target_custom_data_c} to ""
-                            set {_raw_nbt} to {-trade_reqs::nbt::%loop-index%}
-                            if {_raw_nbt} contains "custom_data":
-                                set {_raw_nbt_clean} to {_raw_nbt}
-                                replace all " " with "" in {_raw_nbt_clean}
-                                replace all """" with "" in {_raw_nbt_clean}
-                                replace all "'" with "" in {_raw_nbt_clean}
-                                replace all "[" with "" in {_raw_nbt_clean}
-                                replace all "]" with "" in {_raw_nbt_clean}
-                                replace all "minecraft:" with "" in {_raw_nbt_clean}
-                                replace all "=" with ":" in {_raw_nbt_clean}
-                                
-                                set {_parts::*} to {_raw_nbt_clean} split at "custom_data:{"
-                                if size of {_parts::*} > 1:
-                                    set {_val_part} to {_parts::2}
-                                    set {_subparts::*} to {_val_part} split at "}"
-                                    set {_target_custom_data_c} to {_subparts::1}
-                            
-                            if {_target_custom_data_c} is not "":
-                                loop all items in {_p}'s inventory:
-                                    set {_req_nbt_check_raw} to full nbt of loop-item
-                                    set {_nbt_check_clean} to "%{_req_nbt_check_raw}%"
-                                    set {_q} to """"
-                                    replace all "[" with "" in {_nbt_check_clean}
-                                    replace all "]" with "" in {_nbt_check_clean}
-                                    replace all " " with "" in {_nbt_check_clean}
-                                    replace all {_q} with "" in {_nbt_check_clean}
-                                    replace all "'" with "" in {_nbt_check_clean}
-                                    replace all "minecraft:" with "" in {_nbt_check_clean}
-                                    replace all "=" with ":" in {_nbt_check_clean}
-                                    
-                                    if {_nbt_check_clean} contains "custom_data:{":
-                                        set {_inv_parts::*} to {_nbt_check_clean} split at "custom_data:{"
-                                        if size of {_inv_parts::*} > 1:
-                                            set {_inv_val_part} to {_inv_parts::2}
-                                            set {_inv_subparts::*} to {_inv_val_part} split at "}"
-                                            set {_inv_custom_data} to {_inv_subparts::1}
-                                            
-                                            if {_inv_custom_data} is {_target_custom_data_c}:
-                                                add item amount of loop-item to {_current_stock}
-                            else:
-                                # Fallback to strict count if no custom type
-                                set {_current_stock} to amount of {_req_item_c} in {_p}'s inventory
+                            # カスタムアイテム：名前マッチング（簡略化）
+                            set {_req_name_c} to {-trade_reqs::item_name::%loop-index%}
+                            set {_stripped_req_c} to uncoloured {_req_name_c}
+                            loop all items in {_p}'s inventory:
+                                set {_stripped_inv_c} to uncoloured name of loop-item
+                                if {_stripped_inv_c} is {_stripped_req_c}:
+                                    add item amount of loop-item to {_current_stock}
                         else:
                             # Vanilla Check
                             set {_current_stock} to amount of {_req_item_c} in {_p}'s inventory
-                        
                     else:
                         # Item Parse Failed (Invalid Key)
                         set {_active} to false
-                        broadcast "&c[System] エラー: 要求アイテムの定義が無効です (%{_req_key_c}%)"
                         
                     if {_current_stock} < {_req_qty_c}:
-                        set {_active} to false
                         set {_active} to false
             
             if {_active} is true:
@@ -1333,8 +1291,6 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
         if {_active} is true:
             # コスト徴収 (アイテム)
             loop {-trade_reqs::item_key::*}:
-                delete {_req_item}
-                delete {_nbt_fixed}
                 set {_req_key} to loop-value-2
                 set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
                 set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
@@ -1347,115 +1303,28 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
                         set {_len} to length of {_req_nbt}
                         set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
                 
-                # Hybrid Parsing Logic (Bulk Removal)
-                if {_req_key} contains "[":
-                    set {_req_item} to {_req_key} parsed as item
-                else if {_req_nbt} starts with "[":
-                    # set {_req_item} to "%{_req_key}%%{_req_nbt}%" parsed as item
-                    if {_req_item} is not set:
-                        set {_req_item} to {_req_key} parsed as item
-                        # Sanitize [k=v] to {k:v} for SkBee
-                        set {_len} to length of {_req_nbt}
-                        set {_inner} to subtext of {_req_nbt} from 2 to {_len} - 1
-                        set {_nbt_fixed} to "{%{_inner}%}"
-                        replace all "consumable=" with "consumable:" in {_nbt_fixed}
-                        replace all "custom_data=" with "custom_data:" in {_nbt_fixed}
-                        replace all "item_name=" with "item_name:" in {_nbt_fixed}
-                        replace all "custom_name=" with "custom_name:" in {_nbt_fixed}
-                        replace all "rarity=" with "rarity:" in {_nbt_fixed}
-                        replace all "'" with """" in {_nbt_fixed}
-                        # add nbt from {_nbt_fixed} to nbt of {_req_item}
-                else:
-                    set {_req_item} to {_req_key} parsed as item
-                    if {_is_orig} is true:
-                         # Strict Match Fallback Logic (Only applied if strict match path used)
-                        if {_req_nbt} is set:
-                            if {_req_nbt} starts with """":
-                                set {_len} to length of {_req_nbt}
-                                set {_req_nbt} to subtext of {_req_nbt} from 2 to {_len} - 1
-                            add nbt compound from {_req_nbt} to nbt of {_req_item}
-                
-                # Removal Logic (Decoupled)
-                    # Removal Logic (Decoupled & Relaxed)
-                set {_target_custom_data_rem} to ""
-                set {_nbt_to_clean} to ""
-                if {_nbt_fixed} is not "":
-                    set {_nbt_to_clean} to {_nbt_fixed}
-                else:
-                    set {_nbt_to_clean} to "%{_req_nbt}%"
-                    
-                if {_nbt_to_clean} contains "custom_data":
-                    set {_nbt_fixed_clean} to "%{_nbt_to_clean}%"
-                    set {_q} to """"
-                    replace all "[" with "" in {_nbt_fixed_clean}
-                    replace all "]" with "" in {_nbt_fixed_clean}
-                    replace all " " with "" in {_nbt_fixed_clean}
-                    replace all {_q} with "" in {_nbt_fixed_clean}
-                    replace all "'" with "" in {_nbt_fixed_clean}
-                    replace all "minecraft:" with "" in {_nbt_fixed_clean}
-                    replace all "=" with ":" in {_nbt_fixed_clean}
-                    
-                    set {_parts::*} to {_nbt_fixed_clean} split at "custom_data:{"
-                    if size of {_parts::*} > 1:
-                        set {_val_part} to {_parts::2}
-                        set {_subparts::*} to {_val_part} split at "}"
-                        set {_target_custom_data_rem} to {_subparts::1}
-                
-                set {_removed_by_custom} to false
-                if {_target_custom_data_rem} is not "":
-                    set {_to_remove} to {_req_qty}
+                # アイテム削除処理（簡略化版）
+                if {_is_orig} is true:
+                    # カスタムアイテムの場合は名前マッチング
+                    set {_total_remove} to {_req_qty}
+                    set {_removed_count} to 0
+                    set {_stripped_req_rem} to uncoloured {_req_name}
                     loop all items in {_p}'s inventory:
-                        if {_to_remove} > 0:
-                            set {_req_nbt_check_raw} to full nbt of loop-item
-                            if {_req_nbt_check_raw} is not set:
-                                continue
-                            set {_nbt_check_clean} to "%{_req_nbt_check_raw}%"
-                            set {_q} to """"
-                            replace all "[" with "" in {_nbt_check_clean}
-                            replace all "]" with "" in {_nbt_check_clean}
-                            replace all " " with "" in {_nbt_check_clean}
-                            replace all {_q} with "" in {_nbt_check_clean}
-                            replace all "'" with "" in {_nbt_check_clean}
-                            replace all "minecraft:" with "" in {_nbt_check_clean}
-                            replace all "=" with ":" in {_nbt_check_clean}
-                            
-                            if {_nbt_check_clean} contains "custom_data:{":
-                                set {_inv_parts::*} to {_nbt_check_clean} split at "custom_data:{"
-                                if size of {_inv_parts::*} > 1:
-                                    set {_inv_val_part} to {_inv_parts::2}
-                                    set {_inv_subparts::*} to {_inv_val_part} split at "}"
-                                    set {_inv_custom_data} to {_inv_subparts::1}
-                                    if {_inv_custom_data} is {_target_custom_data_rem}:
-                                        set {_count} to item amount of loop-item
-                                        if {_count} <= {_to_remove}:
-                                            remove loop-item from {_p}'s inventory
-                                            subtract {_count} from {_to_remove}
-                                        else:
-                                            set item amount of loop-item to ({_count} - {_to_remove})
-                                            set {_to_remove} to 0
-                    if {_to_remove} <= 0:
-                        set {_removed_by_custom} to true
-                
-                if {_removed_by_custom} is false:
-                    if {_is_orig} is true:
-                        set {_total_remove} to {_req_qty}
-                        set {_removed_count} to 0
-                        set {_stripped_req_rem} to uncoloured {_req_name}
-                        loop all items in {_p}'s inventory:
-                            if {_removed_count} < {_total_remove}:
-                                set {_stripped_inv_rem} to uncoloured name of loop-item
-                                if {_stripped_inv_rem} is {_stripped_req_rem}:
-                                    set {_chunk_amt} to item amount of loop-item
-                                    set {_needed} to {_total_remove} - {_removed_count}
-                                    if {_chunk_amt} <= {_needed}:
-                                        remove loop-item from {_p}'s inventory
-                                        add {_chunk_amt} to {_removed_count}
-                                    else:
-                                        remove {_needed} of loop-item from {_p}'s inventory
-                                        add {_needed} to {_removed_count}
-                    else:
-                        # Vanilla Item
-                        remove {_req_qty} of {_req_item} from {_p}
+                        if {_removed_count} < {_total_remove}:
+                            set {_stripped_inv_rem} to uncoloured name of loop-item
+                            if {_stripped_inv_rem} is {_stripped_req_rem}:
+                                set {_chunk_amt} to item amount of loop-item
+                                set {_needed} to {_total_remove} - {_removed_count}
+                                if {_chunk_amt} <= {_needed}:
+                                    remove loop-item from {_p}'s inventory
+                                    add {_chunk_amt} to {_removed_count}
+                                else:
+                                    remove {_needed} of loop-item from {_p}'s inventory
+                                    add {_needed} to {_removed_count}
+                else:
+                    # Vanilla Item
+                    set {_req_item} to {_req_key} parsed as item
+                    remove {_req_qty} of {_req_item} from {_p}
                          # コスト徴収 (お金)
             loop {-trade_reqs::price::*}:
                 set {_price} to loop-value-2
