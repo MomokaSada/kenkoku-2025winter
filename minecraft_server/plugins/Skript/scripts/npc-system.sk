@@ -828,7 +828,7 @@ on rightclick with villager spawn egg:
         
         set {_npcName} to string tag "npcName" of {_nbt}
         if {_npcName} is not set:
-            send "&c[Error] NPC名が定義されていません。"
+            send "&c[Error] NPC名が定義されていません。" to player
             stop
             
         # ターゲット位置の特定 (プレイヤーの位置)
@@ -842,9 +842,7 @@ on rightclick with villager spawn egg:
         
         # アイテム消費 (サバイバルのみ)
         if gamemode of player is survival:
-            set {_amount} to item amount of {_tool}
-            subtract 1 from {_amount}
-            set item amount of {_tool} to {_amount}
+            remove 1 of {_tool} from player
 
 # ------------------------------------------------------------------
 # Shift-Click (一括取引) 用の処理関数
