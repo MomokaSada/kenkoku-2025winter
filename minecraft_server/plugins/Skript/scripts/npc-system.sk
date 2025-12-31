@@ -452,6 +452,15 @@ on player trade:
         if {_npc_type} is "quest":
             add "kenkoku_quest_completed_%{_tid}%" to scoreboard tags of {_player}
         
+        # 取引券の消費 (Slot 0から1枚削除)
+        set {_ticket_slot} to slot 0 of current inventory of {_player}
+        if {_ticket_slot} is not air:
+            set {_ticket_amount} to item amount of {_ticket_slot}
+            if {_ticket_amount} > 1:
+                set item amount of slot 0 of current inventory of {_player} to {_ticket_amount} - 1
+            else:
+                set slot 0 of current inventory of {_player} to air
+        
         send "&a[System] 取引成立！" to {_player}
 
 # 一括取引専用処理 (Inventory Click + Shift)
