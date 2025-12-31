@@ -179,8 +179,7 @@ function spawnNpc(name: text, loc: location, p: player):
         execute console command "minecraft:give %{_p}% villager_spawn_egg%{_give_nbt}% 1"
         
         # チャット欄にコピー用メッセージを出力
-        send "&e[Click to Copy] &fNPC (%{_name}%) の召喚用コマンドを生成しました。" to {_p}
-        send formatted "<suggest command:%{_command}%>&7[ここをクリックしてコマンドを表示/コピー]&r" to {_p}
+        send formatted "<tooltip:クリックでコピー><copy:%{_command}%>&e[Click to Copy] &7%{_command}%" to {_p}
 
 
 # NPCを召喚するコマンド (Function呼び出し)
