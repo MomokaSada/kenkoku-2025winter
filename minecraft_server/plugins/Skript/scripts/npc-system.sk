@@ -817,6 +817,12 @@ on rightclick with villager spawn egg:
     set {_nbt} to custom nbt of {_tool}
     set {_type} to string tag "itemType" of {_nbt}
     
+    # オフハンドチェック
+    if {_type} is not "npcSpawner":
+        set {_tool} to player's offhand tool
+        set {_nbt} to custom nbt of {_tool}
+        set {_type} to string tag "itemType" of {_nbt}
+    
     if {_type} is "npcSpawner":
         cancel event
         
@@ -836,7 +842,9 @@ on rightclick with villager spawn egg:
         
         # アイテム消費 (サバイバルのみ)
         if gamemode of player is survival:
-            remove 1 of {_tool} from player
+            set {_amount} to item amount of {_tool}
+            subtract 1 from {_amount}
+            set item amount of {_tool} to {_amount}
 
 # ------------------------------------------------------------------
 # Shift-Click (一括取引) 用の処理関数
