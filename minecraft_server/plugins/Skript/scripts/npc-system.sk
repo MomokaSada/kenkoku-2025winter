@@ -432,12 +432,12 @@ function openTradeMenu(p: player, npc: entity, page: number):
         set slot 53 of {_p}'s current inventory to {_next_btn}
     
     # 一括取引量の初期化
-    if {-trade_amount::%p%} is not set:
-        set {-trade_amount::%p%} to 1
+    if {-trade_amount::%{_p}%} is not set:
+        set {-trade_amount::%{_p}%} to 1
     
     # 一括取引切り替えボタン
     set {_bulk_btn} to gold nugget
-    set name of {_bulk_btn} to "&e&l一括取引: &f&lx%{-trade_amount::%p%}%"
+    set name of {_bulk_btn} to "&e&l一括取引: &f&lx%{-trade_amount::%{_p}%}%"
     set lore of {_bulk_btn} to "&7クリックで取引量を変更" and "&7(1 -> 16 -> 32 -> 48 -> 64)"
     set {_nbt_bulk} to "{custom_data:{action:""toggle_amount"",npcId:%{_npc_id}%,page:%{_page}%}}"
     add nbt compound from {_nbt_bulk} to nbt of {_bulk_btn}
@@ -604,6 +604,11 @@ function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: num
 
 # 取引実行関数
 function executeTrade(p: player, tid: number, amount: number = 1):
+    # パラメータをローカル変数にセット
+    set {_p} to {_p}
+    set {_tid} to {_tid}
+    set {_amount} to {_amount}
+
     # 一括取引の制限（デフォルト1）
     if {_amount} < 1:
         set {_amount} to 1
