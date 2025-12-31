@@ -512,7 +512,12 @@ on inventory click:
                 set {_parts::*} to split {_nbt_str} at "tradeId:"
                 set {_val} to {_parts::2}
                 set {_sub::*} to split {_val} at ","
-                set {_tid} to {_sub::1} parsed as number
+                set {_tid_str} to {_sub::1}
+                set {_tid} to {_tid_str} parsed as number
+                
+                # デバッグ: NBT解析確認
+                broadcast "&d[NBT Debug] Raw: %{_nbt_str}%"
+                broadcast "&d[NBT Debug] Parsed TID String: '%{_tid_str}%', Number: %{_tid}%"
                 
                 # NPC IDも取得（GUI再表示用）
                 set {_parts2::*} to split {_nbt_str} at "npcId:"
@@ -528,7 +533,10 @@ on inventory click:
                             stop
                 
                 # 取引実行してGUI再表示
-                executeTradeAndRefresh(player, {_tid}, {_npc_entity})
+                if {_tid} is set:
+                    executeTradeAndRefresh(player, {_tid}, {_npc_entity})
+                else:
+                    send "&c[Error] 取引IDの取得に失敗しました。" to player
 
 # 取引実行してGUI再表示する関数
 function executeTradeAndRefresh(p: player, tid: number, npc: entity):
@@ -550,8 +558,8 @@ function executeTrade(p: player, tid: number):
     broadcast "&b[Param Debug] Received tid: %{_tid}%"
     
     # Trade IDからNPCタイプを取得
-    execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
-    set {_npc_type} to {-trade_info::npc_type::1}
+    execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {_trade_info::*}
+    set {_npc_type} to {_trade_info::npc_type::1}
     
     # デバッグ: 取引実行時のnpc_type確認
     broadcast "&7[Debug Execute] Trade ID: %{_tid}%, NPC Type: '%{_npc_type}%'"
@@ -563,23 +571,23 @@ function executeTrade(p: player, tid: number):
             stop
     
     # コスト情報取得
-    delete {-trade_reqs::*}
-    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+    delete {_trade_reqs::*}
+    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {_trade_reqs::*}
 
     # リワード情報取得
-    delete {-trade_rewards::*}
-    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+    delete {_trade_rewards::*}
+    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {_trade_rewards::*}
     
     # コスト所持チェック（事前確認）
     set {_can_afford} to true
     set {_err_msg} to ""
     
     # アイテムチェック
-    loop {-trade_reqs::item_key::*}:
+    loop {_trade_reqs::item_key::*}:
         set {_req_key} to loop-value
-        set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
-        set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
-        set {_req_name} to {-trade_reqs::item_name::%loop-index%}
+        set {_req_qty} to {_trade_reqs::quantity::%loop-index%}
+        set {_is_orig} to {_trade_reqs::is_original::%loop-index%}
+        set {_req_name} to {_trade_reqs::item_name::%loop-index%}
         
         set {_amount} to 0
         
@@ -603,7 +611,7 @@ function executeTrade(p: player, tid: number):
     
     # お金チェック
     if {_can_afford} is true:
-        loop {-trade_reqs::price::*}:
+        loop {_trade_reqs::price::*}:
             set {_price} to loop-value
             if {_price} > 0:
                 set {_m} to metadata "money" of {_p}
@@ -621,12 +629,12 @@ function executeTrade(p: player, tid: number):
         stop
     
     # コスト徴収 (アイテム)
-    loop {-trade_reqs::item_key::*}:
+    loop {_trade_reqs::item_key::*}:
         set {_req_key} to loop-value
-        set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
-        set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
-        set {_req_nbt} to {-trade_reqs::nbt::%loop-index%}
-        set {_req_name} to {-trade_reqs::item_name::%loop-index%}
+        set {_req_qty} to {_trade_reqs::quantity::%loop-index%}
+        set {_is_orig} to {_trade_reqs::is_original::%loop-index%}
+        set {_req_nbt} to {_trade_reqs::nbt::%loop-index%}
+        set {_req_name} to {_trade_reqs::item_name::%loop-index%}
         
         # Strip Quotes
         if {_req_nbt} is set:
@@ -660,7 +668,7 @@ function executeTrade(p: player, tid: number):
             send "&c- %{_req_key}% x%{_req_qty}%" to {_p}
     
     # コスト徴収 (お金)
-    loop {-trade_reqs::price::*}:
+    loop {_trade_reqs::price::*}:
         set {_price} to loop-value
         if {_price} > 0:
             set {_m} to metadata "money" of {_p}
@@ -675,11 +683,11 @@ function executeTrade(p: player, tid: number):
             send "&c- %{_price}%G" to {_p}
     
     # リワード付与 (アイテム)
-    loop {-trade_rewards::item_key::*}:
+    loop {_trade_rewards::item_key::*}:
         set {_r_key} to loop-value
-        set {_r_qty} to {-trade_rewards::quantity::%loop-index%}
-        set {_r_is_orig} to {-trade_rewards::is_original::%loop-index%}
-        set {_r_nbt} to {-trade_rewards::nbt::%loop-index%}
+        set {_r_qty} to {_trade_rewards::quantity::%loop-index%}
+        set {_r_is_orig} to {_trade_rewards::is_original::%loop-index%}
+        set {_r_nbt} to {_trade_rewards::nbt::%loop-index%}
         
         # Strip Quotes
         if {_r_nbt} is set:
@@ -701,7 +709,7 @@ function executeTrade(p: player, tid: number):
             send "&a+ %{_r_key}% x%{_r_qty}%" to {_p}
     
     # リワード付与 (お金)
-    loop {-trade_rewards::price::*}:
+    loop {_trade_rewards::price::*}:
         set {_r_price} to loop-value
         if {_r_price} > 0:
             set {_m} to metadata "money" of {_p}
