@@ -392,11 +392,11 @@ on inventory click:
             
             # 1. コスト情報 (Cost Items + Money)
             delete {-trade_reqs::*}
-            execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+            execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
 
             # 2. リワード情報 (Reward Items + Money)
             delete {-trade_rewards::*}
-            execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+            execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
             
             # 3. 所持チェック
             loop {-trade_reqs::item_key::*}:
@@ -404,6 +404,7 @@ on inventory click:
                 set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
                 set {_is_orig} to {-trade_reqs::is_original::%loop-index%}
                 set {_req_nbt} to {-trade_reqs::nbt::%loop-index%}
+                set {_req_name} to {-trade_reqs::item_name::%loop-index%}
                 
                 # Strip Quotes
                 if {_req_nbt} is set:
@@ -628,7 +629,8 @@ on inventory click:
                                                 else:
                                                     set item amount of loop-item to ({_count} - {_to_remove})
                                                     set {_to_remove} to 0
-                            set {_removed_by_custom} to true
+                            if {_to_remove} <= 0:
+                                set {_removed_by_custom} to true
 
                     if {_removed_by_custom} is false:
                         # Fallback to Name Comparison or Vanilla Removal
@@ -753,10 +755,10 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
 
     # DBからコスト・報酬取得
     delete {-trade_reqs::*}
-    execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
     
     delete {-trade_rewards::*}
-    execute "SELECT i.key as item_key, i.name as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
     
     # 2. 取引可能回数 (N) の計算
     
@@ -1073,7 +1075,8 @@ function processBulkTrade(p: player, tid: number, ticket_count: number):
                                         else:
                                             set item amount of loop-item to ({_count} - {_to_remove})
                                             set {_to_remove} to 0
-                    set {_removed_by_custom} to true
+                    if {_to_remove} <= 0:
+                        set {_removed_by_custom} to true
                 
                 if {_removed_by_custom} is false:
                     if {_is_orig} is true:
