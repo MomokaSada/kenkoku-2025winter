@@ -825,15 +825,8 @@ on rightclick with villager spawn egg:
             send "&c[Error] NPC名が定義されていません。"
             stop
             
-        # ターゲット位置の特定
-        set {_loc} to event-location
-        if {_loc} is not set:
-            # ブロッククリックでなければターゲットブロックの上面
-            set {_target_block} to target block
-            if {_target_block} is set:
-                set {_loc} to location above {_target_block}
-            else:
-                set {_loc} to location of player
+        # ターゲット位置の特定 (プレイヤーの位置)
+        set {_loc} to location of player
                 
         # 向きをプレイヤーに向ける
         set yaw of {_loc} to yaw of player * -1
