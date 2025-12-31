@@ -134,7 +134,7 @@ function spawnNpc(name: text, loc: location, p: player):
     
     # giveコマンドとスポーンエッグの生成
     set {_escaped_name} to {_name}
-    replace all """" with "\"" in {_escaped_name}
+    replace all """" with "\""" in {_escaped_name}
     set {_give_nbt} to "{VillagerData:{profession:""minecraft:%{_profession}%"",type:""minecraft:%{_biome}%"",level:%{_level}%},entity_data:{id:""minecraft:villager"",NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b,Silent:1b,CustomName:'{""text"":""%{_escaped_name}%""}',Offers:{Recipes:%{_recipes_nbt}%}},custom_data:{KenkokuNpcName:""%{_escaped_name}%""},item_name:'{""text"":""%{_escaped_name}%""}'}"
     
     set {_command} to "/minecraft:give @p villager_spawn_egg%{_give_nbt}% 1"
