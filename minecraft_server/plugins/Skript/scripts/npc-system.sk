@@ -308,6 +308,9 @@ on rightclick on villager:
 on player trade:
     # NPCとの取引かチェック
     if event-entity has scoreboard tag "kenkoku_npc":
+        # 即座にイベントキャンセル（デフォルト処理を無効化）
+        cancel event
+        
         set {_player} to player
         
         # 取引結果アイテムからトレードIDを取得
@@ -330,9 +333,6 @@ on player trade:
         
         if {_tid} is not set:
             stop
-        
-        # イベントキャンセル（デフォルト処理を無効化）
-        cancel event
         
         # Trade IDからNPCタイプを取得
         execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
