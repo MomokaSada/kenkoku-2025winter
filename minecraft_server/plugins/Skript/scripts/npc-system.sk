@@ -41,7 +41,17 @@ function spawnNpc(name: text, loc: location, p: player):
         stop
         
     # NPC基本情報取得
-    execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
+    # NPC基本情報取得
+    set {_is_number} to false
+    if {_name} matches "^[0-9]+$":
+        set {_is_number} to true
+        
+    if {_is_number} is true:
+        # IDまたは名前で検索 (完全一致)
+        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.id = %{_name}% OR n.name = '%{_name}%' LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
+    else:
+        # 名前で検索
+        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = '%{_name}%' LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
     
     if {_npc_data::id::*} is not set:
         broadcast "&c[Error] 指定されたNPC (%{_name}%) は見つかりませんでした。"
