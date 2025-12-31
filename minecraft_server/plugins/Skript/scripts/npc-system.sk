@@ -308,10 +308,11 @@ on rightclick on villager:
 on player trade:
     # NPCとの取引かチェック
     if event-entity has scoreboard tag "kenkoku_npc":
+        cancel event  # デフォルトの取引処理を無効化
         set {_player} to player
         
         # 取引結果アイテムからトレードIDを取得
-        set {_result_item} to event-item
+        set {_result_item} to the traded item
         set {_nbt_str} to "%nbt of {_result_item}%"
         
         # トレードID取得
