@@ -34,7 +34,7 @@ command /npc-refresh:
 
 # NPCを召喚するコマンド
 # NPC召喚関数 (再利用可能)
-function spawnNpc(name: text, loc: location, p: player = air):
+function spawnNpc(name: text, loc: location, p: player):
     # DB接続チェック
     if {kenkoku_db} is not set:
         broadcast "&c[Error] データベース接続変数 {kenkoku_db} が設定されていません！"
@@ -139,7 +139,7 @@ function spawnNpc(name: text, loc: location, p: player = air):
     
     set {_command} to "/minecraft:give @p villager_spawn_egg%{_give_nbt}% 1"
     
-    if {_p} is not air:
+    if {_p} is set:
         # スポーンエッグを付与
         execute console command "minecraft:give %{_p}% villager_spawn_egg%{_give_nbt}% 1"
         
@@ -180,7 +180,8 @@ command /npc-update:
                 
                 if {_target_name} is set:
                     set {_loc} to location of loop-villager
-                    spawnNpc({_target_name}, {_loc})
+                    delete {_p_none}
+                    spawnNpc({_target_name}, {_loc}, {_p_none})
                     kill loop-villager
                     add 1 to {_count}
                 else:
