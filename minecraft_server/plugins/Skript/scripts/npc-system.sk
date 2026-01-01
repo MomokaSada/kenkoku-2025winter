@@ -727,7 +727,7 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                 # カンマ区切りで要素を取得
                 set {_pairs::*} to split {_content} at ","
                 loop {_pairs::*}:
-                    set {_pair} to loop-value
+                    set {_pair} to loop-value-2
                     # 余分なスペース削除
                     replace all " " with "" in {_pair}
                     # 区切り文字判定 (: が基本だが念のため)
@@ -750,8 +750,8 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                     set {_match} to true
                     
                     loop {_req_tags::*}:
-                        set {_key} to "%loop-index%"
-                        set {_req_val} to loop-value
+                        set {_key} to "%loop-index-2%"
+                        set {_req_val} to loop-value-3
                         
                         # プレイヤーアイテムからタグ値を取得
                         # string tagとして取得して文字列比較する
@@ -837,7 +837,7 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                 set {_has_req_data} to true
                 set {_pairs::*} to split {_content} at ","
                 loop {_pairs::*}:
-                    set {_pair} to loop-value
+                    set {_pair} to loop-value-2
                     replace all " " with "" in {_pair}
                     if {_pair} contains ":":
                         set {_kv::*} to split {_pair} at ":"
@@ -858,8 +858,8 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                         set {_match} to true
                         
                         loop {_req_tags::*}:
-                            set {_key} to "%loop-index%"
-                            set {_req_val} to loop-value
+                            set {_key} to "%loop-index-2%"
+                            set {_req_val} to loop-value-3
                             set {_act_val} to string tag {_key} of {_inv_nbt}
                             if {_act_val} is not set:
                                 set {_match} to false
