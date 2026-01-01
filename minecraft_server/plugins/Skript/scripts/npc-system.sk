@@ -707,7 +707,8 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         if {_is_orig} is true:
             # カスタムアイテムチェック: custom_data内の全要素を動的比較
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
-            delete {_req_tags::*}
+            delete {_req_keys::*}
+            delete {_req_vals::*}
             set {_has_req_data} to false
             
             # 1. custom_dataの中身を抽出 (JSON形式:{} と Component形式={} 両対応)
@@ -721,9 +722,7 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                 set {_sub::*} to split {_parts::2} at "}"
                 set {_content} to {_sub::1}
             
-            # 2. Key-Valueペアを解析してリスト化
-            if {_content} is not "":
-                set {_has_req_data} to true
+            # 2. Key-Valueペアを解析してリスト化 (Case-Sensitivity維持のため並列リスト使用)
             if {_content} is not "":
                 set {_has_req_data} to true
                 # カンマ区切りで要素を取得
@@ -738,13 +737,15 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                             set {_v} to {_kv::2}
                             replace all """" with "" in {_k}
                             replace all """" with "" in {_v}
-                            set {_req_tags::%{_k}%} to {_v}
+                            
+                            add {_k} to {_req_keys::*}
+                            add {_v} to {_req_vals::*}
             
             # DEBUG
-            broadcast "DEBUG: Req NBT: %{_req_nbt_str}%"
-            broadcast "DEBUG: Content: %{_content}%"
-            loop {_req_tags::*}:
-                broadcast "DEBUG: Req Tag %loop-index-2% = %loop-value-2%"
+            # broadcast "DEBUG: Req NBT: %{_req_nbt_str}%"
+            # broadcast "DEBUG: Content: %{_content}%"
+            # loop {_req_keys::*}:
+            #     broadcast "DEBUG: Req Tag Key:%loop-value-2% Val:%{_req_vals::%loop-index-2%}%"
 
             if {_has_req_data} is true:
                 # 3. プレイヤーのアイテムと全タグ一致チェック
@@ -752,12 +753,15 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                     set {_inv_nbt} to custom nbt of loop-item
                     set {_match} to true
                     
-                    loop {_req_tags::*}:
-                        set {_key} to loop-index-2
-                        set {_req_val} to loop-value-3
+                    loop {_req_keys::*}:
+                        set {_key} to loop-value-3
+                        set {_req_val} to {_req_vals::%loop-index-2%} # ここはloop-index-3ではなく、keysリストのindexを使うべき
+                        
+                        # プレイヤーアイテムからタグ値を取得
+                        # string tagとして取得して文字列比較する
                         set {_act_val} to string tag {_key} of {_inv_nbt}
                         
-                        broadcast "DEBUG: Check %loop-item%: %{_key}% Act:%{_act_val}% vs Req:%{_req_val}%"
+                        # broadcast "DEBUG: Check %loop-item%: %{_key}% Act:%{_act_val}% vs Req:%{_req_val}%"
                         
                         if {_act_val} is not set:
                             set {_match} to false
@@ -819,7 +823,8 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         if {_is_orig} is true:
             # カスタムアイテム消費
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
-            delete {_req_tags::*}
+            delete {_req_keys::*}
+            delete {_req_vals::*}
             set {_has_req_data} to false
             
             # 1. 解析 (消費時も同じロジック)
@@ -846,7 +851,9 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                             set {_v} to {_kv::2}
                             replace all """" with "" in {_k}
                             replace all """" with "" in {_v}
-                            set {_req_tags::%{_k}%} to {_v}
+                            
+                            add {_k} to {_req_keys::*}
+                            add {_v} to {_req_vals::*}
             
             set {_remaining} to {_req_total_qty}
             
@@ -857,9 +864,9 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                         set {_inv_nbt} to custom nbt of loop-item
                         set {_match} to true
                         
-                        loop {_req_tags::*}:
-                            set {_key} to loop-index-2
-                            set {_req_val} to loop-value-3
+                        loop {_req_keys::*}:
+                            set {_key} to loop-value-3
+                            set {_req_val} to {_req_vals::%loop-index-2%} # ここも重要：keysループのindexを使う
                             set {_act_val} to string tag {_key} of {_inv_nbt}
                             if {_act_val} is not set:
                                 set {_match} to false
