@@ -243,7 +243,6 @@ on rightclick with villager spawn egg:
         stop
 
     # 使用したアイテムの特定（メインハンド or オフハンド）
-    # event-hand が使えない環境のため、NBTで判定する
     set {_tool} to player's tool
     set {_nbt} to custom nbt of {_tool}
     set {_type} to string tag "itemType" of {_nbt}
@@ -263,15 +262,9 @@ on rightclick with villager spawn egg:
             # スポーン位置の計算 (クリックしたブロックの上)
             set {_loc} to location of block above clicked block
             
-            # 位置調整（ブロックの中心へ + 少し浮かせる）
-            set x-coordinate of {_loc} to floor(x-coordinate of {_loc}) + 0.5
-            set y-coordinate of {_loc} to y-coordinate of {_loc} + 0.05
-            set z-coordinate of {_loc} to floor(z-coordinate of {_loc}) + 0.5
-            
-            # プレイヤーの向きに合わせてNPCの向きを設定（対面するように）
-            set {_yaw} to yaw of player
-            add 180 to {_yaw}
-            set yaw of {_loc} to {_yaw}
+            # 中心に合わせる
+            add 0.5 to x-coordinate of {_loc}
+            add 0.5 to z-coordinate of {_loc}
             
             # NPC召喚実行
             spawnNpc({_npc_name}, {_loc}, player)
@@ -279,6 +272,21 @@ on rightclick with villager spawn egg:
             # サバイバルモードならアイテム消費
             if player's gamemode is not creative:
                 remove 1 of {_tool} from inventory of player
+
+# NPC削除コマンド
+command /kill-npc:
+    permission: op
+    trigger:
+        set {_target} to target entity
+        if {_target} is set:
+            if scoreboard tags of {_target} contains "kenkoku_npc":
+                set {_name} to display name of {_target}
+                kill {_target}
+                send "&a[System] NPC (%{_name}%) を削除しました。"
+            else:
+                send "&c[Error] ターゲットはKenkoku NPCではありません。"
+        else:
+            send "&c[Error] 削除するNPCをターゲットしてください。"
 
 # NPCを召喚するコマンド (Function呼び出し)
 command /spawn-npc <text>:
