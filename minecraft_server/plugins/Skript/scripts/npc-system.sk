@@ -704,7 +704,7 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         
         set {_req_total_qty} to {_req_qty} * {_amount}
         set {_amount_inv} to 0
-                if {_is_orig} is true:
+        if {_is_orig} is true:
             # カスタムアイテムチェック: custom_data全体の一致を確認
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
             set {_target_compound} to nbt compound from "{}"
