@@ -259,12 +259,8 @@ on rightclick with villager spawn egg:
         set {_npc_name} to string tag "npcName" of {_nbt}
         
         if {_npc_name} is set:
-            # スポーン位置の計算 (クリックしたブロックの上)
-            set {_loc} to location of block above clicked block
-            
-            # 中心に合わせる
-            add 0.5 to x-coordinate of {_loc}
-            add 0.5 to z-coordinate of {_loc}
+            # スポーン位置の計算 (プレイヤーの位置 = ~ ~ ~)
+            set {_loc} to location of player
             
             # NPC召喚実行
             spawnNpc({_npc_name}, {_loc}, player)
@@ -277,16 +273,16 @@ on rightclick with villager spawn egg:
 command /kill-npc:
     permission: op
     trigger:
-        set {_target} to target entity
-        if {_target} is set:
-            if scoreboard tags of {_target} contains "kenkoku_npc":
-                set {_name} to display name of {_target}
-                kill {_target}
-                send "&a[System] NPC (%{_name}%) を削除しました。"
-            else:
-                send "&c[Error] ターゲットはKenkoku NPCではありません。"
+        set {_count} to 0
+        loop all entities in radius 5 of player:
+            if scoreboard tags of loop-entity contains "kenkoku_npc":
+                kill loop-entity
+                add 1 to {_count}
+        
+        if {_count} > 0:
+            send "&a[System] 周囲のNPCを %{_count}% 体削除しました。"
         else:
-            send "&c[Error] 削除するNPCをターゲットしてください。"
+            send "&c[System] 半径5m以内に削除対象のNPCは見つかりませんでした。"
 
 # NPCを召喚するコマンド (Function呼び出し)
 command /spawn-npc <text>:
