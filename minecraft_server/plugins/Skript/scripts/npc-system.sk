@@ -705,30 +705,68 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         set {_req_total_qty} to {_req_qty} * {_amount}
         set {_amount_inv} to 0
         if {_is_orig} is true:
-            # カスタムアイテムチェック: custom_data全体の一致を確認
+            # カスタムアイテムチェック: custom_data内の全要素を動的比較
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
-            set {_target_compound} to nbt compound from "{}"
-            set {_has_custom_data} to false
+            delete {_req_tags::*}
+            set {_has_req_data} to false
             
-            # custom_data:{...} の内容を抽出
+            # 1. custom_dataの中身を抽出 (JSON形式:{} と Component形式={} 両対応)
+            set {_content} to ""
             if {_req_nbt_str} contains "custom_data:{":
                 set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
-                # {_parts::2} は "key:val, ...} ..." となっているはず
-                if size of {_parts::*} >= 2:
-                    set {_val_part} to {_parts::2}
-                    # 最初の "}" までを取得（ネストがない前提）
-                    set {_sub::*} to split {_val_part} at "}"
-                    set {_raw_content} to {_sub::1}
-                    
-                    # NBTコンパウンドを作成
-                    set {_target_compound} to nbt compound from "{%{_raw_content}%}"
-                    set {_has_custom_data} to true
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            else if {_req_nbt_str} contains "custom_data={":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data={"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
             
-            if {_has_custom_data} is true:
+            # 2. Key-Valueペアを解析してリスト化
+            if {_content} is not "":
+                set {_has_req_data} to true
+                # カンマ区切りで要素を取得
+                set {_pairs::*} to split {_content} at ","
+                loop {_pairs::*}:
+                    set {_pair} to loop-value
+                    # 余分なスペース削除
+                    replace all " " with "" in {_pair}
+                    # 区切り文字判定 (: が基本だが念のため)
+                    if {_pair} contains ":":
+                        set {_kv::*} to split {_pair} at ":"
+                        if size of {_kv::*} >= 2:
+                            set {_k} to {_kv::1}
+                            set {_v} to {_kv::2}
+                            
+                            # クォート削除 (key, value共に)
+                            replace all """" with "" in {_k}
+                            replace all """" with "" in {_v}
+                            
+                            set {_req_tags::%{_k}%} to {_v}
+            
+            if {_has_req_data} is true:
+                # 3. プレイヤーのアイテムと全タグ一致チェック
                 loop all items in {_p}'s inventory:
                     set {_inv_nbt} to custom nbt of loop-item
-                    # 厳密な一致判定 (NBT Compound同士の比較)
-                    if {_inv_nbt} is {_target_compound}:
+                    set {_match} to true
+                    
+                    loop {_req_tags::*}:
+                        set {_key} to loop-index
+                        set {_req_val} to loop-value
+                        
+                        # プレイヤーアイテムからタグ値を取得
+                        # string tagとして取得して文字列比較する
+                        set {_act_val} to tag {_key} of {_inv_nbt}
+                        
+                        # 値がない、または一致しない場合はNG
+                        # NOTE: "%{_act_val}%" で文字列化して比較 (1bと1の違いなどを吸収)
+                        if {_act_val} is not set:
+                            set {_match} to false
+                            stop loop
+                        if "%{_act_val}%" is not "%{_req_val}%":
+                            set {_match} to false
+                            stop loop
+                    
+                    if {_match} is true:
                         add item amount of loop-item to {_amount_inv}
             else:
                 # custom_dataがない場合は従来通り名前マッチング
@@ -781,26 +819,56 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         if {_is_orig} is true:
             # カスタムアイテム消費
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
-            set {_target_compound} to nbt compound from "{}"
-            set {_has_custom_data} to false
+            delete {_req_tags::*}
+            set {_has_req_data} to false
             
+            # 1. 解析 (消費時も同じロジック)
+            set {_content} to ""
             if {_req_nbt_str} contains "custom_data:{":
                 set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
-                if size of {_parts::*} >= 2:
-                    set {_val_part} to {_parts::2}
-                    set {_sub::*} to split {_val_part} at "}"
-                    set {_raw_content} to {_sub::1}
-                    set {_target_compound} to nbt compound from "{%{_raw_content}%}"
-                    set {_has_custom_data} to true
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            else if {_req_nbt_str} contains "custom_data={":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data={"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            
+            if {_content} is not "":
+                set {_has_req_data} to true
+                set {_pairs::*} to split {_content} at ","
+                loop {_pairs::*}:
+                    set {_pair} to loop-value
+                    replace all " " with "" in {_pair}
+                    if {_pair} contains ":":
+                        set {_kv::*} to split {_pair} at ":"
+                        if size of {_kv::*} >= 2:
+                            set {_k} to {_kv::1}
+                            set {_v} to {_kv::2}
+                            replace all """" with "" in {_k}
+                            replace all """" with "" in {_v}
+                            set {_req_tags::%{_k}%} to {_v}
             
             set {_remaining} to {_req_total_qty}
             
-            if {_has_custom_data} is true:
-                # NBT一致で消費
+            if {_has_req_data} is true:
+                # 3. 全タグ一致で消費
                 loop all items in {_p}'s inventory:
                     if {_remaining} > 0:
                         set {_inv_nbt} to custom nbt of loop-item
-                        if {_inv_nbt} is {_target_compound}:
+                        set {_match} to true
+                        
+                        loop {_req_tags::*}:
+                            set {_key} to loop-index
+                            set {_req_val} to loop-value
+                            set {_act_val} to tag {_key} of {_inv_nbt}
+                            if {_act_val} is not set:
+                                set {_match} to false
+                                stop loop
+                            if "%{_act_val}%" is not "%{_req_val}%":
+                                set {_match} to false
+                                stop loop
+                        
+                        if {_match} is true:
                             if item amount of loop-item >= {_remaining}:
                                 remove {_remaining} of loop-item from {_p}'s inventory
                                 set {_remaining} to 0
