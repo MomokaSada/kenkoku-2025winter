@@ -724,25 +724,28 @@ function executeTrade(p: player, tid: number, amount: number = 1):
             # 2. Key-Valueペアを解析してリスト化
             if {_content} is not "":
                 set {_has_req_data} to true
+            if {_content} is not "":
+                set {_has_req_data} to true
                 # カンマ区切りで要素を取得
                 set {_pairs::*} to split {_content} at ","
                 loop {_pairs::*}:
                     set {_pair} to loop-value-2
-                    # 余分なスペース削除
                     replace all " " with "" in {_pair}
-                    # 区切り文字判定 (: が基本だが念のため)
                     if {_pair} contains ":":
                         set {_kv::*} to split {_pair} at ":"
                         if size of {_kv::*} >= 2:
                             set {_k} to {_kv::1}
                             set {_v} to {_kv::2}
-                            
-                            # クォート削除 (key, value共に)
                             replace all """" with "" in {_k}
                             replace all """" with "" in {_v}
-                            
                             set {_req_tags::%{_k}%} to {_v}
             
+            # DEBUG
+            # broadcast "DEBUG: Req NBT: %{_req_nbt_str}%"
+            # broadcast "DEBUG: Content: %{_content}%"
+            # loop {_req_tags::*}:
+            #    broadcast "DEBUG: Req Tag %loop-index-2% = %loop-value-3%"
+
             if {_has_req_data} is true:
                 # 3. プレイヤーのアイテムと全タグ一致チェック
                 loop all items in {_p}'s inventory:
@@ -752,13 +755,10 @@ function executeTrade(p: player, tid: number, amount: number = 1):
                     loop {_req_tags::*}:
                         set {_key} to loop-index-2
                         set {_req_val} to loop-value-3
-                        
-                        # プレイヤーアイテムからタグ値を取得
-                        # string tagとして取得して文字列比較する
                         set {_act_val} to string tag {_key} of {_inv_nbt}
                         
-                        # 値がない、または一致しない場合はNG
-                        # NOTE: "%{_act_val}%" で文字列化して比較 (1bと1の違いなどを吸収)
+                        # broadcast "DEBUG: Check %loop-item%: %{_key}% Act:%{_act_val}% vs Req:%{_req_val}%"
+                        
                         if {_act_val} is not set:
                             set {_match} to false
                             stop loop
