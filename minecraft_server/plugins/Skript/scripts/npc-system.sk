@@ -706,12 +706,39 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         set {_amount_inv} to 0
         
         if {_is_orig} is true:
-            # カスタムアイテム：名前マッチング
-            set {_stripped_req} to uncoloured {_req_name}
-            loop all items in {_p}'s inventory:
-                set {_stripped_inv} to uncoloured name of loop-item
-                if {_stripped_inv} is {_stripped_req}:
-                    add item amount of loop-item to {_amount_inv}
+            # カスタムアイテムチェック: custom_dataのitemTypeで判定
+            set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
+            set {_target_type} to ""
+            
+            # DBのNBT文字列からitemTypeを抽出
+            # 例: ...custom_data:{itemType:"tradeTicket"}...
+            # 簡易的な文字列解析
+            if {_req_nbt_str} contains "itemType:":
+                # まず不要なスペースを削除
+                replace " " with "" in {_req_nbt_str}
+                # "itemType:""" で分割
+                set {_parts::*} to split {_req_nbt_str} at "itemType:"""
+                if size of {_parts::*} >= 2:
+                    set {_val_part} to {_parts::2}
+                    # 次の """ で分割して値を取得
+                    set {_sub::*} to split {_val_part} at """"
+                    set {_target_type} to {_sub::1}
+            
+            # itemTypeが特定できた場合
+            if {_target_type} is not "":
+                loop all items in {_p}'s inventory:
+                    set {_inv_nbt} to custom nbt of loop-item
+                    set {_inv_type} to string tag "itemType" of {_inv_nbt}
+                    
+                    if {_inv_type} is {_target_type}:
+                        add item amount of loop-item to {_amount_inv}
+            else:
+                # itemTypeがない場合は従来通り名前マッチング (フォールバック)
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_p}'s inventory:
+                    set {_stripped_inv} to uncoloured name of loop-item
+                    if {_stripped_inv} is {_stripped_req}:
+                        add item amount of loop-item to {_amount_inv}
         else:
             # 通常アイテム
             set {_item} to {_req_key} parsed as item type
@@ -755,19 +782,49 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         
         if {_is_orig} is true:
             # カスタムアイテム消費
-            set {_stripped_req} to uncoloured {_req_name}
+            set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
+            set {_target_type} to ""
+            
+            # 再度抽出
+            if {_req_nbt_str} contains "itemType:":
+                replace " " with "" in {_req_nbt_str}
+                set {_parts::*} to split {_req_nbt_str} at "itemType:"""
+                if size of {_parts::*} >= 2:
+                    set {_val_part} to {_parts::2}
+                    set {_sub::*} to split {_val_part} at """"
+                    set {_target_type} to {_sub::1}
+            
             set {_remaining} to {_req_total_qty}
-            loop all items in {_p}'s inventory:
-                if {_remaining} > 0:
-                    set {_stripped_inv} to uncoloured name of loop-item
-                    if {_stripped_inv} is {_stripped_req}:
-                        if item amount of loop-item >= {_remaining}:
-                            remove {_remaining} of loop-item from {_p}'s inventory
-                            set {_remaining} to 0
-                        else:
-                            set {_amt} to item amount of loop-item
-                            remove loop-item from {_p}'s inventory
-                            remove {_amt} from {_remaining}
+            
+            if {_target_type} is not "":
+                # itemTypeで消費
+                loop all items in {_p}'s inventory:
+                    if {_remaining} > 0:
+                        set {_inv_nbt} to custom nbt of loop-item
+                        set {_inv_type} to string tag "itemType" of {_inv_nbt}
+                        
+                        if {_inv_type} is {_target_type}:
+                            if item amount of loop-item >= {_remaining}:
+                                remove {_remaining} of loop-item from {_p}'s inventory
+                                set {_remaining} to 0
+                            else:
+                                set {_amt} to item amount of loop-item
+                                remove loop-item from {_p}'s inventory
+                                remove {_amt} from {_remaining}
+            else:
+                # 名前マッチングで消費 (フォールバック)
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_p}'s inventory:
+                    if {_remaining} > 0:
+                        set {_stripped_inv} to uncoloured name of loop-item
+                        if {_stripped_inv} is {_stripped_req}:
+                            if item amount of loop-item >= {_remaining}:
+                                remove {_remaining} of loop-item from {_p}'s inventory
+                                set {_remaining} to 0
+                            else:
+                                set {_amt} to item amount of loop-item
+                                remove loop-item from {_p}'s inventory
+                                remove {_amt} from {_remaining}
         else:
             # 通常アイテム消費
             set {_item} to {_req_key} parsed as item type
