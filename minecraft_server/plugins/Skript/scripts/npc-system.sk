@@ -236,6 +236,49 @@ function giveNpcSpawner(p: player, name: text):
     send formatted "<tooltip:クリックでコピー><copy:%{_command}%>&e[Click to Copy] &7%{_command}%" to {_p}
 
 
+# NPCスポーンエッグの使用イベント
+on rightclick with villager spawn egg:
+    # ブロックをクリックしていない場合は無視（空中右クリックなど）
+    if clicked block is not set:
+        stop
+
+    # 使用したアイテムの特定（メインハンド or オフハンド）
+    set {_hand} to event-hand
+    if {_hand} is offhand:
+        set {_tool} to player's offhand tool
+    else:
+        set {_tool} to player's tool
+    
+    # NBTチェック
+    set {_nbt} to custom nbt of {_tool}
+    set {_type} to string tag "itemType" of {_nbt}
+    
+    if {_type} is "npcSpawner":
+        cancel event
+        
+        set {_npc_name} to string tag "npcName" of {_nbt}
+        
+        if {_npc_name} is set:
+            # スポーン位置の計算 (クリックしたブロックの隣接位置)
+            set {_loc} to relative location of clicked block to clicked face
+            
+            # 位置調整（ブロックの中心へ + 少し浮かせる）
+            set x-coordinate of {_loc} to floor(x-coordinate of {_loc}) + 0.5
+            set y-coordinate of {_loc} to y-coordinate of {_loc} + 0.05
+            set z-coordinate of {_loc} to floor(z-coordinate of {_loc}) + 0.5
+            
+            # プレイヤーの向きに合わせてNPCの向きを設定（対面するように）
+            set {_yaw} to yaw of player
+            add 180 to {_yaw}
+            set yaw of {_loc} to {_yaw}
+            
+            # NPC召喚実行
+            spawnNpc({_npc_name}, {_loc}, player)
+            
+            # サバイバルモードならアイテム消費
+            if player's gamemode is not creative:
+                remove 1 of {_tool} from inventory of player
+
 # NPCを召喚するコマンド (Function呼び出し)
 command /spawn-npc <text>:
     permission: op
