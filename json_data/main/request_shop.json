@@ -5,6 +5,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 2,
+      "level": 4,
       "trades": [
         {
           "content": "Sell シュルカーボックス",
@@ -82,6 +83,36 @@
           ]
         },
         {
+          "content": "Sell お財布",
+          "view_item_id": 244,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1502,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 表示切替 (スコアボード)",
+          "view_item_id": 143,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1505,
+              "quantity": 1
+            }
+          ]
+        },
+        {
           "content": "Sell 幸運ダイヤピッケル(幸運Ⅳ、耐久Ⅲ)",
           "view_item_id": 126,
           "costs": [
@@ -152,6 +183,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 2,
+      "level": 4,
       "trades": [
         {
           "content": "Sell 弓 (耐久Ⅲ)",
@@ -300,6 +332,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 2,
+      "level": 4,
       "trades": [
         {
           "content": "Sell エンチャ本 (耐久Ⅲ)",
@@ -368,6 +401,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 2,
+      "level": 4,
       "trades": [
         {
           "content": "Sell 海晶ブロック ×64",

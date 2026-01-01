@@ -66,9 +66,37 @@ command /get-lottery-ticket <text> [<integer>] [<integer>]:
 # Event: ガチャチケット使用 (右クリック)
 # -------------------------------------------------------------------------
 on rightclick:
+    # 手に持っているアイテムを取得 (Main/Off自動判定)
+    
+    # 1. Main Hand Check
     set {_item} to player's tool
     set {_nbt} to custom nbt of {_item}
     set {_type} to string tag "itemType" of {_nbt}
+    
+    set {_is_valid} to false
+    if {_type} is "lottery_ticket":
+        set {_is_valid} to true
+    else if {_item} is paper:
+        if uncolored name of {_item} ends with "ガチャ":
+            set {_is_valid} to true
+            
+    # 2. Main Handがチケットでない場合、Off Handをチェック
+    if {_is_valid} is false:
+        set {_off} to player's offhand tool
+        set {_nbt_off} to custom nbt of {_off}
+        set {_type_off} to string tag "itemType" of {_nbt_off}
+        
+        set {_off_valid} to false
+        if {_type_off} is "lottery_ticket":
+            set {_off_valid} to true
+        else if {_off} is paper:
+            if uncolored name of {_off} ends with "ガチャ":
+                set {_off_valid} to true
+                
+        if {_off_valid} is true:
+            set {_item} to {_off}
+            set {_nbt} to {_nbt_off}
+            set {_type} to {_type_off}
     
     set {_lotteryName} to ""
     set {_count} to 1
@@ -109,6 +137,10 @@ on rightclick:
         
     set {_lid} to {_l_row::id::1}
     
+    # レアリティ取得 (ループ外)
+    delete {_rarities::*}
+    execute "SELECT id, name, probability FROM rarities WHERE lottery_id = %{_lid}% ORDER BY probability ASC" in {kenkoku_db} and store the result in {_rarities::*}
+
     # レアリティの合計確率を事前に計算
     set {_total_prob} to 0
     loop {_rarities::probability::*}:
@@ -181,6 +213,23 @@ on rightclick:
         # プレイヤーに付与 (Execute console command with raw DB strings)
         if {_dnbt} is set:
             if {_dnbt} is not "{}":
+                # Safeguard: Spawn Eggにentity_dataがない場合付与
+                set {_is_spawn_egg} to false
+                if {_key} contains "spawn_egg":
+                    set {_is_spawn_egg} to true
+                
+                if {_is_spawn_egg} is true:
+                    if {_dnbt} does not contain "entity_data":
+                        set {_len} to length of {_dnbt}
+                        set {_dnbt_pre} to subtext of {_dnbt} from 1 to {_len} - 1
+                        
+                        if {_dnbt} starts with "[":
+                            # Component Syntax
+                            set {_dnbt} to "%{_dnbt_pre}%,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]"
+                        else if {_dnbt} starts with "{":
+                            # Legacy NBT
+                            set {_dnbt} to "%{_dnbt_pre}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}}"
+
                 execute console command "minecraft:give %player% %{_key}%%{_dnbt}%"
             else:
                 execute console command "minecraft:give %player% %{_key}%"
