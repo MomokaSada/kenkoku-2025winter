@@ -5,6 +5,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 3,
+      "level": 1,
       "trades": [
         {
           "content": "街のお掃除",
@@ -17,7 +18,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -33,7 +34,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -49,7 +50,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -65,7 +66,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -81,7 +82,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -97,7 +98,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -113,7 +114,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 10
             }
           ]
@@ -125,6 +126,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 3,
+      "level": 2,
       "trades": [
         {
           "content": "リッチな昼食",
@@ -137,7 +139,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 20
             }
           ]
@@ -153,7 +155,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 20
             }
           ]
@@ -169,7 +171,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 20
             }
           ]
@@ -185,7 +187,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 20
             }
           ]
@@ -197,6 +199,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 3,
+      "level": 3,
       "trades": [
         {
           "content": "うさぎ討伐隊",
@@ -209,7 +212,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 30
             }
           ]
@@ -225,7 +228,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 30
             }
           ]
@@ -241,7 +244,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 30
             }
           ]
@@ -257,7 +260,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1532,
               "quantity": 30
             }
           ]
@@ -269,6 +272,7 @@
       "biome_id": 1,
       "profession_id": 1,
       "type": 3,
+      "level": 4,
       "trades": [
         {
           "content": "ブラック鉱夫",
@@ -281,7 +285,7 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1529,
               "quantity": 1
             }
           ]
@@ -329,14 +333,12 @@
           ],
           "rewards": [
             {
-              "item_id": 326,
+              "item_id": 1531,
               "quantity": 1
             }
           ]
         }
       ]
     }
-  ],
-  "patch": [],
-  "delete": []
+  ]
 }

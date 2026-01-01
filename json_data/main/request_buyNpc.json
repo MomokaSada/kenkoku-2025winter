@@ -1,0 +1,205 @@
+{
+  "store": [
+    {
+      "name": "NPC販売",
+      "biome_id": 5,
+      "profession_id": 7,
+      "type": 2,
+      "level": 4,
+      "trades": [
+        {
+          "content": "Sell 買取屋(鉱石)",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1534,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 買取屋(農作物)",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1535,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 買取屋(水産物)",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1536,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 買取屋(レア)",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1537,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 雑貨屋",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1538,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 武器・防具屋",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1539,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 本屋",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1540,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 海晶屋",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1541,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell クエスト (★ (初級))",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1542,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell クエスト (★★ (中級))",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1543,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell クエスト (★★★ (上級))",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1544,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell クエスト (特別クエスト)",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1545,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
