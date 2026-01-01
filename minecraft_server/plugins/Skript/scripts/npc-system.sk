@@ -744,7 +744,7 @@ function executeTrade(p: player, tid: number, amount: number = 1):
             broadcast "DEBUG: Req NBT: %{_req_nbt_str}%"
             broadcast "DEBUG: Content: %{_content}%"
             loop {_req_tags::*}:
-                broadcast "DEBUG: Req Tag %loop-index-2% = %loop-value-3%"
+                broadcast "DEBUG: Req Tag %loop-index-2% = %loop-value-2%"
 
             if {_has_req_data} is true:
                 # 3. プレイヤーのアイテムと全タグ一致チェック
