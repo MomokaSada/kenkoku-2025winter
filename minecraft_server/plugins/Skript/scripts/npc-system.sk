@@ -704,36 +704,34 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         
         set {_req_total_qty} to {_req_qty} * {_amount}
         set {_amount_inv} to 0
-        
-        if {_is_orig} is true:
-            # カスタムアイテムチェック: custom_dataのitemTypeで判定
+                if {_is_orig} is true:
+            # カスタムアイテムチェック: custom_data全体の一致を確認
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
-            set {_target_type} to ""
+            set {_target_compound} to nbt compound from "{}"
+            set {_has_custom_data} to false
             
-            # DBのNBT文字列からitemTypeを抽出
-            # 例: ...custom_data:{itemType:"tradeTicket"}...
-            # 簡易的な文字列解析
-            if {_req_nbt_str} contains "itemType:":
-                # まず不要なスペースを削除
-                replace " " with "" in {_req_nbt_str}
-                # "itemType:""" で分割
-                set {_parts::*} to split {_req_nbt_str} at "itemType:"""
+            # custom_data:{...} の内容を抽出
+            if {_req_nbt_str} contains "custom_data:{":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
+                # {_parts::2} は "key:val, ...} ..." となっているはず
                 if size of {_parts::*} >= 2:
                     set {_val_part} to {_parts::2}
-                    # 次の """ で分割して値を取得
-                    set {_sub::*} to split {_val_part} at """"
-                    set {_target_type} to {_sub::1}
+                    # 最初の "}" までを取得（ネストがない前提）
+                    set {_sub::*} to split {_val_part} at "}"
+                    set {_raw_content} to {_sub::1}
+                    
+                    # NBTコンパウンドを作成
+                    set {_target_compound} to nbt compound from "{%{_raw_content}%}"
+                    set {_has_custom_data} to true
             
-            # itemTypeが特定できた場合
-            if {_target_type} is not "":
+            if {_has_custom_data} is true:
                 loop all items in {_p}'s inventory:
                     set {_inv_nbt} to custom nbt of loop-item
-                    set {_inv_type} to string tag "itemType" of {_inv_nbt}
-                    
-                    if {_inv_type} is {_target_type}:
+                    # 厳密な一致判定 (NBT Compound同士の比較)
+                    if {_inv_nbt} is {_target_compound}:
                         add item amount of loop-item to {_amount_inv}
             else:
-                # itemTypeがない場合は従来通り名前マッチング (フォールバック)
+                # custom_dataがない場合は従来通り名前マッチング
                 set {_stripped_req} to uncoloured {_req_name}
                 loop all items in {_p}'s inventory:
                     set {_stripped_inv} to uncoloured name of loop-item
@@ -783,27 +781,26 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         if {_is_orig} is true:
             # カスタムアイテム消費
             set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
-            set {_target_type} to ""
+            set {_target_compound} to nbt compound from "{}"
+            set {_has_custom_data} to false
             
-            # 再度抽出
-            if {_req_nbt_str} contains "itemType:":
-                replace " " with "" in {_req_nbt_str}
-                set {_parts::*} to split {_req_nbt_str} at "itemType:"""
+            if {_req_nbt_str} contains "custom_data:{":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
                 if size of {_parts::*} >= 2:
                     set {_val_part} to {_parts::2}
-                    set {_sub::*} to split {_val_part} at """"
-                    set {_target_type} to {_sub::1}
+                    set {_sub::*} to split {_val_part} at "}"
+                    set {_raw_content} to {_sub::1}
+                    set {_target_compound} to nbt compound from "{%{_raw_content}%}"
+                    set {_has_custom_data} to true
             
             set {_remaining} to {_req_total_qty}
             
-            if {_target_type} is not "":
-                # itemTypeで消費
+            if {_has_custom_data} is true:
+                # NBT一致で消費
                 loop all items in {_p}'s inventory:
                     if {_remaining} > 0:
                         set {_inv_nbt} to custom nbt of loop-item
-                        set {_inv_type} to string tag "itemType" of {_inv_nbt}
-                        
-                        if {_inv_type} is {_target_type}:
+                        if {_inv_nbt} is {_target_compound}:
                             if item amount of loop-item >= {_remaining}:
                                 remove {_remaining} of loop-item from {_p}'s inventory
                                 set {_remaining} to 0
