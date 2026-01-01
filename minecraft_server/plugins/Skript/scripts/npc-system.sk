@@ -238,20 +238,21 @@ function giveNpcSpawner(p: player, name: text):
 
 # NPCスポーンエッグの使用イベント
 on rightclick with villager spawn egg:
-    # ブロックをクリックしていない場合は無視（空中右クリックなど）
+    # ブロックをクリックしていない場合は無視
     if clicked block is not set:
         stop
 
     # 使用したアイテムの特定（メインハンド or オフハンド）
-    set {_hand} to event-hand
-    if {_hand} is offhand:
-        set {_tool} to player's offhand tool
-    else:
-        set {_tool} to player's tool
-    
-    # NBTチェック
+    # event-hand が使えない環境のため、NBTで判定する
+    set {_tool} to player's tool
     set {_nbt} to custom nbt of {_tool}
     set {_type} to string tag "itemType" of {_nbt}
+    
+    # メインハンドが対象でない場合、オフハンドをチェック
+    if {_type} is not "npcSpawner":
+        set {_tool} to player's offhand tool
+        set {_nbt} to custom nbt of {_tool}
+        set {_type} to string tag "itemType" of {_nbt}
     
     if {_type} is "npcSpawner":
         cancel event
@@ -259,8 +260,8 @@ on rightclick with villager spawn egg:
         set {_npc_name} to string tag "npcName" of {_nbt}
         
         if {_npc_name} is set:
-            # スポーン位置の計算 (クリックしたブロックの隣接位置)
-            set {_loc} to relative location of clicked block to clicked face
+            # スポーン位置の計算 (クリックしたブロックの上)
+            set {_loc} to location of block above clicked block
             
             # 位置調整（ブロックの中心へ + 少し浮かせる）
             set x-coordinate of {_loc} to floor(x-coordinate of {_loc}) + 0.5
