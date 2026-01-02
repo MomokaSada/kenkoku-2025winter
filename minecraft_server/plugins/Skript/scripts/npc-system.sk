@@ -236,6 +236,54 @@ function giveNpcSpawner(p: player, name: text):
     send formatted "<tooltip:クリックでコピー><copy:%{_command}%>&e[Click to Copy] &7%{_command}%" to {_p}
 
 
+# NPCスポーンエッグの使用イベント
+on rightclick with villager spawn egg:
+    # ブロックをクリックしていない場合は無視
+    if clicked block is not set:
+        stop
+
+    # 使用したアイテムの特定（メインハンド or オフハンド）
+    set {_tool} to player's tool
+    set {_nbt} to custom nbt of {_tool}
+    set {_type} to string tag "itemType" of {_nbt}
+    
+    # メインハンドが対象でない場合、オフハンドをチェック
+    if {_type} is not "npcSpawner":
+        set {_tool} to player's offhand tool
+        set {_nbt} to custom nbt of {_tool}
+        set {_type} to string tag "itemType" of {_nbt}
+    
+    if {_type} is "npcSpawner":
+        cancel event
+        
+        set {_npc_name} to string tag "npcName" of {_nbt}
+        
+        if {_npc_name} is set:
+            # スポーン位置の計算 (プレイヤーの位置 = ~ ~ ~)
+            set {_loc} to location of player
+            
+            # NPC召喚実行
+            spawnNpc({_npc_name}, {_loc}, player)
+            
+            # サバイバルモードならアイテム消費
+            if player's gamemode is not creative:
+                remove 1 of {_tool} from inventory of player
+
+# NPC削除コマンド
+command /kill-npc:
+    permission: op
+    trigger:
+        set {_count} to 0
+        loop all entities in radius 5 of player:
+            if scoreboard tags of loop-entity contains "kenkoku_npc":
+                kill loop-entity
+                add 1 to {_count}
+        
+        if {_count} > 0:
+            send "&a[System] 周囲のNPCを %{_count}% 体削除しました。"
+        else:
+            send "&c[System] 半径5m以内に削除対象のNPCは見つかりませんでした。"
+
 # NPCを召喚するコマンド (Function呼び出し)
 command /spawn-npc <text>:
     permission: op
@@ -656,14 +704,81 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         
         set {_req_total_qty} to {_req_qty} * {_amount}
         set {_amount_inv} to 0
-        
         if {_is_orig} is true:
-            # カスタムアイテム：名前マッチング
-            set {_stripped_req} to uncoloured {_req_name}
-            loop all items in {_p}'s inventory:
-                set {_stripped_inv} to uncoloured name of loop-item
-                if {_stripped_inv} is {_stripped_req}:
-                    add item amount of loop-item to {_amount_inv}
+            # カスタムアイテムチェック: custom_data内の全要素を動的比較
+            set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
+            delete {_req_keys::*}
+            delete {_req_vals::*}
+            set {_has_req_data} to false
+            
+            # 1. custom_dataの中身を抽出 (JSON形式:{} と Component形式={} 両対応)
+            set {_content} to ""
+            if {_req_nbt_str} contains "custom_data:{":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            else if {_req_nbt_str} contains "custom_data={":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data={"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            
+            # 2. Key-Valueペアを解析してリスト化 (Case-Sensitivity維持のため並列リスト使用)
+            if {_content} is not "":
+                set {_has_req_data} to true
+                # カンマ区切りで要素を取得
+                set {_pairs::*} to split {_content} at ","
+                loop {_pairs::*}:
+                    set {_pair} to loop-value-2
+                    replace all " " with "" in {_pair}
+                    if {_pair} contains ":":
+                        set {_kv::*} to split {_pair} at ":"
+                        if size of {_kv::*} >= 2:
+                            set {_k} to {_kv::1}
+                            set {_v} to {_kv::2}
+                            replace all """" with "" in {_k}
+                            replace all """" with "" in {_v}
+                            
+                            add {_k} to {_req_keys::*}
+                            add {_v} to {_req_vals::*}
+            
+            # DEBUG
+            # broadcast "DEBUG: Req NBT: %{_req_nbt_str}%"
+            # broadcast "DEBUG: Content: %{_content}%"
+            # loop {_req_keys::*}:
+            #     broadcast "DEBUG: Req Tag Key:%loop-value-2% Val:%{_req_vals::%loop-index-2%}%"
+
+            if {_has_req_data} is true:
+                # 3. プレイヤーのアイテムと全タグ一致チェック
+                loop all items in {_p}'s inventory:
+                    set {_inv_nbt} to custom nbt of loop-item
+                    set {_match} to true
+                    
+                    loop {_req_keys::*}:
+                        set {_key} to loop-value-3
+                        set {_req_val} to {_req_vals::%loop-index-2%} # ここはloop-index-3ではなく、keysリストのindexを使うべき
+                        
+                        # プレイヤーアイテムからタグ値を取得
+                        # string tagとして取得して文字列比較する
+                        set {_act_val} to string tag {_key} of {_inv_nbt}
+                        
+                        # broadcast "DEBUG: Check %loop-item%: %{_key}% Act:%{_act_val}% vs Req:%{_req_val}%"
+                        
+                        if {_act_val} is not set:
+                            set {_match} to false
+                            stop loop
+                        if "%{_act_val}%" is not "%{_req_val}%":
+                            set {_match} to false
+                            stop loop
+                    
+                    if {_match} is true:
+                        add item amount of loop-item to {_amount_inv}
+            else:
+                # custom_dataがない場合は従来通り名前マッチング
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_p}'s inventory:
+                    set {_stripped_inv} to uncoloured name of loop-item
+                    if {_stripped_inv} is {_stripped_req}:
+                        add item amount of loop-item to {_amount_inv}
         else:
             # 通常アイテム
             set {_item} to {_req_key} parsed as item type
@@ -707,19 +822,81 @@ function executeTrade(p: player, tid: number, amount: number = 1):
         
         if {_is_orig} is true:
             # カスタムアイテム消費
-            set {_stripped_req} to uncoloured {_req_name}
+            set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
+            delete {_req_keys::*}
+            delete {_req_vals::*}
+            set {_has_req_data} to false
+            
+            # 1. 解析 (消費時も同じロジック)
+            set {_content} to ""
+            if {_req_nbt_str} contains "custom_data:{":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            else if {_req_nbt_str} contains "custom_data={":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data={"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            
+            if {_content} is not "":
+                set {_has_req_data} to true
+                set {_pairs::*} to split {_content} at ","
+                loop {_pairs::*}:
+                    set {_pair} to loop-value-2
+                    replace all " " with "" in {_pair}
+                    if {_pair} contains ":":
+                        set {_kv::*} to split {_pair} at ":"
+                        if size of {_kv::*} >= 2:
+                            set {_k} to {_kv::1}
+                            set {_v} to {_kv::2}
+                            replace all """" with "" in {_k}
+                            replace all """" with "" in {_v}
+                            
+                            add {_k} to {_req_keys::*}
+                            add {_v} to {_req_vals::*}
+            
             set {_remaining} to {_req_total_qty}
-            loop all items in {_p}'s inventory:
-                if {_remaining} > 0:
-                    set {_stripped_inv} to uncoloured name of loop-item
-                    if {_stripped_inv} is {_stripped_req}:
-                        if item amount of loop-item >= {_remaining}:
-                            remove {_remaining} of loop-item from {_p}'s inventory
-                            set {_remaining} to 0
-                        else:
-                            set {_amt} to item amount of loop-item
-                            remove loop-item from {_p}'s inventory
-                            remove {_amt} from {_remaining}
+            
+            if {_has_req_data} is true:
+                # 3. 全タグ一致で消費
+                loop all items in {_p}'s inventory:
+                    if {_remaining} > 0:
+                        set {_inv_nbt} to custom nbt of loop-item
+                        set {_match} to true
+                        
+                        loop {_req_keys::*}:
+                            set {_key} to loop-value-3
+                            set {_req_val} to {_req_vals::%loop-index-2%} # ここも重要：keysループのindexを使う
+                            set {_act_val} to string tag {_key} of {_inv_nbt}
+                            if {_act_val} is not set:
+                                set {_match} to false
+                                stop loop
+                            if "%{_act_val}%" is not "%{_req_val}%":
+                                set {_match} to false
+                                stop loop
+                        
+                        if {_match} is true:
+                            if item amount of loop-item >= {_remaining}:
+                                remove {_remaining} of loop-item from {_p}'s inventory
+                                set {_remaining} to 0
+                            else:
+                                set {_amt} to item amount of loop-item
+                                remove loop-item from {_p}'s inventory
+                                remove {_amt} from {_remaining}
+            else:
+                # 名前マッチングで消費 (フォールバック)
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_p}'s inventory:
+                    if {_remaining} > 0:
+                        set {_stripped_inv} to uncoloured name of loop-item
+                        if {_stripped_inv} is {_stripped_req}:
+                            if item amount of loop-item >= {_remaining}:
+                                remove {_remaining} of loop-item from {_p}'s inventory
+                                set {_remaining} to 0
+                            else:
+                                set {_amt} to item amount of loop-item
+                                remove loop-item from {_p}'s inventory
+                                remove {_amt} from {_remaining}
         else:
             # 通常アイテム消費
             set {_item} to {_req_key} parsed as item type

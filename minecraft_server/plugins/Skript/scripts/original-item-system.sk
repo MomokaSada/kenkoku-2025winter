@@ -369,6 +369,7 @@ on tab complete of "/get-original-item":
 every 1 second:
     loop all players:
         delete {_effects::*}
+        set {_bonus_health} to 0
         
         # ホットバー (0-8) をチェック
         loop 9 times:
