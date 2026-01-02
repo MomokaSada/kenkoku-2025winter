@@ -186,7 +186,7 @@ on rightclick:
 
         # アイテム選定 (選ばれたレアリティの中からランダムに1つ)
         delete {_i_row::*}
-        execute "SELECT item_id FROM lottery_items WHERE lottery_id = %{_lid}% AND rarity_id = %{_selected_rid}% ORDER BY RAND() LIMIT 1" in {kenkoku_db} and store the result in {_i_row::*}
+        execute "SELECT item_id, quantity FROM lottery_items WHERE lottery_id = %{_lid}% AND rarity_id = %{_selected_rid}% ORDER BY RAND() LIMIT 1" in {kenkoku_db} and store the result in {_i_row::*}
         
         if {_i_row::item_id::1} is not set:
             send "&c[System] %{_selected_rname}% (%{_lotteryName}%) に当選しましたが、アイテムが設定されていません。" to player
@@ -194,6 +194,9 @@ on rightclick:
             continue
             
         set {_item_id} to {_i_row::item_id::1}
+        set {_qty} to {_i_row::quantity::1}
+        if {_qty} is not set:
+            set {_qty} to 1
         
         # アイテムデータ取得
         delete {_data::*}
@@ -230,12 +233,12 @@ on rightclick:
                             # Legacy NBT
                             set {_dnbt} to "%{_dnbt_pre}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}}"
 
-                execute console command "minecraft:give %player% %{_key}%%{_dnbt}%"
+                execute console command "minecraft:give %player% %{_key}%%{_dnbt}% %{_qty}%"
             else:
-                execute console command "minecraft:give %player% %{_key}%"
+                execute console command "minecraft:give %player% %{_key}% %{_qty}%"
         else:
             # DBのnbtカラムがnullの場合はNBTなしで付与
-            execute console command "minecraft:give %player% %{_key}%"
+            execute console command "minecraft:give %player% %{_key}% %{_qty}%"
         
         # 名前表示 (名前がない場合はキーを表示)
         set {_disp} to name of {_reward_item}
@@ -244,7 +247,7 @@ on rightclick:
         
         # 演出 (ループ中は控えめにしてもいいが、要望通り出す)
         play sound "entity.player.levelup" with volume 0.5 to player
-        send "&a[%{_lotteryName}%] &e%{_selected_rname}%当選! &f%{_disp}% &7(ID: %{_item_id}%) &aを手に入れました！" to player
+        send "&a[%{_lotteryName}%] &e%{_selected_rname}%当選! &f%{_disp}% &7(x%{_qty}%) &aを手に入れました！" to player
         
         # ループ時のwait (負荷対策)
         # wait 1 tick

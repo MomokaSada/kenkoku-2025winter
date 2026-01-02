@@ -943,7 +943,7 @@ function executeTrade(p: player, tid: number, amount: number = 1):
     
     # リワード付与 (お金)
     loop {_trade_rewards::price::*}:
-        set {_r_price} to loop-value
+        set {_r_price} to loop-value * {_amount}
         if {_r_price} > 0:
             set {_m} to metadata "money" of {_p}
             add {_r_price} to {_m}
