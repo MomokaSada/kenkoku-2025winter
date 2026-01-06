@@ -64,7 +64,7 @@ DEBUG:
 #Manage what characters an user can type changing the global regex pattern. By setting USE to false, you're still able to use it per command by using "regex_pattern" command field.
 REGEX:
   USE: true
-  PATTERN: "^[-a-zA-Z0-9&._ ]+"
+  PATTERN: "^[-a-zA-Z0-9&.:_ ]+"
   RAW_TEXT_SPLITTER: ";"
 ECONOMY:
   ALLOW_DEBT: false
@@ -112,4 +112,5 @@ MYSQL:
   DATABASE: 'MyCommand'
   AUTO_RECONNECT: true
   #If true use "com.mysql.cj.jdbc.Driver" instead of "com.mysql.jdbc.Driver"
+
   USE_NEWER_DRIVER: false
