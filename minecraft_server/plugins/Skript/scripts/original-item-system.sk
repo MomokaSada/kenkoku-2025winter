@@ -475,7 +475,10 @@ every 5 ticks:
             set {_loc} to eye location of loop-player
             set {_front} to location 1.5 meters in front of {_loc}
             if block at {_front} is solid:
-                apply levitation 3 without particles to loop-player for 1 second
+                apply levitation 5 without particles to loop-player for 1 second
+            else:
+                remove levitation from loop-player
+        
 
 # 消費防止: ディスペンサー
 on dispense:

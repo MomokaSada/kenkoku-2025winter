@@ -1,0 +1,236 @@
+[1mdiff --git a/minecraft_server/plugins/MyCommand/config.yml b/minecraft_server/plugins/MyCommand/config.yml[m
+[1mindex 0138b10..93515ce 100644[m
+[1m--- a/minecraft_server/plugins/MyCommand/config.yml[m
+[1m+++ b/minecraft_server/plugins/MyCommand/config.yml[m
+[36m@@ -64,7 +64,7 @@[m [mDEBUG:[m
+ #Manage what characters an user can type changing the global regex pattern. By setting USE to false, you're still able to use it per command by using "regex_pattern" command field.[m
+ REGEX:[m
+   USE: true[m
+[31m-  PATTERN: "^[-a-zA-Z0-9&._ ]+"[m
+[32m+[m[32m  PATTERN: "^[-a-zA-Z0-9&.:_ ]+"[m[41m[m
+   RAW_TEXT_SPLITTER: ";"[m
+ ECONOMY:[m
+   ALLOW_DEBT: false[m
+[36m@@ -112,4 +112,5 @@[m [mMYSQL:[m
+   DATABASE: 'MyCommand'[m
+   AUTO_RECONNECT: true[m
+   #If true use "com.mysql.cj.jdbc.Driver" instead of "com.mysql.jdbc.Driver"[m
+[31m-  USE_NEWER_DRIVER: false[m
+\ No newline at end of file[m
+[32m+[m[41m[m
+[32m+[m[32m  USE_NEWER_DRIVER: false[m[41m[m
+[1mdiff --git a/minecraft_server/plugins/Skript/scripts/head-command.sk b/minecraft_server/plugins/Skript/scripts/head-command.sk[m
+[1mnew file mode 100644[m
+[1mindex 0000000..65b7c05[m
+[1m--- /dev/null[m
+[1m+++ b/minecraft_server/plugins/Skript/scripts/head-command.sk[m
+[36m@@ -0,0 +1,148 @@[m
+[32m+[m
+[32m+[m[32mimport:[m
+[32m+[m[32m    com.google.gson.JsonParser[m
+[32m+[m[32m    java.net.URI[m
+[32m+[m[32m    java.net.http.HttpRequest[m
+[32m+[m[32m    java.net.http.HttpClient[m
+[32m+[m[32m    java.net.http.HttpResponse$BodyHandlers[m
+[32m+[m[32m    java.time.Duration[m
+[32m+[m[32m    java.util.UUID[m
+[32m+[m[32m    java.lang.Long[m
+[32m+[m[32m    java.nio.ByteBuffer[m
+[32m+[m
+[32m+[m[32m# Helper function to fetch JSON from URL[m
+[32m+[m[32mfunction fetchJson(url: text) :: object:[m
+[32m+[m[32m    set {_client} to HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()[m
+[32m+[m[32m    set {_request} to HttpRequest.newBuilder().uri(URI.create({_url})).GET().build()[m
+[32m+[m[32m    set {_response} to {_client}.send({_request}, BodyHandlers.ofString())[m
+[32m+[m[32m    if {_response}.statusCode() is 200:[m
+[32m+[m[32m        set {_body} to {_response}.body()[m
+[32m+[m[32m        return JsonParser.parseString({_body}).getAsJsonObject()[m
+[32m+[m[32m    else:[m
+[32m+[m[32m        broadcast "§c[HeadCommand] HTTP Error: %{_response}.statusCode()%"[m
+[32m+[m[32m    return null[m
+[32m+[m
+[32m+[m[32m# Helper to convert UUID string (with or without hyphens) to Minecraft Int Array String "1,2,3,4"[m
+[32m+[m[32mfunction uuidToIntArrayString(uuidStr: text) :: text:[m
+[32m+[m[32m    if length of {_uuidStr} is 32:[m
+[32m+[m[32m        # Insert hyphens for UUID.fromString if missing[m
+[32m+[m[32m        set {_uuidStr} to "%subtext of {_uuidStr} from 1 to 8%-%subtext of {_uuidStr} from 9 to 12%-%subtext of {_uuidStr} from 13 to 16%-%subtext of {_uuidStr} from 17 to 20%-%subtext of {_uuidStr} from 21 to 32%"[m
+[32m+[m[41m    [m
+[32m+[m[32m    set {_uuid} to UUID.fromString({_uuidStr})[m
+[32m+[m[32m    set {_most} to {_uuid}.getMostSignificantBits()[m
+[32m+[m[32m    set {_least} to {_uuid}.getLeastSignificantBits()[m
+[32m+[m[41m    [m
+[32m+[m[32m    # Convert 2 longs to 4 ints[m
+[32m+[m[32m    # High-Most, Low-Most, High-Least, Low-Least[m
+[32m+[m[32m    set {_i1} to floor({_most} / 4294967296)[m
+[32m+[m[32m    set {_i2} to mod({_most}, 4294967296) # This mod might need better handling for negative numbers in Skript?[m
+[32m+[m[32m    # Actually, bit shifting via Java is safer.[m
+[32m+[m[41m    [m
+[32m+[m[32m    set {_bb} to ByteBuffer.allocate(16)[m
+[32m+[m[32m    set {_void} to {_bb}.putLong({_most})[m
+[32m+[m[32m    set {_void} to {_bb}.putLong({_least})[m
+[32m+[m[32m    set {_void} to {_bb}.flip()[m
+[32m+[m[41m    [m
+[32m+[m[32m    set {_ints} to ""[m
+[32m+[m[32m    loop 4 times:[m
+[32m+[m[32m        set {_val} to {_bb}.getInt()[m
+[32m+[m[32m        if loop-value is 1:[m
+[32m+[m[32m            set {_ints} to "%{_val}%"[m
+[32m+[m[32m        else:[m
+[32m+[m[32m            set {_ints} to "%{_ints}%,%{_val}%"[m
+[32m+[m[41m            [m
+[32m+[m[32m    return {_ints}[m
+[32m+[m
+[32m+[m[32mcommand /head <text> <text>:[m
+[32m+[m[32m    permission: admin.head[m
+[32m+[m[32m    trigger:[m
+[32m+[m[32m        if arg-1 is "java":[m
+[32m+[m[32m            send "§eFetching Java player data for %arg-2%..."[m
+[32m+[m[32m            # 1. Get UUID from Mojang API[m
+[32m+[m[32m            set {_json} to fetchJson("https://api.mojang.com/users/profiles/minecraft/%arg-2%")[m
+[32m+[m[32m            if {_json} is not set:[m
+[32m+[m[32m                send "§cPlayer not found or API error."[m
+[32m+[m[32m                stop[m
+[32m+[m[41m            [m
+[32m+[m[32m            set {_uuidStr} to {_json}.get("id").getAsString()[m
+[32m+[m[32m            set {_name} to {_json}.get("name").getAsString()[m
+[32m+[m[41m            [m
+[32m+[m[32m            # 2. Get Skin from Session API[m
+[32m+[m[32m            set {_skinJson} to fetchJson("https://sessionserver.mojang.com/session/minecraft/profile/%{_uuidStr}%?unsigned=false")[m
+[32m+[m[32m            if {_skinJson} is not set:[m
+[32m+[m[32m                send "§cSkin data not found."[m
+[32m+[m[32m                stop[m
+[32m+[m[41m            [m
+[32m+[m[32m            # Extract Value and Signature[m
+[32m+[m[32m            # properites is an array[m
+[32m+[m[32m            set {_props} to {_skinJson}.get("properties").getAsJsonArray()[m
+[32m+[m[32m            # Loop to find "textures" just in case, though usually it's first[m
+[32m+[m[32m            set {_value} to ""[m
+[32m+[m[32m            set {_sig} to ""[m
+[32m+[m[41m            [m
+[32m+[m[32m            set {_found} to false[m
+[32m+[m[32m            # Simple access to first element for now as it's standard[m
+[32m+[m[32m            set {_propObj} to {_props}.get(0).getAsJsonObject()[m
+[32m+[m[32m            if {_propObj}.get("name").getAsString() is "textures":[m
+[32m+[m[32m                set {_value} to {_propObj}.get("value").getAsString()[m
+[32m+[m[32m                if {_propObj}.has("signature"):[m
+[32m+[m[32m                    set {_sig} to {_propObj}.get("signature").getAsString()[m
+[32m+[m[41m            [m
+[32m+[m[32m            if {_value} is "":[m
+[32m+[m[32m                send "§cNo texture property found."[m
+[32m+[m[32m                stop[m
+[32m+[m
+[32m+[m[32m            # 3. Give Head[m
+[32m+[m[32m            set {_intArray} to uuidToIntArrayString({_uuidStr})[m
+[32m+[m[41m            [m
+[32m+[m[32m            # Construct Command[m
+[32m+[m[32m            # Using execute console command to ensure correct NBT parsing[m
+[32m+[m[32m            set {_cmd} to "give %player% player_head[profile={name:""%{_name}%"",id:[I;%{_intArray}%],properties:[{name:""textures"",value:""%{_value}%"",signature:""%{_sig}%""}]}] 1"[m
+[32m+[m[32m            execute console command {_cmd}[m
+[32m+[m[32m            send "§aGave head of %{_name}%"[m
+[32m+[m
+[32m+[m[32m        else if arg-1 is "be":[m
+[32m+[m[32m            send "§eFetching Bedrock player data for %arg-2%..."[m
+[32m+[m[32m            set {_safeName} to arg-2[m
+[32m+[m[32m            replace all """" with "" in {_safeName}[m
+[32m+[m[32m            replace all " " with "%%20" in {_safeName} # url encode space[m
+[32m+[m[41m            [m
+[32m+[m[32m            # 1. Get XUID from Geyser API[m
+[32m+[m[32m            set {_json} to fetchJson("https://api.geysermc.org/v2/xbox/xuid/%{_safeName}%")[m
+[32m+[m[32m            if {_json} is not set:[m
+[32m+[m[32m                send "§cAPI Connection failed."[m
+[32m+[m[32m                stop[m
+[32m+[m[41m            [m
+[32m+[m[32m            if {_json}.has("xuid") is false:[m
+[32m+[m[32m                send "§cGamertag not found (No XUID returned)."[m
+[32m+[m[32m                stop[m
+[32m+[m[41m                [m
+[32m+[m[32m            set {_xuid} to {_json}.get("xuid").getAsLong()[m
+[32m+[m[41m            [m
+[32m+[m[32m            # 2. Get Skin from Geyser Skin API[m
+[32m+[m[32m            set {_skinJson} to fetchJson("https://api.geysermc.org/v2/skin/%{_xuid}%")[m
+[32m+[m[32m            if {_skinJson} is not set:[m
+[32m+[m[32m                send "§cSkin data not found."[m
+[32m+[m[32m                stop[m
+[32m+[m[41m                [m
+[32m+[m[32m            set {_value} to {_skinJson}.get("value").getAsString()[m
+[32m+[m[32m            set {_sig} to {_skinJson}.get("signature").getAsString()[m
+[32m+[m[41m            [m
+[32m+[m[32m            # Re-cleaning for display/NBT name[m
+[32m+[m[32m            set {_displayName} to arg-2[m
+[32m+[m[32m            replace all """" with "" in {_displayName}[m
+[32m+[m[32m            replace all " " with "_" in {_displayName}[m
+[32m+[m
+[32m+[m[32m            # Generate a consistent UUID for the head? Or random.[m
+[32m+[m[32m            # Let's generate a random one for now to avoid collision issues, or simply don't specify ID?[m
+[32m+[m[32m            # If ID is missing, valid player head? The user's command had ID.[m
+[32m+[m[32m            # Let's generate a random ID for now.[m
+[32m+[m[32m            set {_randomUUID} to UUID.randomUUID().toString()[m
+[32m+[m[32m            set {_intArray} to uuidToIntArrayString({_randomUUID})[m
+[32m+[m[41m            [m
+[32m+[m[32m            set {_cmd} to "give %player% player_head[profile={name:""BE_%{_displayName}%"",id:[I;%{_intArray}%],properties:[{name:""textures"",value:""%{_value}%"",signature:""%{_sig}%""}]}] 1"[m
+[32m+[m[32m            execute console command {_cmd}[m
+[32m+[m[32m            send "§aGave Bedrock head of %arg-2%"[m
+[32m+[m[41m            [m
+[32m+[m[32m        else:[m
+[32m+[m[32m            send "§cUsage: /head <java|be> <name>"[m
+[1mdiff --git a/minecraft_server/plugins/Skript/scripts/lottery-system.sk b/minecraft_server/plugins/Skript/scripts/lottery-system.sk[m
+[1mindex b21f371..eb3c3d6 100644[m
+[1m--- a/minecraft_server/plugins/Skript/scripts/lottery-system.sk[m
+[1m+++ b/minecraft_server/plugins/Skript/scripts/lottery-system.sk[m
+[36m@@ -186,7 +186,7 @@[m [mon rightclick:[m
+ [m
+         # アイテム選定 (選ばれたレアリティの中からランダムに1つ)[m
+         delete {_i_row::*}[m
+[31m-        execute "SELECT item_id, quantity FROM lottery_items WHERE lottery_id = %{_lid}% AND rarity_id = %{_selected_rid}% ORDER BY RAND() LIMIT 1" in {kenkoku_db} and store the result in {_i_row::*}[m
+[32m+[m[32m        execute "SELECT item_id FROM lottery_items WHERE lottery_id = %{_lid}% AND rarity_id = %{_selected_rid}% ORDER BY RAND() LIMIT 1" in {kenkoku_db} and store the result in {_i_row::*}[m
+         [m
+         if {_i_row::item_id::1} is not set:[m
+             send "&c[System] %{_selected_rname}% (%{_lotteryName}%) に当選しましたが、アイテムが設定されていません。" to player[m
+[36m@@ -194,9 +194,6 @@[m [mon rightclick:[m
+             continue[m
+             [m
+         set {_item_id} to {_i_row::item_id::1}[m
+[31m-        set {_qty} to {_i_row::quantity::1}[m
+[31m-        if {_qty} is not set:[m
+[31m-            set {_qty} to 1[m
+         [m
+         # アイテムデータ取得[m
+         delete {_data::*}[m
+[36m@@ -233,12 +230,12 @@[m [mon rightclick:[m
+                             # Legacy NBT[m
+                             set {_dnbt} to "%{_dnbt_pre}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}}"[m
+ [m
+[31m-                execute console command "minecraft:give %player% %{_key}%%{_dnbt}% %{_qty}%"[m
+[32m+[m[32m                execute console command "minecraft:give %player% %{_key}%%{_dnbt}%"[m
+             else:[m
+[31m-                execute console command "minecraft:give %player% %{_key}% %{_qty}%"[m
+[32m+[m[32m                execute console command "minecraft:give %player% %{_key}%"[m
+         else:[m
+             # DBのnbtカラムがnullの場合はNBTなしで付与[m
+[31m-            execute console command "minecraft:give %player% %{_key}% %{_qty}%"[m
+[32m+[m[32m            execute console command "minecraft:give %player% %{_key}%"[m
+         [m
+         # 名前表示 (名前がない場合はキーを表示)[m
+         set {_disp} to name of {_reward_item}[m
+[36m@@ -247,7 +244,7 @@[m [mon rightclick:[m
+         [m
+         # 演出 (ループ中は控えめにしてもいいが、要望通り出す)[m
+         play sound "entity.player.levelup" with volume 0.5 to player[m
+[31m-        send "&a[%{_lotteryName}%] &e%{_selected_rname}%当選! &f%{_disp}% &7(x%{_qty}%) &aを手に入れました！" to player[m
+[32m+[m[32m        send "&a[%{_lotteryName}%] &e%{_selected_rname}%当選! &f%{_disp}% &7(ID: %{_item_id}%) &aを手に入れました！" to player[m
+         [m
+         # ループ時のwait (負荷対策)[m
+         # wait 1 tick[m
+[1mdiff --git a/minecraft_server/plugins/Skript/scripts/npc-system.sk b/minecraft_server/plugins/Skript/scripts/npc-system.sk[m
+[1mindex eada316..3d8942a 100644[m
+[1m--- a/minecraft_server/plugins/Skript/scripts/npc-system.sk[m
+[1m+++ b/minecraft_server/plugins/Skript/scripts/npc-system.sk[m
+[36m@@ -943,7 +943,7 @@[m [mfunction executeTrade(p: player, tid: number, amount: number = 1):[m
+     [m
+     # リワード付与 (お金)[m
+     loop {_trade_rewards::price::*}:[m
+[31m-        set {_r_price} to loop-value * {_amount}[m
+[32m+[m[32m        set {_r_price} to loop-value[m
+         if {_r_price} > 0:[m
+             set {_m} to metadata "money" of {_p}[m
+             add {_r_price} to {_m}[m
