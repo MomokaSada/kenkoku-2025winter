@@ -1,0 +1,148 @@
+
+import:
+    com.google.gson.JsonParser
+    java.net.URI
+    java.net.http.HttpRequest
+    java.net.http.HttpClient
+    java.net.http.HttpResponse$BodyHandlers
+    java.time.Duration
+    java.util.UUID
+    java.lang.Long
+    java.nio.ByteBuffer
+
+# Helper function to fetch JSON from URL
+function fetchJson(url: text) :: object:
+    set {_client} to HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
+    set {_request} to HttpRequest.newBuilder().uri(URI.create({_url})).GET().build()
+    set {_response} to {_client}.send({_request}, BodyHandlers.ofString())
+    if {_response}.statusCode() is 200:
+        set {_body} to {_response}.body()
+        return JsonParser.parseString({_body}).getAsJsonObject()
+    else:
+        broadcast "§c[HeadCommand] HTTP Error: %{_response}.statusCode()%"
+    return null
+
+# Helper to convert UUID string (with or without hyphens) to Minecraft Int Array String "1,2,3,4"
+function uuidToIntArrayString(uuidStr: text) :: text:
+    if length of {_uuidStr} is 32:
+        # Insert hyphens for UUID.fromString if missing
+        set {_uuidStr} to "%subtext of {_uuidStr} from 1 to 8%-%subtext of {_uuidStr} from 9 to 12%-%subtext of {_uuidStr} from 13 to 16%-%subtext of {_uuidStr} from 17 to 20%-%subtext of {_uuidStr} from 21 to 32%"
+    
+    set {_uuid} to UUID.fromString({_uuidStr})
+    set {_most} to {_uuid}.getMostSignificantBits()
+    set {_least} to {_uuid}.getLeastSignificantBits()
+    
+    # Convert 2 longs to 4 ints
+    # High-Most, Low-Most, High-Least, Low-Least
+    set {_i1} to floor({_most} / 4294967296)
+    set {_i2} to mod({_most}, 4294967296) # This mod might need better handling for negative numbers in Skript?
+    # Actually, bit shifting via Java is safer.
+    
+    set {_bb} to ByteBuffer.allocate(16)
+    set {_void} to {_bb}.putLong({_most})
+    set {_void} to {_bb}.putLong({_least})
+    set {_void} to {_bb}.flip()
+    
+    set {_ints} to ""
+    loop 4 times:
+        set {_val} to {_bb}.getInt()
+        if loop-value is 1:
+            set {_ints} to "%{_val}%"
+        else:
+            set {_ints} to "%{_ints}%,%{_val}%"
+            
+    return {_ints}
+
+command /head <text> <text>:
+    permission: admin.head
+    trigger:
+        if arg-1 is "java":
+            send "§eFetching Java player data for %arg-2%..."
+            # 1. Get UUID from Mojang API
+            set {_json} to fetchJson("https://api.mojang.com/users/profiles/minecraft/%arg-2%")
+            if {_json} is not set:
+                send "§cPlayer not found or API error."
+                stop
+            
+            set {_uuidStr} to {_json}.get("id").getAsString()
+            set {_name} to {_json}.get("name").getAsString()
+            
+            # 2. Get Skin from Session API
+            set {_skinJson} to fetchJson("https://sessionserver.mojang.com/session/minecraft/profile/%{_uuidStr}%?unsigned=false")
+            if {_skinJson} is not set:
+                send "§cSkin data not found."
+                stop
+            
+            # Extract Value and Signature
+            # properites is an array
+            set {_props} to {_skinJson}.get("properties").getAsJsonArray()
+            # Loop to find "textures" just in case, though usually it's first
+            set {_value} to ""
+            set {_sig} to ""
+            
+            set {_found} to false
+            # Simple access to first element for now as it's standard
+            set {_propObj} to {_props}.get(0).getAsJsonObject()
+            if {_propObj}.get("name").getAsString() is "textures":
+                set {_value} to {_propObj}.get("value").getAsString()
+                if {_propObj}.has("signature"):
+                    set {_sig} to {_propObj}.get("signature").getAsString()
+            
+            if {_value} is "":
+                send "§cNo texture property found."
+                stop
+
+            # 3. Give Head
+            set {_intArray} to uuidToIntArrayString({_uuidStr})
+            
+            # Construct Command
+            # Using execute console command to ensure correct NBT parsing
+            set {_cmd} to "give %player% player_head[profile={name:""%{_name}%"",id:[I;%{_intArray}%],properties:[{name:""textures"",value:""%{_value}%"",signature:""%{_sig}%""}]}] 1"
+            execute console command {_cmd}
+            send "§aGave head of %{_name}%"
+
+        else if arg-1 is "be":
+            send "§eFetching Bedrock player data for %arg-2%..."
+            set {_safeName} to arg-2
+            replace all """" with "" in {_safeName}
+            replace all " " with "%%20" in {_safeName} # url encode space
+            
+            # 1. Get XUID from Geyser API
+            set {_json} to fetchJson("https://api.geysermc.org/v2/xbox/xuid/%{_safeName}%")
+            if {_json} is not set:
+                send "§cAPI Connection failed."
+                stop
+            
+            if {_json}.has("xuid") is false:
+                send "§cGamertag not found (No XUID returned)."
+                stop
+                
+            set {_xuid} to {_json}.get("xuid").getAsLong()
+            
+            # 2. Get Skin from Geyser Skin API
+            set {_skinJson} to fetchJson("https://api.geysermc.org/v2/skin/%{_xuid}%")
+            if {_skinJson} is not set:
+                send "§cSkin data not found."
+                stop
+                
+            set {_value} to {_skinJson}.get("value").getAsString()
+            set {_sig} to {_skinJson}.get("signature").getAsString()
+            
+            # Re-cleaning for display/NBT name
+            set {_displayName} to arg-2
+            replace all """" with "" in {_displayName}
+            replace all " " with "_" in {_displayName}
+
+            # Generate a consistent UUID for the head? Or random.
+            # Let's generate a random one for now to avoid collision issues, or simply don't specify ID?
+            # If ID is missing, valid player head? The user's command had ID.
+            # Let's generate a random ID for now.
+            set {_randomUUID} to UUID.randomUUID().toString()
+            set {_intArray} to uuidToIntArrayString({_randomUUID})
+            
+            set {_cmd} to "give %player% player_head[profile={name:""BE_%{_displayName}%"",id:[I;%{_intArray}%],properties:[{name:""textures"",value:""%{_value}%"",signature:""%{_sig}%""}]}] 1"
+            execute console command {_cmd}
+            send "§aGave Bedrock head of %arg-2%"
+            
+        else:
+            send "§cUsage: /head <java|be> <name>"
