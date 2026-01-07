@@ -2,7 +2,7 @@
   "bg_bg": "5fbc2b2222751e36191b8359a176b8a5d1aafc39",
   "cs_cz": "eb1192ea88b56efadecd3d470b138fdff768f18e",
   "cy_gb": "398b32835a4b4bc94be5b3193c492f543f4c6da8",
-  "de_de": "324493ceb219dca8619be1255c247941513d5205",
+  "de_de": "c2b626f0a067067c49f8cb236b5d4d13278ead08",
   "en_gb": "21b08bd55d72aa3ec9b6c14cc59ee91db830fd25",
   "en_us": "ac1e0e78f2e8a6b6d0a6158122c3a0a13fe13a33",
   "es_es": "b08caf33cad36fb80bed8f1d96ef5e7fa1ad1e24",
@@ -21,5 +21,6 @@
   "pt_br": "77307434195bb2cfe61fcd7b08f0903afa5e010e",
   "pt_pt": "c749ae9eb0fa5c31be1e67d0ef2f8a210e5eb34b",
   "uk_ua": "d91586500d9f15ecae8eb00edde55971b51871ea",
-  "nl_nl": "54f3ced544eeec06c6d6f96142cfb47d7d1cd71f"
+  "nl_nl": "54f3ced544eeec06c6d6f96142cfb47d7d1cd71f",
+  "zh_cn": "af19e5cbcd0a4bccaf220709954a34473957bad8"
 }
