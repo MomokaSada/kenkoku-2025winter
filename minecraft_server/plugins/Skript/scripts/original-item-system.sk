@@ -424,33 +424,51 @@ every 1 second:
         # ポーション効果系
         if {_effects::speed} is set:
             apply speed {_effects::speed} without particles to loop-player for 2 seconds
+            set {-acc_effect_active::%loop-player%::speed} to true
         else:
-            remove speed from loop-player
+            if {-acc_effect_active::%loop-player%::speed} is true:
+                remove speed from loop-player
+                delete {-acc_effect_active::%loop-player%::speed}
             
         if {_effects::haste} is set:
             apply haste {_effects::haste} without particles to loop-player for 2 seconds
+            set {-acc_effect_active::%loop-player%::haste} to true
         else:
-            remove haste from loop-player
+            if {-acc_effect_active::%loop-player%::haste} is true:
+                remove haste from loop-player
+                delete {-acc_effect_active::%loop-player%::haste}
 
         if {_effects::jump} is set:
             apply jump boost {_effects::jump} without particles to loop-player for 2 seconds
+            set {-acc_effect_active::%loop-player%::jump} to true
         else:
-            remove jump boost from loop-player
+            if {-acc_effect_active::%loop-player%::jump} is true:
+                remove jump boost from loop-player
+                delete {-acc_effect_active::%loop-player%::jump}
 
         if {_effects::slowFalling} is set:
             apply slow falling 1 without particles to loop-player for 2 seconds
+            set {-acc_effect_active::%loop-player%::slowFalling} to true
         else:
-            remove slow falling from loop-player
+            if {-acc_effect_active::%loop-player%::slowFalling} is true:
+                remove slow falling from loop-player
+                delete {-acc_effect_active::%loop-player%::slowFalling}
 
         if {_effects::fireResistance} is set:
             apply fire resistance 1 without particles to loop-player for 2 seconds
+            set {-acc_effect_active::%loop-player%::fireResistance} to true
         else:
-            remove fire resistance from loop-player
+            if {-acc_effect_active::%loop-player%::fireResistance} is true:
+                remove fire resistance from loop-player
+                delete {-acc_effect_active::%loop-player%::fireResistance}
 
         if {_effects::nightVision} is set:
             apply night vision 1 without particles to loop-player for 2 seconds
+            set {-acc_effect_active::%loop-player%::nightVision} to true
         else:
-            remove night vision from loop-player
+            if {-acc_effect_active::%loop-player%::nightVision} is true:
+                remove night vision from loop-player
+                delete {-acc_effect_active::%loop-player%::nightVision}
 
 # ぺたぺたくんロジック (判定修正版)
 every 5 ticks:
