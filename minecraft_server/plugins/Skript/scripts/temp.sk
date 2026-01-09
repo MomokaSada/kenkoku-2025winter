@@ -256,7 +256,3 @@ every 3 ticks:
                 # 時間を短くすることで張り付き感を出す
                 apply levitation 3 to loop-player for 5 ticks replacing existing effect
 
-            
-        
-
-
