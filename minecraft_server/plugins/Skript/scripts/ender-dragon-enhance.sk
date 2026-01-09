@@ -1,0 +1,88 @@
+# Enhanced Ender Dragon Script
+# HP: 1000 (5x Normal)
+# Phases:
+# 75%: Summon Shulkers
+# 50%: Lightning Attacks
+# 25%: Rage Mode (Strength + Endermen)
+
+options:
+    MAX_HP: 1000
+    PREFIX: &5[Ender Dragon]&r
+
+on spawn of ender dragon:
+    set max health of event-entity to {@MAX_HP}
+    set health of event-entity to {@MAX_HP}
+    set metadata "phase" of event-entity to 0
+    broadcast "{@PREFIX} &cThe Ancient Dragon has awakened with {@MAX_HP} HP!"
+
+on damage of ender dragon:
+    set {_dragon} to victim
+    set {_hp} to health of {_dragon}
+    set {_max_hp} to max health of {_dragon}
+    set {_percent} to ({_hp} / {_max_hp}) * 100
+    set {_current_phase} to (metadata "phase" of {_dragon}) ? 0
+
+    # Phase 1: 75% HP - Shulker Minions
+    if {_percent} <= 75:
+        if {_current_phase} < 1:
+            set metadata "phase" of {_dragon} to 1
+            broadcast "{@PREFIX} &eThe Dragon calls for reinforcements! (Shulkers)"
+            loop 5 times:
+                spawn shulker at location of {_dragon}
+                set {_shulker} to last spawned shulker
+                push {_shulker} downwards at speed 0.5
+    
+    # Phase 2: 50% HP - Thunderstorm
+    if {_percent} <= 50:
+        if {_current_phase} < 2:
+            set metadata "phase" of {_dragon} to 2
+            broadcast "{@PREFIX} &6The Dragon is charging with electricity! (Lightning)"
+            play sound "entity.ender_dragon.growl" to all players
+    
+    # Phase 3: 25% HP - Rage Mode
+    if {_percent} <= 25:
+        if {_current_phase} < 3:
+            set metadata "phase" of {_dragon} to 3
+            broadcast "{@PREFIX} &4&lThe Dragon is ENRAGED! (Strength + Endermen)"
+            apply potion of strength 2 to {_dragon} for 9999 seconds
+            loop 5 times:
+                spawn enderman at location of {_dragon}
+                set {_enderman} to last spawned enderman
+                set target of {_enderman} to attacker
+                # Summon End Crystal on the first one
+                if loop-number is 1:
+                    spawn ender crystal at location of {_enderman}
+                    make last spawned ender crystal ride {_enderman}
+                    broadcast "{@PREFIX} &d&lWatch out! One of the Endermen is carrying a Crystal!"
+
+every 5 seconds:
+    loop all ender dragons:
+        set {_dragon} to loop-entity
+        set {_phase} to (metadata "phase" of {_dragon}) ? 0
+        
+        # Phase 1+ Effect: Periodic Shulkers (75% or less)
+        # Randomly spawn a Shulker near a random player
+        if {_phase} >= 1:
+            chance of 15%:
+                loop all players in radius 100 of {_dragon}:
+                    spawn shulker at location of loop-player
+                    push last spawned shulker upwards at speed 0.2
+                    stop loop # Spawn one per tick to avoid lag
+        
+        # Phase 2+ Effect: Lightning (50% or less)
+        # Stacks with Shulkers
+        if {_phase} >= 2:
+            loop all players in radius 100 of {_dragon}:
+                chance of 25%:
+                    strike lightning at location of loop-player
+                    send "{@PREFIX} &eYou were struck by the Dragon's lightning!" to loop-player
+        
+        # Phase 3+ Effect: Withers/Blindness + Endermen (25% or less)
+        # Stacks with Shulkers and Lightning
+        if {_phase} >= 3:
+            loop all players in radius 60 of {_dragon}:
+                chance of 15%:
+                    apply potion of wither 2 to loop-player for 4 seconds
+                    apply potion of blindness 1 to loop-player for 4 seconds
+                    spawn enderman at location of loop-player
+

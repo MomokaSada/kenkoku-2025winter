@@ -140,7 +140,11 @@ command /head <text> <text>:
             set {_randomUUID} to UUID.randomUUID().toString()
             set {_intArray} to uuidToIntArrayString({_randomUUID})
             
-            set {_cmd} to "give %player% player_head[profile={name:""BE_%{_displayName}%"",id:[I;%{_intArray}%],properties:[{name:""textures"",value:""%{_value}%"",signature:""%{_sig}%""}]}] 1"
+            set {_nbtName} to "BE_%{_displayName}%"
+            if length of {_nbtName} > 16:
+                set {_nbtName} to subtext of {_nbtName} from 1 to 16
+            
+            set {_cmd} to "give %player% player_head[profile={name:""%{_nbtName}%"",id:[I;%{_intArray}%],properties:[{name:""textures"",value:""%{_value}%"",signature:""%{_sig}%""}]}] 1"
             execute console command {_cmd}
             send "§aGave Bedrock head of %arg-2%"
             
