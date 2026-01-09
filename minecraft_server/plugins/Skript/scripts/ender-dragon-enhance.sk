@@ -3,20 +3,48 @@
 # Phases:
 # 75%: Summon Shulkers
 # 50%: Lightning Attacks
-# 25%: Rage Mode (Strength + Endermen)
+# 25%: Rage Mode (Strength + Endermen + Crystal)
 
 options:
     MAX_HP: 1000
     PREFIX: &5[Ender Dragon]&r
 
-on spawn of ender dragon:
-    set max health of event-entity to {@MAX_HP}
-    set health of event-entity to {@MAX_HP}
-    set metadata "phase" of event-entity to 0
+# Function to apply enhancement
+function makeDragonEnhanced(dragon: entity):
+    set max health of {_dragon} to {@MAX_HP}
+    set health of {_dragon} to {@MAX_HP}
+    set metadata "phase" of {_dragon} to 0
+    set metadata "is_enhanced" of {_dragon} to true
     broadcast "{@PREFIX} &cThe Ancient Dragon has awakened with {@MAX_HP} HP!"
+
+# Command to manually enhance the nearest dragon
+command /dragon-enhance:
+    permission: op
+    trigger:
+        set {_closest_dist} to 9999
+        set {_dragon} to false
+        loop all ender dragons:
+            set {_d} to distance between player and loop-entity
+            if {_d} < {_closest_dist}:
+                set {_closest_dist} to {_d}
+                set {_dragon} to loop-entity
+        
+        if {_dragon} is false:
+            send "&cNo Ender Dragon found nearby!"
+            stop
+        makeDragonEnhanced({_dragon})
+        send "{@PREFIX} &aEnhanced the nearest Ender Dragon!"
+
+# Auto-spawn logic (Disabled by default as per request to use command)
+# on spawn of ender dragon:
+#     makeDragonEnhanced(event-entity)
 
 on damage of ender dragon:
     set {_dragon} to victim
+    # Only apply to enhanced dragons
+    if metadata "is_enhanced" of {_dragon} is not set:
+        stop
+    
     set {_hp} to health of {_dragon}
     set {_max_hp} to max health of {_dragon}
     set {_percent} to ({_hp} / {_max_hp}) * 100
@@ -58,6 +86,10 @@ on damage of ender dragon:
 every 5 seconds:
     loop all ender dragons:
         set {_dragon} to loop-entity
+        # Only process enhanced dragons
+        if metadata "is_enhanced" of {_dragon} is not set:
+            continue
+            
         set {_phase} to (metadata "phase" of {_dragon}) ? 0
         
         # Phase 1+ Effect: Periodic Shulkers (75% or less)
