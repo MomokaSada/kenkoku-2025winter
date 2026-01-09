@@ -1,0 +1,162 @@
+# ==========================================
+# Item Function System (Auto-Redeem Trigger)
+# ------------------------------------------
+# 概要: 特定のNBT（custom_data;commands）を持つアイテムを
+#       「入手した瞬間」にコマンドを実行して消滅させるシステム。
+#
+# トリガー:
+# 1. on pickup (ドロップ拾い)
+# 2. on inventory click (インベントリ内移動/購入)
+# 3. on rightclick (使用/右クリック)
+# 4. on join (ログイン時チェック)
+# ==========================================
+
+# ------------------------------------------
+# 共通処理関数 (Central Processor)
+# ------------------------------------------
+function processFunctionItem(p: player, i: item) :: boolean:
+    set {_nbt} to custom nbt of {_i}
+    set {_isFunc} to boolean tag "isFunctionItem" of {_nbt}
+    
+    if {_isFunc} is true:
+        # コマンドリスト取得
+        set {_commands::*} to string list tag "commands" of {_nbt}
+        
+        # コマンド実行
+        loop {_commands::*}:
+            set {_cmd} to loop-value
+            replace all "<player>" with name of {_p} in {_cmd}
+            
+            # コンソール実行 (execute as %player% at @s run ...)
+            execute console command "execute as %{_p}% at @s run %{_cmd}%"
+            
+        # 効果音 (成功フィードバック)
+        play sound "entity.experience_orb.pickup" with volume 0.5 at {_p}
+        
+        return true
+        
+    return false
+
+# ------------------------------------------
+# 1. Pickup Trigger (拾った時)
+# ------------------------------------------
+on pickup:
+    # ユーザー要望: 情緒を持たせるため、イベントはキャンセルせず
+    # アイテムがインベントリに入った直後に処理を行う
+    set {_nbt} to custom nbt of event-item
+    set {_isFunc} to boolean tag "isFunctionItem" of {_nbt}
+    
+    if {_isFunc} is true:
+        wait 1 tick
+        # インベントリに入ったはずなのでスキャンして実行
+        scanInventoryForFunctionItems(player)
+
+# ------------------------------------------
+# 2. Inventory Click Trigger (インベントリ操作時)
+# ------------------------------------------
+on inventory click:
+    # Check Current Item (Clicked Slot)
+    set {_item} to event-item
+    if {_item} is not air:
+        if processFunctionItem(player, {_item}) is true:
+            # 処理が走ったらアイテムを消す
+            set event-slot to air
+            cancel event # イベントキャンセルして持ち上げを防ぐ
+            
+    # Check Cursor Item (既に持っている場合)
+    set {_cursor} to cursor slot of player
+    if {_cursor} is not air:
+        if processFunctionItem(player, {_cursor}) is true:
+            set cursor slot of player to air
+            cancel event
+
+# ------------------------------------------
+# 3. Right Click Trigger (使用時 - Fallback)
+# ------------------------------------------
+on rightclick:
+    set {_item} to player's tool
+    if processFunctionItem(player, {_item}) is true:
+        set player's tool to air
+        cancel event
+
+# ------------------------------------------
+# 4. Join Trigger (ログイン時 - Offline Give対応)
+# ------------------------------------------
+on join:
+    # ログイン時にチェック
+    wait 1 second # 読み込み待ち
+    scanInventoryForFunctionItems(player)
+
+# ------------------------------------------
+# 5. Tool Change Trigger (持ち替え時)
+# ------------------------------------------
+on tool change:
+    # 新しく持ったアイテムをチェック
+    wait 1 tick # 持ち替え完了待ち
+    set {_item} to player's tool
+    if processFunctionItem(player, {_item}) is true:
+        set player's tool to air
+
+# ------------------------------------------
+# 6. Drop Trigger (捨てようとした時)
+# ------------------------------------------
+on drop:
+    if processFunctionItem(player, event-item) is true:
+        cancel event
+        wait 1 tick
+        remove event-item from player's inventory
+
+# ------------------------------------------
+# 7. Swap Hand Trigger (オフハンドへ移動時)
+# ------------------------------------------
+on swap hand items:
+    # Fキーを押したときのメインハンド/オフハンド両方をチェック
+    if processFunctionItem(player, player's tool) is true:
+        set player's tool to air
+        cancel event
+    else if processFunctionItem(player, player's offhand tool) is true:
+        set player's offhand tool to air
+        cancel event
+
+# ------------------------------------------
+# 8. Backup Triggers (保険 - インベントリ監視)
+# ------------------------------------------
+# ユーザー要望: バックアップとしてインベントリを開閉した際にもチェックする
+# (Eキーでのインベントリオープンはサーバー側で検知できない場合があるが、
+# チェストやGUIを開いた/閉じたタイミングを検知する)
+
+on inventory open:
+    wait 1 tick
+    scanInventoryForFunctionItems(player)
+
+on inventory close:
+    scanInventoryForFunctionItems(player)
+
+# 9. Periodic Trigger (Removed)
+# ------------------------------------------
+# 取引完了時に scanInventoryForFunctionItems() を呼び出すフック実装済みのため
+# 定期実行ループは不要になりました。
+
+# ------------------------------------------
+# Helper: インベントリスキャン
+# ------------------------------------------
+function scanInventoryForFunctionItems(p: player):
+    loop all items in {_p}'s inventory:
+        if processFunctionItem({_p}, loop-item) is true:
+            remove loop-item from {_p}'s inventory
+
+# ------------------------------------------
+# デバッグ用コマンド
+# ------------------------------------------
+command /get-pickup-test-item:
+    permission: op
+    trigger:
+        set {_i} to diamond named "&bテストアイテム(自動実行)"
+        # NBT設定
+        # <player> is still useful, but now commands run as player.
+        # Example: "say Hello" -> "execute as fur-dev at @s run say Hello"
+        set {_nbt_string} to "{custom_data:{isFunctionItem:true,commands:[""say <player> redeemed item!"",""effect give @s speed 5 1""]}}"
+        add nbt compound from {_nbt_string} to nbt of {_i}
+        
+        give {_i} to player
+        send "&a[デバッグ] &fテスト用アイテムを付与しました。(インベントリに入った瞬間に発動します)"
