@@ -653,6 +653,10 @@ function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: num
     
     executeTrade({_player}, {_trade_id}, {_amt})
     
+    # 取引成功後、即座に関数アイテムをスキャンして実行 (Auto-Redeem)
+    wait 1 tick
+    scanInventoryForFunctionItems({_player})
+    
     # 取引成功後、GUIを再表示
     wait 1 tick
     if {_npc_entity} is set:
