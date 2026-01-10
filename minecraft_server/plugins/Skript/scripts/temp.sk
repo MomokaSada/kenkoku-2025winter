@@ -1,258 +1,49 @@
-every 1 second:
-    loop all players:
-        set {_p} to loop-player
-        # ホットバー (0-8) + オフハンド (40) をチェック
-        # Skriptでは slot 0 to 8 of inventory でホットバー取得可能
-        # 今回は「ホットバーに入れている」が条件
-        
-        # 属性リセット（体力増強用）- 今回はMaxHealth属性を直接書き換えるアプローチはリスクがあるため、
-        # シンプルにEffect付与のみにするか、あるいはAttributeModifier付きアイテムを配布する形式が推奨される。
-        # ユーザー要望の画像には (10), (20) とあるので Health Boost (Heart 5, 10, 15) と推定。
-        
-        # フラグリセット
-        # 固定リストでループ (インデックス曖昧回避)
-        loop 0, 1, 2, 3, 4, 5, 6, 7, 8:
-            set {_slot} to loop-value-2
-            set {_item} to slot {_slot} of {_p}'s inventory
-            
-            set {_nbt} to nbt compound of {_item}
-            set {_type} to string tag "AccessoryType" of {_nbt}
-            
-            # Debug: NBTが見つかったら報告
-            # if {_type} is set:
-            #     send "&e[Debug] Slot %{_slot}%: Found %{_type}%" to console
-
-            if {_type} is set:
-                # --- パッシブスキル系 ---
-                if {_type} is "health_10":
-                    if {_max_h_tier} < 1:
-                        set {_max_h_tier} to 1
-                else if {_type} is "health_20":
-                    if {_max_h_tier} < 2:
-                        set {_max_h_tier} to 2
-                else if {_type} is "health_30":
-                    if {_max_h_tier} < 3:
-                        set {_max_h_tier} to 3
-                
-                # 他のエフェクトは通常通り
-                else if {_type} is "speed_1":
-                    apply speed 1 to {_p} for 2 seconds replacing existing effect
-                else if {_type} is "haste_2":
-                    apply haste 2 to {_p} for 2 seconds replacing existing effect
-                else if {_type} is "jump_2":
-                    apply jump boost 2 to {_p} for 2 seconds replacing existing effect
-                else if {_type} is "slow_falling":
-                    apply slow falling 1 to {_p} for 2 seconds replacing existing effect
-                else if {_type} is "fire_resistance":
-                    apply fire resistance 1 to {_p} for 2 seconds replacing existing effect
-                else if {_type} is "night_vision":
-                    apply night vision 1 to {_p} for 12 seconds replacing existing effect 
-
-        # --- Health Boost State Handling ---
-        set {_update_needed} to false
-        
-        if {active_health_tier::%{_p}%} is not set:
-            set {active_health_tier::%{_p}%} to 0
-        
-        # State changed?
-        if {active_health_tier::%{_p}%} is not {_max_h_tier}:
-            set {_update_needed} to true
-        
-        # Effect check
-        else if {_max_h_tier} > 0:
-            if {_p} does not have potion effect health boost:
-                set {_update_needed} to true
-        
-        # 2. Apply / Remove
-        if {_update_needed} is true:
-            if {_max_h_tier} is 0:
-                remove health boost from {_p}
-                set {active_health_tier::%{_p}%} to 0
-                send "&e[Debug] Removed Health Boost from %{_p}%" to console
-            
-            else if {_max_h_tier} is 1:
-                remove health boost from {_p}
-                apply health boost 5 to {_p} for 999 days replacing existing effect
-                heal {_p}
-                set {active_health_tier::%{_p}%} to 1
-                send "&e[Debug] Applied H-Boost 1 to %{_p}%" to console
-
-            else if {_max_h_tier} is 2:
-                remove health boost from {_p}
-                apply health boost 10 to {_p} for 999 days replacing existing effect
-                heal {_p}
-                set {active_health_tier::%{_p}%} to 2
-                send "&e[Debug] Applied H-Boost 2 to %{_p}%" to console
-
-            else if {_max_h_tier} is 3:
-                remove health boost from {_p}
-                apply health boost 15 to {_p} for 999 days replacing existing effect
-                heal {_p}
-                set {active_health_tier::%{_p}%} to 3
-                send "&e[Debug] Applied H-Boost 3 to %{_p}%" to console
-                # send "&e[Debug] Applied Health Boost 3" to {_p}
-
-# Debug Command
-command /debug-scan-inv <player>:
+# テスト用：1つのアイテムをパースして名前を確認
+command /test-parse-item:
     permission: op
     trigger:
-        set {_p} to arg-1
-        send "&e[Debug] Scanning inventory of %{_p}%..." to console
-        loop 41 times:
-            set {_slot} to loop-value - 1
-            set {_item} to slot {_slot} of {_p}'s inventory
-            if {_item} is not air:
-                set {_nbt} to nbt compound of {_item}
-                set {_type} to string tag "AccessoryType" of {_nbt}
-                
-                if {_type} is set:
-                    send "&e[Debug] Slot %{_slot}%: Valid NBT (%{_type}%)" to console
-                else if name of {_item} contains "体力増強":
-                    send "&c[Debug] Slot %{_slot}%: Item found but NO NBT (Old or Broken)!" to console
-                    # send "&7NBT Dump: %{_nbt}%" to console
-        send "&e[Debug] Scan complete." to console
-
-command /original-item <text> [<text>]:
-    permission: op
-    trigger:
-        if arg-1 is "list":
-            send "&6=== アクセサリー一覧 ==="
-            send "&a[パッシブ]"
-            send "&7- health_10 (体力増強+10)"
-            send "&7- health_20 (体力増強+20)"
-            send "&7- health_30 (体力増強+30)"
-            send "&7- speed_1 (スピードI)"
-            send "&7- haste_2 (採掘速度II)"
-            send "&7- jump_2 (ジャンプII)"
-            send "&7- slow_falling (低速落下)"
-            send "&7- fire_resistance (火炎耐性)"
-            send "&7- night_vision (暗視)"
-            send "&b[無限系]"
-            send "&7- infinite_pearl (無限エンパ)"
-            send "&b[特殊系]"
-            send "&7- peta_peta (ペタペタくん)"
-            send "&7- jump_kun (ジャンプくん)"
-            
-        else if arg-1 is "get":
-            set {_type} to arg-2
-            if {_type} is not set:
-                send "&c[Error] タイプを指定してください: /original-item get <type>"
-                stop
-            
-            # アイテム生成ロジック
-            delete {_i}
-            
-            if {_type} is "health_10":
-                set {_i} to golden apple named "&c体力増強 (10)" with lore "&7ホットバー所持: 体力+10"
-                set string tag "AccessoryType" of nbt of {_i} to "health_10"
-            else if {_type} is "health_20":
-                set {_i} to golden apple named "&c体力増強 (20)" with lore "&7ホットバー所持: 体力+20"
-                set string tag "AccessoryType" of nbt of {_i} to "health_20"
-            else if {_type} is "health_30":
-                set {_i} to golden apple named "&c体力増強 (30)" with lore "&7ホットバー所持: 体力+30"
-                set string tag "AccessoryType" of nbt of {_i} to "health_30"
-            else if {_type} is "speed_1":
-                set {_i} to sugar named "&bスピード (I)" with lore "&7ホットバー所持: 移動速度上昇I"
-                set string tag "AccessoryType" of nbt of {_i} to "speed_1"
-            else if {_type} is "haste_2":
-                set {_i} to golden pickaxe named "&e採掘速度 (II)" with lore "&7ホットバー所持: 採掘速度上昇II"
-                set string tag "AccessoryType" of nbt of {_i} to "haste_2"
-            else if {_type} is "jump_2":
-                set {_i} to rabbit foot named "&aジャンプ (II)" with lore "&7ホットバー所持: 跳躍力上昇II"
-                set string tag "AccessoryType" of nbt of {_i} to "jump_2"
-            else if {_type} is "slow_falling":
-                set {_i} to feather named "&f低速落下" with lore "&7ホットバー所持: 落下速度低下"
-                set string tag "AccessoryType" of nbt of {_i} to "slow_falling"
-            else if {_type} is "fire_resistance":
-                set {_i} to magma cream named "&6火炎耐性" with lore "&7ホットバー所持: 火炎耐性"
-                set string tag "AccessoryType" of nbt of {_i} to "fire_resistance"
-            else if {_type} is "night_vision":
-                set {_i} to golden carrot named "&9暗視" with lore "&7ホットバー所持: 暗視"
-                set string tag "AccessoryType" of nbt of {_i} to "night_vision"
-            else if {_type} is "infinite_pearl":
-                set {_i} to ender pearl named "&d無限エンパ" with lore "&7投げてもなくならない"
-                set string tag "AccessoryType" of nbt of {_i} to "infinite_pearl"
-            else if {_type} is "peta_peta":
-                set {_i} to slime ball named "&aペタペタくん" with lore "&7壁に向かって持つと浮遊する"
-                set string tag "AccessoryType" of nbt of {_i} to "peta_peta"
-            else if {_type} is "jump_kun":
-                set {_i} to feather named "&bジャンプくん" with lore "&7右クリックで大ジャンプ"
-                set string tag "AccessoryType" of nbt of {_i} to "jump_kun"
-            
-            if {_i} is set:
-                give {_i} to player
-                send "&a[System] %{_type}% を取得しました"
-                
-                # Debug: 生成されたNBTを確認
-                set {_nbt} to nbt compound of {_i}
-                set {_tag} to string tag "AccessoryType" of {_nbt}
-                send "&e[Debug] Created with AccessoryType: %{_tag}%" to console
+        execute "SELECT id, `key`, nbt, name FROM items WHERE is_original = TRUE LIMIT 1" in {kenkoku_db} and store the result in {_test::*}
+        
+        set {_id} to {_test::id::1}
+        set {_key} to {_test::key::1}
+        set {_nbt_str} to {_test::nbt::1}
+        set {_old_name} to {_test::name::1}
+        
+        broadcast "&e=== Test Parse Item ==="
+        broadcast "&7ID: %{_id}%"
+        broadcast "&7Key: %{_key}%"
+        broadcast "&7Old Name: %{_old_name}%"
+        broadcast "&7NBT (first 100 chars): %subtext of {_nbt_str} from 1 to 100%"
+        
+        # クォート除去
+        if {_nbt_str} starts with """":
+            set {_len} to length of {_nbt_str}
+            set {_nbt_str} to subtext of {_nbt_str} from 2 to {_len} - 1
+            broadcast "&7Removed quotes from NBT"
+        
+        # パース
+        if {_nbt_str} starts with "[":
+            broadcast "&7Using Component Syntax parse"
+            set {_combined} to "%{_key}%%{_nbt_str}%"
+            broadcast "&7Combined string (first 150): %subtext of {_combined} from 1 to 150%"
+            set {_item} to {_combined} parsed as item
+        else:
+            broadcast "&7Using Standard NBT parse"
+            set {_item} to {_key} parsed as item
+            if {_nbt_str} is not "":
+                add nbt compound from {_nbt_str} to nbt of {_item}
+        
+        set {_display_name} to name of {_item}
+        
+        broadcast "&7Parsed item: %{_item}%"
+        broadcast "&7Display name: %{_display_name}%"
+        
+        if {_display_name} is set:
+            if {_display_name} is {_old_name}:
+                broadcast "&c>>> Names MATCH - will NOT update"
             else:
-                send "&c[Error] 未定義のタイプです: %{_type}%"
-                stop
-
-# -------------------------------------------------------------------------
-# 無限エンパ (Infinite Pearl)
-# -------------------------------------------------------------------------
-on right click holding ender pearl:
-    set {_nbt} to nbt compound of tool
-    set {_type} to string tag "AccessoryType" of {_nbt}
-    if {_type} is "infinite_pearl":
-        cancel event
-        # プレイヤーが向いている方向に投げる
-        shoot ender pearl from player at speed 1.5
-        # 音を鳴らす（使用感のため）
-        play sound "entity.ender_pearl.throw" at player for player
-
-# -------------------------------------------------------------------------
-# ジャンプくん (Jump-kun)
-# -------------------------------------------------------------------------
-on right click:
-    set {_nbt} to nbt compound of tool
-    set {_type} to string tag "AccessoryType" of {_nbt}
-    if {_type} is "jump_kun":
-        # 上方向に飛ばす
-        push player upwards at speed 1.5
-        push player forward at speed 0.5
-        play sound "entity.firework_rocket.launch" at player for player
-        show 10 cloud at location of player
-        # クールダウン（連打防止）
-        set {_cooldown} to difference between {jump_kun_cooldown::%player%} and now
-        if {_cooldown} is less than 1 second:
-            stop
-        set {jump_kun_cooldown::%player%} to now
-
-# -------------------------------------------------------------------------
-# ペタペタくん (PetaPeta-kun)
-# -------------------------------------------------------------------------
-# 常に壁チェックを行うのは負荷が気になるため、3 tick間隔程度にする
-every 3 ticks:
-    loop all players:
-        # メインハンドまたはオフハンドに持っているかチェック
-        set {_tool} to loop-player's tool
-        set {_off} to loop-player's offhand tool
-        set {_has_peta} to false
-        
-        # 判定
-        if {_tool} is set:
-            set {_root} to nbt compound of {_tool}
-            set {_type} to string tag "AccessoryType" of {_root}
-            if {_type} is "peta_peta":
-                set {_has_peta} to true
-        
-        if {_has_peta} is false:
-            if {_off} is set:
-                set {_root} to nbt compound of {_off}
-                set {_type} to string tag "AccessoryType" of {_root}
-                if {_type} is "peta_peta":
-                    set {_has_peta} to true
-        
-        if {_has_peta} is true:
-            # 壁判定 (目の前のブロック)
-            set {_loc} to location 0.6 meter in front of loop-player
-            if block at {_loc} is solid:
-                # 浮遊エフェクト (Levitation)
-                # Levitation 3 = そこそこの上昇速度
-                # 時間を短くすることで張り付き感を出す
-                apply levitation 3 to loop-player for 5 ticks replacing existing effect
-
+                broadcast "&a>>> Names DIFFER - will update"
+                broadcast "&a    Old: %{_old_name}%"
+                broadcast "&a    New: %{_display_name}%"
+        else:
+            broadcast "&c>>> Display name is NOT SET"

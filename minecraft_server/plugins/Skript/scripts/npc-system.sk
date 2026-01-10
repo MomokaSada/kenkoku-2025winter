@@ -374,6 +374,51 @@ function openTradeMenu(p: player, npc: entity, page: number):
     delete {_trades::*}
     execute "SELECT t.id, t.content, vi.key as view_item_key, nt.name as npc_type FROM trades t LEFT JOIN items vi ON t.view_item_id = vi.id JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
     
+    # 詳細情報の取得 (Bulk Fetch)
+    delete {_costs::*}
+    delete {_rewards::*}
+    
+    # Costs
+    execute "SELECT tc.trade_id, IFNULL(i.name, i.key) as item_name, tc.quantity, tc.price, i.is_original FROM trade_costs tc JOIN trades t ON tc.trade_id = t.id LEFT JOIN items i ON tc.item_id = i.id WHERE t.npc_id = %{_npc_id}%" in {kenkoku_db} and store the result in {_costs::*}
+    
+    # Rewards
+    execute "SELECT r.trade_id, IFNULL(i.name, i.key) as item_name, r.quantity, r.price, i.is_original FROM rewards r JOIN trades t ON r.trade_id = t.id LEFT JOIN items i ON r.item_id = i.id WHERE t.npc_id = %{_npc_id}%" in {kenkoku_db} and store the result in {_rewards::*}
+    
+    # コスト情報の整形
+    loop {_costs::trade_id::*}:
+        set {_tid} to loop-value
+        set {_name} to {_costs::item_name::%loop-index%}
+        set {_qty} to {_costs::quantity::%loop-index%}
+        set {_price} to {_costs::price::%loop-index%}
+        
+        # アイテム名がキーそのものの場合は整形 (minecraft:除去など)
+        if {_name} contains "minecraft:":
+            replace "minecraft:" with "" in {_name}
+        
+        if {_price} > 0:
+            add "&7- %{_price}%G" to {_cost_lines::%{_tid}%::*}
+        
+        if {_name} is set:
+            if {_name} is not "":
+                add "&7- %{_name}% ×%{_qty}%" to {_cost_lines::%{_tid}%::*}
+                
+    # リワード情報の整形
+    loop {_rewards::trade_id::*}:
+        set {_tid} to loop-value
+        set {_name} to {_rewards::item_name::%loop-index%}
+        set {_qty} to {_rewards::quantity::%loop-index%}
+        set {_price} to {_rewards::price::%loop-index%}
+        
+        if {_name} contains "minecraft:":
+            replace "minecraft:" with "" in {_name}
+            
+        if {_price} > 0:
+            add "&7- %{_price}%G" to {_reward_lines::%{_tid}%::*}
+            
+        if {_name} is set:
+            if {_name} is not "":
+                add "&7- %{_name}% ×%{_qty}%" to {_reward_lines::%{_tid}%::*}
+    
     if {_trades::id::*} is not set:
         send "&c[Error] このNPCには取引がありません。" to {_p}
         stop
@@ -434,22 +479,55 @@ function openTradeMenu(p: player, npc: entity, page: number):
                         set {_is_completed} to true
                 
                 # アイテム名とLoreを設定
-                if {_is_completed} is true:
-                    set name of {_trade_item} to "&7&l[完了] %{_current_content}%"
-                    set lore of {_trade_item} to "&8このクエストは完了済みです"
+                # ヘッダーとサブタイトルの設定
+                delete {_lore::*}
+                
+                if {_current_npc_type} is "quest":
+                    set {_title_prefix} to "&e&l[クエスト]"
+                    set {_click_msg} to "&7クリックでクエストをクリア"
+                    set {_cost_header} to "&e&l納品アイテム"
+                    set {_reward_header} to "&e&l返礼アイテム"
+                else if {_current_npc_type} is "pawnshop":
+                    set {_title_prefix} to "&6&l[買取]"
+                    set {_click_msg} to "&7クリックで売却"
+                    set {_cost_header} to "&6&l売却アイテム"
+                    set {_reward_header} to "&6&l獲得報酬"
+                else if {_current_npc_type} is "shop":
+                    set {_title_prefix} to "&b&l[ショップ]"
+                    set {_click_msg} to "&7クリックで購入"
+                    set {_cost_header} to "&b&l必要コスト"
+                    set {_reward_header} to "&b&l購入アイテム"
                 else:
-                    if {_current_npc_type} is "quest":
-                        set name of {_trade_item} to "&e&l[クエスト] %{_current_content}%"
-                        set lore of {_trade_item} to "&7クリックで詳細を表示"
-                    else if {_current_npc_type} is "pawnshop":
-                        set name of {_trade_item} to "&6&l[買取] %{_current_content}%"
-                        set lore of {_trade_item} to "&7クリックで売却"
-                    else if {_current_npc_type} is "shop":
-                        set name of {_trade_item} to "&b&l[ショップ] %{_current_content}%"
-                        set lore of {_trade_item} to "&7クリックで購入"
-                    else:
-                        set name of {_trade_item} to "&e&l%{_current_content}%"
-                        set lore of {_trade_item} to "&7クリックで詳細を表示 (Type: %{_current_npc_type}%)"
+                    set {_title_prefix} to "&e&l"
+                    set {_click_msg} to "&7クリックで交換"
+                    set {_cost_header} to "&f&l納品アイテム"
+                    set {_reward_header} to "&f&l返礼アイテム"
+                
+                # アイテム名と基本Loreの設定
+                if {_is_completed} is true:
+                    # 完了済みでも内容は表示するが、完了マークをつける
+                    set name of {_trade_item} to "&7&l[完了] %{_current_content}%"
+                    add "&8このクエストは完了済みです" to {_lore::*}
+                    add "" to {_lore::*}
+                else:
+                    set name of {_trade_item} to "%{_title_prefix}% %{_current_content}%"
+                    add {_click_msg} to {_lore::*}
+                    add "" to {_lore::*}
+                
+                # Cost Lines
+                if {_cost_lines::%{_current_tid}%::*} is set:
+                    add {_cost_header} to {_lore::*}
+                    loop {_cost_lines::%{_current_tid}%::*}:
+                        add loop-value-2 to {_lore::*}
+                    add "" to {_lore::*}
+                    
+                # Reward Lines
+                if {_reward_lines::%{_current_tid}%::*} is set:
+                    add {_reward_header} to {_lore::*}
+                    loop {_reward_lines::%{_current_tid}%::*}:
+                        add loop-value-2 to {_lore::*}
+                            
+                set lore of {_trade_item} to {_lore::*}
                 
                 # カスタムNBTでトレードID埋め込み
                 set {_nbt} to "{custom_data:{tradeId:%{_current_tid}%,npcId:%{_npc_id}%}}"

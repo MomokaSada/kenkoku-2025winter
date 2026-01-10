@@ -41,28 +41,48 @@ command /insert-original-item <text> <text> <text>:
                     set {_nbt_pre} to subtext of {_nbt} from 1 to {_len} - 1
                     set {_nbt} to "%{_nbt_pre}%,entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01,Invulnerable:1b}}"
         
-        send "&e[System] オリジナルアイテムの登録を開始します: %{_unique_name}% (Base: %{_base_key}%)"
+        # Display Nameの抽出 (DB保存用)
+        set {_display_name} to ""
         
-        # 存在チェック (Unique Nameでチェック, NULL除外)
+        # NBTがComponent Syntax ([...]) かどうかで分岐
+        if {_nbt} starts with "[":
+            # Component Syntax: 結合してパース
+            set {_dummy_item} to "%{_base_key}%%{_nbt}%" parsed as item
+        else:
+            # Standard NBT: アイテム生成後にNBT付与
+            set {_dummy_item} to {_base_key} parsed as item
+            if {_nbt} is not "":
+                add nbt compound from {_nbt} to nbt of {_dummy_item}
+                
+        set {_display_name} to name of {_dummy_item}
+        
+        # 名前が見つからない場合はarg-1を使用
+        if {_display_name} is not set:
+            set {_display_name} to {_unique_name}
+        
+        send "&e[System] オリジナルアイテムの登録を開始します: %{_display_name}% (Base: %{_base_key}%)"
+        
+        # 存在チェック (Display Nameでチェック)
         delete {-check::*}
-        execute "SELECT id FROM items WHERE `name` = %{_unique_name}% AND `name` IS NOT NULL LIMIT 1" in {kenkoku_db} and store the result in {-check::*}
+        execute "SELECT id FROM items WHERE `name` = %{_display_name}% AND `name` IS NOT NULL LIMIT 1" in {kenkoku_db} and store the result in {-check::*}
         
         if {-check::id::1} is set:
             # 更新 (UPDATE)
-            execute "UPDATE items SET `key` = %{_base_key}%, is_original = TRUE, nbt = %{_nbt}%, updated_at = NOW() WHERE `name` = %{_unique_name}%" in {kenkoku_db}
+            execute "UPDATE items SET `key` = %{_base_key}%, is_original = TRUE, nbt = %{_nbt}%, updated_at = NOW() WHERE `name` = %{_display_name}%" in {kenkoku_db}
             set {_action} to "更新"
         else:
             # 新規登録 (INSERT)
-            execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) VALUES (%{_base_key}%, %{_unique_name}%, TRUE, %{_nbt}%, NOW(), NOW())" in {kenkoku_db}
+            execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) VALUES (%{_base_key}%, %{_display_name}%, TRUE, %{_nbt}%, NOW(), NOW())" in {kenkoku_db}
             set {_action} to "新規登録"
             # キャッシュに追加
-            add {_unique_name} to {-original_names_cache::*}
+            add {_display_name} to {-original_names_cache::*}
         
         set {_last_error} to last sql error
         if {_last_error} is set:
             send "&c[Error] %{_action}%に失敗しました: %{_last_error}%"
         else:
-            send "&a[System] オリジナルアイテムを%{_action}%しました。"
+            send "&a[System] オリジナルアイテムを%{_action}%しました (%{_display_name}%)。"
+
 
 on tab complete of "/insert-original-item":
     # position 1: Unique Name (自由入力だが、既存のものを更新したい場合のためにキャッシュを出すのもあり)
