@@ -1,0 +1,130 @@
+# item-translation.sk
+# 外部言語ファイル(ja_jp.json)を利用したアイテム名の日本語化
+
+import:
+    java.net.URI
+    java.net.http.HttpRequest
+    java.net.http.HttpClient
+    java.net.http.HttpResponse$BodyHandlers
+    java.time.Duration
+    java.nio.charset.StandardCharsets
+    com.google.gson.JsonParser
+
+# -------------------------------------------------------------------------
+# Helper: fetch text from URL
+# -------------------------------------------------------------------------
+function fetchText(url: text) :: text:
+    set {_client} to HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
+    set {_request} to HttpRequest.newBuilder().uri(URI.create({_url})).GET().build()
+    
+    set {_response} to {_client}.send({_request}, BodyHandlers.ofString())
+    if {_response}.statusCode() is 200:
+        return {_response}.body()
+    else:
+        broadcast "&c[Error] HTTP Status: %{_response}.statusCode()%"
+        
+    return ""
+
+# -------------------------------------------------------------------------
+# 1. 言語ファイル読み込みコマンド
+# -------------------------------------------------------------------------
+command /load-lang:
+    permission: op
+    trigger:
+        send "&e[System] 言語ファイル(ja_jp.json)のダウンロードを開始します..."
+        
+        # Valid URL from InventivetalentDev (1.20.1)
+        # Default version
+        set {_ver} to "1.21.1"
+        
+        # Fetch version from server_infos
+        execute "SELECT version FROM server_infos LIMIT 1" in {kenkoku_db} and store the result in {-ver_data::*}
+        if {-ver_data::version::1} is set:
+            set {_ver} to {-ver_data::version::1}
+            
+        send "&e[System] 取得バージョン: %{_ver}%"
+        
+        # Construct URL dynamically
+        set {_url} to "https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/%{_ver}%/assets/minecraft/lang/ja_jp.json"
+        
+        set {_json_text} to fetchText({_url})
+        
+        if {_json_text} is "":
+            send "&c[Error] ダウンロードに失敗しました。"
+            stop
+            
+        send "&e[System] ダウンロード完了。解析中..."
+        
+        # JSONをパースしてグローバル変数にキャッシュ
+        delete {-lang::*}
+        
+        # Parse as JsonObject using GSON
+        set {_jsonElement} to JsonParser.parseString({_json_text})
+        set {_jsonObject} to {_jsonElement}.getAsJsonObject()
+        set {_entrySet} to {_jsonObject}.entrySet()
+        
+        loop ...{_entrySet}:
+            set {_entry} to loop-value
+            set {_key} to {_entry}.getKey()
+            set {_valElement} to {_entry}.getValue()
+            set {_val} to {_valElement}.getAsString()
+            
+            set {-lang::%{_key}%} to {_val}
+            
+        set {_count} to size of {-lang::*}
+        send "&a[System] 言語定義を読み込みました (登録数: %{_count}%件)"
+
+# -------------------------------------------------------------------------
+# 2. 一括更新コマンド (日本語適用版)
+# -------------------------------------------------------------------------
+command /item-update-all:
+    permission: op
+    trigger:
+        send "&e[System] アイテム名の日本語化更新を開始します (Source: ja_jp.json)..."
+        
+        if size of {-lang::*} is 0:
+            send "&c[Error] 言語データがロードされていません。先に /load-lang を実行してください。"
+            stop
+            
+        execute "SELECT `key` FROM items WHERE (is_original = 0 OR is_original IS FALSE)" in {kenkoku_db} and store the result in {_rows::*}
+        
+        set {_count} to 0
+        set {_total} to size of {_rows::key::*}
+        broadcast "&e[System] 対象アイテム数: %{_total}%"
+        
+        loop {_rows::key::*}:
+            set {_key} to loop-value
+            
+            # アイテムタイプとしてパース
+            if {_key} does not contain ":":
+                set {_parse_key} to "minecraft:%{_key}%"
+            else:
+                set {_parse_key} to {_key}
+                
+            set {_item} to {_parse_key} parsed as item type
+            
+            if {_item} is set:
+                # SkBee 等で translation key (例: block.minecraft.stone) を取得
+                set {_trans_key} to translation key of {_item}
+                
+                # 言語マップから検索
+                set {_jp_name} to {-lang::%{_trans_key}%}
+                
+                # 見つからない場合は英語名 or キー
+                if {_jp_name} is not set:
+                    # broadcast "&7[Debug] Translation missing for %{_trans_key}%"
+                    set {_jp_name} to name of {_item}
+                
+                if {_jp_name} is set:
+                    # SQL Injection対策: シングルクォートをエスケープ (簡易)
+                    replace all "'" with "''" in {_jp_name}
+                    
+                    # 以前のJSON形式などを上書き更新
+                    execute "UPDATE items SET name = %{_jp_name}%, updated_at = NOW() WHERE items.key = %{_key}% AND (is_original = 0 OR is_original IS FALSE)" in {kenkoku_db}
+                    add 1 to {_count}
+                    
+                    # 負荷軽減 (100件ごとにwait)
+                    if mod({_count}, 100) is 0:
+                        wait 1 tick
+        
+        send "&a[System] アイテム名の更新が完了しました。(%{_count}% / %{_total}% 件)"
