@@ -1,16 +1,16 @@
 [
     {
-        "id": 10,
+        "id": 16,
         "biome_id": 1,
         "profession_id": 1,
-        "npc_type_id": 1,
-        "name": "買取屋(鉱石)",
-        "level": 1,
-        "created_at": "2025-12-30T18:48:44.000000Z",
-        "updated_at": "2025-12-30T18:48:44.000000Z",
+        "npc_type_id": 2,
+        "name": "お食事処",
+        "level": 4,
+        "created_at": "2026-01-11T12:15:57.000000Z",
+        "updated_at": "2026-01-11T12:15:57.000000Z",
         "npc_type": {
-            "id": 1,
-            "name": "pawnshop",
+            "id": 2,
+            "name": "shop",
             "created_at": null,
             "updated_at": null
         },
@@ -28,9 +28,884 @@
         },
         "trades": [
             {
+                "id": 87,
+                "npc_id": 16,
+                "content": "Sell 鉱夫じゃがいも",
+                "slot": 0,
+                "created_at": "2026-01-11T12:15:57.000000Z",
+                "updated_at": "2026-01-11T12:15:57.000000Z",
+                "view_item_id": 16,
+                "rewards": [
+                    {
+                        "id": 87,
+                        "trade_id": 87,
+                        "item_id": 1553,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2026-01-11T12:15:57.000000Z",
+                        "updated_at": "2026-01-11T12:15:57.000000Z",
+                        "item": {
+                            "id": 1553,
+                            "name": "炭鉱夫じゃがいも",
+                            "key": "minecraft:baked_potato",
+                            "is_original": 1,
+                            "nbt": "[custom_name={extra:[{text:\"炭鉱夫じゃがいも\"}],text:\"\"},custom_data={itemType:minerPotato,isFunctionItem:true,commands:[\"effect give @s minecraft:haste 600 1 true\",\"effect give @s minecraft:saturation 1 4 true\"]}]",
+                            "created_at": "2026-01-11T01:59:02.000000Z",
+                            "updated_at": "2026-01-11T01:59:02.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 87,
+                        "trade_id": 87,
+                        "item_id": 1511,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2026-01-11T12:15:57.000000Z",
+                        "updated_at": "2026-01-11T12:15:57.000000Z",
+                        "item": {
+                            "id": 1511,
+                            "name": "お食事券",
+                            "key": "minecraft:paper",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"お食事券\",color:green}],text:\"\"},custom_data={itemType:mealTicket}]",
+                            "created_at": "2025-12-30T03:03:06.000000Z",
+                            "updated_at": "2025-12-30T03:03:06.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 88,
+                "npc_id": 16,
+                "content": "Sell 爆速スープ",
+                "slot": 1,
+                "created_at": "2026-01-11T12:15:57.000000Z",
+                "updated_at": "2026-01-11T12:15:57.000000Z",
+                "view_item_id": 24,
+                "rewards": [
+                    {
+                        "id": 88,
+                        "trade_id": 88,
+                        "item_id": 1554,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2026-01-11T12:15:57.000000Z",
+                        "updated_at": "2026-01-11T12:15:57.000000Z",
+                        "item": {
+                            "id": 1554,
+                            "name": "爆速スープ",
+                            "key": "minecraft:beetroot_soup",
+                            "is_original": 1,
+                            "nbt": "[custom_name={extra:[{text:\"爆速スープ\"}],text:\"\"},custom_data={itemType:SuperFastSoup,isFunctionItem:true,commands:[\"effect give @s minecraft:speed 1800 0 true\",\"effect give @s minecraft:saturation 1 5 true\"]}]",
+                            "created_at": "2026-01-11T02:34:19.000000Z",
+                            "updated_at": "2026-01-11T02:34:19.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 88,
+                        "trade_id": 88,
+                        "item_id": 1511,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2026-01-11T12:15:57.000000Z",
+                        "updated_at": "2026-01-11T12:15:57.000000Z",
+                        "item": {
+                            "id": 1511,
+                            "name": "お食事券",
+                            "key": "minecraft:paper",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"お食事券\",color:green}],text:\"\"},custom_data={itemType:mealTicket}]",
+                            "created_at": "2025-12-30T03:03:06.000000Z",
+                            "updated_at": "2025-12-30T03:03:06.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 89,
+                "npc_id": 16,
+                "content": "Sell マグマパイ",
+                "slot": 2,
+                "created_at": "2026-01-11T12:15:57.000000Z",
+                "updated_at": "2026-01-11T12:15:57.000000Z",
+                "view_item_id": 353,
+                "rewards": [
+                    {
+                        "id": 89,
+                        "trade_id": 89,
+                        "item_id": 1555,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2026-01-11T12:15:57.000000Z",
+                        "updated_at": "2026-01-11T12:15:57.000000Z",
+                        "item": {
+                            "id": 1555,
+                            "name": "マグマパイ",
+                            "key": "minecraft:pumpkin_pie",
+                            "is_original": 1,
+                            "nbt": "[custom_name={extra:[{text:\"マグマパイ\"}],text:\"\"},custom_data={itemType:magmaPie,isFunctionItem:true,commands:[\"effect give @s minecraft:fire_resistance 1800 0 true\",\"effect give @s minecraft:saturation 1 7 true\"]}]",
+                            "created_at": "2026-01-11T02:40:00.000000Z",
+                            "updated_at": "2026-01-11T02:40:00.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 89,
+                        "trade_id": 89,
+                        "item_id": 1511,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2026-01-11T12:15:57.000000Z",
+                        "updated_at": "2026-01-11T12:15:57.000000Z",
+                        "item": {
+                            "id": 1511,
+                            "name": "お食事券",
+                            "key": "minecraft:paper",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"お食事券\",color:green}],text:\"\"},custom_data={itemType:mealTicket}]",
+                            "created_at": "2025-12-30T03:03:06.000000Z",
+                            "updated_at": "2025-12-30T03:03:06.000000Z"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "biome_id": 1,
+        "profession_id": 1,
+        "npc_type_id": 3,
+        "name": "冬休み終了記念GIFT",
+        "level": 5,
+        "created_at": "2026-01-04T11:03:45.000000Z",
+        "updated_at": "2026-01-04T11:03:45.000000Z",
+        "npc_type": {
+            "id": 3,
+            "name": "quest",
+            "created_at": null,
+            "updated_at": null
+        },
+        "biome": {
+            "id": 1,
+            "key": "desert",
+            "created_at": "2025-12-30T07:14:58.000000Z",
+            "updated_at": "2025-12-30T07:14:58.000000Z"
+        },
+        "profession": {
+            "id": 1,
+            "key": "armorer",
+            "created_at": "2025-12-30T07:14:55.000000Z",
+            "updated_at": "2025-12-30T07:14:55.000000Z"
+        },
+        "trades": [
+            {
+                "id": 86,
+                "npc_id": 15,
+                "content": "~~~冬休み終了記念~~~",
+                "slot": 0,
+                "created_at": "2026-01-04T11:03:45.000000Z",
+                "updated_at": "2026-01-04T11:03:45.000000Z",
+                "view_item_id": 469,
+                "rewards": [
+                    {
+                        "id": 86,
+                        "trade_id": 86,
+                        "item_id": 1532,
+                        "quantity": 3,
+                        "price": null,
+                        "created_at": "2026-01-04T11:03:45.000000Z",
+                        "updated_at": "2026-01-04T11:03:45.000000Z",
+                        "item": {
+                            "id": 1532,
+                            "name": "福引ガチャ (10連)",
+                            "key": "minecraft:allay_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "created_at": "2025-12-30T09:12:43.000000Z",
+                            "updated_at": "2025-12-30T09:12:43.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 86,
+                        "trade_id": 86,
+                        "item_id": 660,
+                        "quantity": 30,
+                        "price": null,
+                        "created_at": "2026-01-04T11:03:45.000000Z",
+                        "updated_at": "2026-01-04T11:03:45.000000Z",
+                        "item": {
+                            "id": 660,
+                            "name": "丸石",
+                            "key": "minecraft:cobblestone",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:53.000000Z",
+                            "updated_at": "2026-01-09T12:54:28.000000Z"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "biome_id": 5,
+        "profession_id": 7,
+        "npc_type_id": 2,
+        "name": "NPC販売",
+        "level": 4,
+        "created_at": "2025-12-31T12:07:07.000000Z",
+        "updated_at": "2025-12-31T12:07:07.000000Z",
+        "npc_type": {
+            "id": 2,
+            "name": "shop",
+            "created_at": null,
+            "updated_at": null
+        },
+        "biome": {
+            "id": 5,
+            "key": "snow",
+            "created_at": "2025-12-30T07:14:58.000000Z",
+            "updated_at": "2025-12-30T07:14:58.000000Z"
+        },
+        "profession": {
+            "id": 7,
+            "key": "fletcher",
+            "created_at": "2025-12-30T07:14:56.000000Z",
+            "updated_at": "2025-12-30T07:14:56.000000Z"
+        },
+        "trades": [
+            {
+                "id": 74,
+                "npc_id": 14,
+                "content": "Sell 買取屋(鉱石)",
+                "slot": 0,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2025-12-31T12:07:07.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 74,
+                        "trade_id": 74,
+                        "item_id": 1534,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1534,
+                            "name": "buyOre",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 買取屋(鉱石)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"買取屋(鉱石)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:17:07.000000Z",
+                            "updated_at": "2025-12-31T02:17:07.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 74,
+                        "trade_id": 74,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 75,
+                "npc_id": 14,
+                "content": "Sell 買取屋(農作物)",
+                "slot": 1,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 75,
+                        "trade_id": 75,
+                        "item_id": 1535,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1535,
+                            "name": "buyCrops",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 買取屋(農作物)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"買取屋(農作物)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:20:11.000000Z",
+                            "updated_at": "2025-12-31T02:20:17.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 75,
+                        "trade_id": 75,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 76,
+                "npc_id": 14,
+                "content": "Sell 買取屋(水産物)",
+                "slot": 2,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 76,
+                        "trade_id": 76,
+                        "item_id": 1536,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1536,
+                            "name": "buySeafood",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 買取屋(水産物)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"買取屋(水産物)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:22:14.000000Z",
+                            "updated_at": "2025-12-31T02:22:14.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 76,
+                        "trade_id": 76,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 77,
+                "npc_id": 14,
+                "content": "Sell 買取屋(レア)",
+                "slot": 3,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 77,
+                        "trade_id": 77,
+                        "item_id": 1537,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1537,
+                            "name": "buyRareItem",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 買取屋(レア)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"買取屋(レア)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:23:46.000000Z",
+                            "updated_at": "2025-12-31T02:23:46.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 77,
+                        "trade_id": 77,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 78,
+                "npc_id": 14,
+                "content": "Sell 雑貨屋",
+                "slot": 4,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 78,
+                        "trade_id": 78,
+                        "item_id": 1538,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1538,
+                            "name": "generalStore",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 雑貨屋\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"雑貨屋\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:26:12.000000Z",
+                            "updated_at": "2025-12-31T02:26:12.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 78,
+                        "trade_id": 78,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 79,
+                "npc_id": 14,
+                "content": "Sell 武器屋",
+                "slot": 5,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 79,
+                        "trade_id": 79,
+                        "item_id": 1539,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1539,
+                            "name": "weaponArmorStore",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 武器屋\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"武器屋\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:27:34.000000Z",
+                            "updated_at": "2025-12-31T02:27:34.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 79,
+                        "trade_id": 79,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 80,
+                "npc_id": 14,
+                "content": "Sell 本屋",
+                "slot": 6,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 80,
+                        "trade_id": 80,
+                        "item_id": 1540,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1540,
+                            "name": "bookStore",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 本屋\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"本屋\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:28:33.000000Z",
+                            "updated_at": "2025-12-31T02:28:33.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 80,
+                        "trade_id": 80,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 81,
+                "npc_id": 14,
+                "content": "Sell 海晶屋",
+                "slot": 7,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 81,
+                        "trade_id": 81,
+                        "item_id": 1541,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1541,
+                            "name": "seaCrystalStore",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 海晶屋\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"海晶屋\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:29:54.000000Z",
+                            "updated_at": "2025-12-31T02:29:54.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 81,
+                        "trade_id": 81,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 82,
+                "npc_id": 14,
+                "content": "Sell クエスト (★ (初級))",
+                "slot": 8,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 82,
+                        "trade_id": 82,
+                        "item_id": 1542,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1542,
+                            "name": "beginnerQuest",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: クエスト (★ (初級))\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"クエスト (★ (初級))\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:32:04.000000Z",
+                            "updated_at": "2025-12-31T02:32:04.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 82,
+                        "trade_id": 82,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 83,
+                "npc_id": 14,
+                "content": "Sell クエスト (★★ (中級))",
+                "slot": 9,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 83,
+                        "trade_id": 83,
+                        "item_id": 1543,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1543,
+                            "name": "intermediateQuest",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: クエスト (★★ (中級))\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"クエスト (★★ (中級))\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:33:42.000000Z",
+                            "updated_at": "2025-12-31T02:33:42.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 83,
+                        "trade_id": 83,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 84,
+                "npc_id": 14,
+                "content": "Sell クエスト (★★★ (上級))",
+                "slot": 10,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 84,
+                        "trade_id": 84,
+                        "item_id": 1544,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1544,
+                            "name": "advancedQuest",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: クエスト (★★★ (上級))\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"クエスト (★★★ (上級))\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:34:40.000000Z",
+                            "updated_at": "2025-12-31T02:34:40.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 84,
+                        "trade_id": 84,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 85,
+                "npc_id": 14,
+                "content": "Sell クエスト (特別クエスト)",
+                "slot": 11,
+                "created_at": "2025-12-31T12:07:07.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
+                "view_item_id": 443,
+                "rewards": [
+                    {
+                        "id": 85,
+                        "trade_id": 85,
+                        "item_id": 1545,
+                        "quantity": 1,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 1545,
+                            "name": "specialQuest",
+                            "key": "villager_spawn_egg",
+                            "is_original": 1,
+                            "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: クエスト (特別クエスト)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"クエスト (特別クエスト)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+                            "created_at": "2025-12-31T02:35:41.000000Z",
+                            "updated_at": "2025-12-31T02:35:41.000000Z"
+                        }
+                    }
+                ],
+                "costs": [
+                    {
+                        "id": 85,
+                        "trade_id": 85,
+                        "item_id": 118,
+                        "quantity": 10,
+                        "price": null,
+                        "created_at": "2025-12-31T12:07:07.000000Z",
+                        "updated_at": "2025-12-31T12:07:07.000000Z",
+                        "item": {
+                            "id": 118,
+                            "name": "ダイヤモンド",
+                            "key": "minecraft:diamond",
+                            "is_original": 0,
+                            "nbt": null,
+                            "created_at": "2025-12-29T04:34:26.000000Z",
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "biome_id": 7,
+        "profession_id": 10,
+        "npc_type_id": 1,
+        "name": "買取屋(鉱石)",
+        "level": 1,
+        "created_at": "2025-12-30T18:48:44.000000Z",
+        "updated_at": "2025-12-30T18:48:44.000000Z",
+        "npc_type": {
+            "id": 1,
+            "name": "pawnshop",
+            "created_at": null,
+            "updated_at": null
+        },
+        "biome": {
+            "id": 7,
+            "key": "taiga",
+            "created_at": "2025-12-30T07:14:58.000000Z",
+            "updated_at": "2025-12-30T07:14:58.000000Z"
+        },
+        "profession": {
+            "id": 10,
+            "key": "mason",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
+        },
+        "trades": [
+            {
                 "id": 55,
                 "npc_id": 10,
                 "content": "Buy 原銅ブロック",
+                "slot": 0,
                 "created_at": "2025-12-30T18:48:44.000000Z",
                 "updated_at": "2025-12-30T18:48:44.000000Z",
                 "view_item_id": 1189,
@@ -57,12 +932,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 1189,
-                            "name": null,
+                            "name": "銅の原石ブロック",
                             "key": "minecraft:raw_copper_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:20.000000Z",
-                            "updated_at": "2025-12-29T04:35:20.000000Z"
+                            "updated_at": "2026-01-09T12:54:55.000000Z"
                         }
                     }
                 ]
@@ -71,8 +946,9 @@
                 "id": 56,
                 "npc_id": 10,
                 "content": "Buy 原金ブロック",
+                "slot": 1,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1190,
                 "rewards": [
                     {
@@ -97,12 +973,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 1190,
-                            "name": null,
+                            "name": "金の原石ブロック",
                             "key": "minecraft:raw_gold_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:20.000000Z",
-                            "updated_at": "2025-12-29T04:35:20.000000Z"
+                            "updated_at": "2026-01-09T12:54:55.000000Z"
                         }
                     }
                 ]
@@ -111,8 +987,9 @@
                 "id": 57,
                 "npc_id": 10,
                 "content": "Buy ダイヤ",
+                "slot": 2,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 118,
                 "rewards": [
                     {
@@ -137,12 +1014,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 118,
-                            "name": null,
+                            "name": "ダイヤモンド",
                             "key": "minecraft:diamond",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:26.000000Z",
-                            "updated_at": "2025-12-29T04:34:26.000000Z"
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
                         }
                     }
                 ]
@@ -151,8 +1028,9 @@
                 "id": 58,
                 "npc_id": 10,
                 "content": "Buy レッドストーンブロック",
+                "slot": 3,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1216,
                 "rewards": [
                     {
@@ -177,12 +1055,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 1216,
-                            "name": null,
+                            "name": "レッドストーンブロック",
                             "key": "minecraft:redstone_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:22.000000Z",
-                            "updated_at": "2025-12-29T04:35:22.000000Z"
+                            "updated_at": "2026-01-09T12:54:56.000000Z"
                         }
                     }
                 ]
@@ -191,8 +1069,9 @@
                 "id": 59,
                 "npc_id": 10,
                 "content": "Buy ラピスラズリブロック",
+                "slot": 4,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 922,
                 "rewards": [
                     {
@@ -217,12 +1096,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 922,
-                            "name": null,
+                            "name": "ラピスラズリブロック",
                             "key": "minecraft:lapis_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:07.000000Z",
-                            "updated_at": "2025-12-29T04:35:07.000000Z"
+                            "updated_at": "2026-01-09T12:54:42.000000Z"
                         }
                     }
                 ]
@@ -231,8 +1110,9 @@
                 "id": 60,
                 "npc_id": 10,
                 "content": "Buy ネザーラック",
+                "slot": 5,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 1034,
                 "rewards": [
                     {
@@ -257,12 +1137,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 1034,
-                            "name": null,
+                            "name": "ネザーラック",
                             "key": "minecraft:netherrack",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:12.000000Z",
-                            "updated_at": "2025-12-29T04:35:12.000000Z"
+                            "updated_at": "2026-01-09T12:54:47.000000Z"
                         }
                     }
                 ]
@@ -271,8 +1151,9 @@
                 "id": 61,
                 "npc_id": 10,
                 "content": "Buy 丸石",
+                "slot": 6,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 660,
                 "rewards": [
                     {
@@ -297,12 +1178,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 660,
-                            "name": null,
+                            "name": "丸石",
                             "key": "minecraft:cobblestone",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:53.000000Z",
-                            "updated_at": "2025-12-29T04:34:53.000000Z"
+                            "updated_at": "2026-01-09T12:54:28.000000Z"
                         }
                     }
                 ]
@@ -311,8 +1192,9 @@
                 "id": 62,
                 "npc_id": 10,
                 "content": "Buy 荒れた深層岩",
+                "slot": 7,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 656,
                 "rewards": [
                     {
@@ -337,12 +1219,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 656,
-                            "name": null,
+                            "name": "深層岩の丸石",
                             "key": "minecraft:cobbled_deepslate",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:53.000000Z",
-                            "updated_at": "2025-12-29T04:34:53.000000Z"
+                            "updated_at": "2026-01-09T12:54:28.000000Z"
                         }
                     }
                 ]
@@ -351,8 +1233,8 @@
     },
     {
         "id": 11,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 2,
+        "profession_id": 5,
         "npc_type_id": 1,
         "name": "買取屋(農作物)",
         "level": 1,
@@ -365,22 +1247,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 2,
+            "key": "jungle",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 5,
+            "key": "farmer",
+            "created_at": "2025-12-30T07:14:56.000000Z",
+            "updated_at": "2025-12-30T07:14:56.000000Z"
         },
         "trades": [
             {
                 "id": 63,
                 "npc_id": 11,
                 "content": "Buy 人参",
+                "slot": 0,
                 "created_at": "2025-12-30T18:48:44.000000Z",
                 "updated_at": "2025-12-30T18:48:44.000000Z",
                 "view_item_id": 60,
@@ -407,12 +1290,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 60,
-                            "name": null,
+                            "name": "ニンジン",
                             "key": "minecraft:carrot",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:23.000000Z",
-                            "updated_at": "2025-12-29T04:34:23.000000Z"
+                            "updated_at": "2026-01-09T12:53:58.000000Z"
                         }
                     }
                 ]
@@ -421,8 +1304,9 @@
                 "id": 64,
                 "npc_id": 11,
                 "content": "Buy じゃがいも",
+                "slot": 1,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 344,
                 "rewards": [
                     {
@@ -447,12 +1331,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 344,
-                            "name": null,
+                            "name": "ジャガイモ",
                             "key": "minecraft:potato",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:37.000000Z",
-                            "updated_at": "2025-12-29T04:34:37.000000Z"
+                            "updated_at": "2026-01-09T12:54:12.000000Z"
                         }
                     }
                 ]
@@ -461,8 +1345,9 @@
                 "id": 65,
                 "npc_id": 11,
                 "content": "Buy 俵",
+                "slot": 2,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 877,
                 "rewards": [
                     {
@@ -487,12 +1372,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 877,
-                            "name": null,
+                            "name": "干草の俵",
                             "key": "minecraft:hay_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:04.000000Z",
-                            "updated_at": "2025-12-29T04:35:04.000000Z"
+                            "updated_at": "2026-01-09T12:54:39.000000Z"
                         }
                     }
                 ]
@@ -501,8 +1386,9 @@
                 "id": 66,
                 "npc_id": 11,
                 "content": "Buy ビートルート",
+                "slot": 3,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 22,
                 "rewards": [
                     {
@@ -527,12 +1413,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 22,
-                            "name": null,
+                            "name": "ビートルート",
                             "key": "minecraft:beetroot",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:21.000000Z",
-                            "updated_at": "2025-12-29T04:34:21.000000Z"
+                            "updated_at": "2026-01-09T12:53:56.000000Z"
                         }
                     }
                 ]
@@ -541,8 +1427,9 @@
                 "id": 67,
                 "npc_id": 11,
                 "content": "Buy 青い目のジャガイモ",
+                "slot": 4,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 340,
                 "rewards": [
                     {
@@ -567,12 +1454,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 340,
-                            "name": null,
+                            "name": "青くなったジャガイモ",
                             "key": "minecraft:poisonous_potato",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:37.000000Z",
-                            "updated_at": "2025-12-29T04:34:37.000000Z"
+                            "updated_at": "2026-01-09T12:54:12.000000Z"
                         }
                     }
                 ]
@@ -581,8 +1468,8 @@
     },
     {
         "id": 12,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 4,
+        "profession_id": 6,
         "npc_type_id": 1,
         "name": "買取屋(水産物)",
         "level": 1,
@@ -595,22 +1482,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 4,
+            "key": "savanna",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 6,
+            "key": "fisherman",
+            "created_at": "2025-12-30T07:14:56.000000Z",
+            "updated_at": "2025-12-30T07:14:56.000000Z"
         },
         "trades": [
             {
                 "id": 68,
                 "npc_id": 12,
                 "content": "Buy タラ",
+                "slot": 0,
                 "created_at": "2025-12-30T18:48:44.000000Z",
                 "updated_at": "2025-12-30T18:48:44.000000Z",
                 "view_item_id": 80,
@@ -637,12 +1525,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 80,
-                            "name": null,
+                            "name": "生鱈",
                             "key": "minecraft:cod",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:24.000000Z",
-                            "updated_at": "2025-12-29T04:34:24.000000Z"
+                            "updated_at": "2026-01-09T12:53:59.000000Z"
                         }
                     }
                 ]
@@ -651,8 +1539,9 @@
                 "id": 69,
                 "npc_id": 12,
                 "content": "Buy 鮭",
+                "slot": 1,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 378,
                 "rewards": [
                     {
@@ -677,12 +1566,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 378,
-                            "name": null,
+                            "name": "生鮭",
                             "key": "minecraft:salmon",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:39.000000Z",
-                            "updated_at": "2025-12-29T04:34:39.000000Z"
+                            "updated_at": "2026-01-09T12:54:14.000000Z"
                         }
                     }
                 ]
@@ -691,8 +1580,9 @@
                 "id": 70,
                 "npc_id": 12,
                 "content": "Buy フグ",
+                "slot": 2,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 350,
                 "rewards": [
                     {
@@ -717,12 +1607,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 350,
-                            "name": null,
+                            "name": "フグ",
                             "key": "minecraft:pufferfish",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:38.000000Z",
-                            "updated_at": "2025-12-29T04:34:38.000000Z"
+                            "updated_at": "2026-01-09T12:54:13.000000Z"
                         }
                     }
                 ]
@@ -731,8 +1621,9 @@
                 "id": 71,
                 "npc_id": 12,
                 "content": "Buy 熱帯魚",
+                "slot": 3,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 435,
                 "rewards": [
                     {
@@ -757,12 +1648,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 435,
-                            "name": null,
+                            "name": "熱帯魚",
                             "key": "minecraft:tropical_fish",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:42.000000Z",
-                            "updated_at": "2025-12-29T04:34:42.000000Z"
+                            "updated_at": "2026-01-09T12:54:17.000000Z"
                         }
                     }
                 ]
@@ -771,8 +1662,8 @@
     },
     {
         "id": 13,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 3,
+        "profession_id": 3,
         "npc_type_id": 1,
         "name": "買取屋(レア)",
         "level": 3,
@@ -785,22 +1676,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 3,
+            "key": "plains",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 3,
+            "key": "cartographer",
+            "created_at": "2025-12-30T07:14:56.000000Z",
+            "updated_at": "2025-12-30T07:14:56.000000Z"
         },
         "trades": [
             {
                 "id": 72,
                 "npc_id": 13,
                 "content": "Buy エンチャント金リンゴ",
+                "slot": 0,
                 "created_at": "2025-12-30T18:48:44.000000Z",
                 "updated_at": "2025-12-30T18:48:44.000000Z",
                 "view_item_id": 142,
@@ -827,12 +1719,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 142,
-                            "name": null,
+                            "name": "エンチャントされた金のリンゴ",
                             "key": "minecraft:enchanted_golden_apple",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:27.000000Z",
-                            "updated_at": "2025-12-29T04:34:27.000000Z"
+                            "updated_at": "2026-01-09T12:54:02.000000Z"
                         }
                     }
                 ]
@@ -841,8 +1733,9 @@
                 "id": 73,
                 "npc_id": 13,
                 "content": "Buy 海の心",
+                "slot": 1,
                 "created_at": "2025-12-30T18:48:44.000000Z",
-                "updated_at": "2025-12-30T18:48:44.000000Z",
+                "updated_at": "2026-01-11T10:38:32.000000Z",
                 "view_item_id": 208,
                 "rewards": [
                     {
@@ -867,12 +1760,12 @@
                         "updated_at": "2025-12-30T18:48:44.000000Z",
                         "item": {
                             "id": 208,
-                            "name": null,
+                            "name": "海洋の心",
                             "key": "minecraft:heart_of_the_sea",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:30.000000Z",
-                            "updated_at": "2025-12-29T04:34:30.000000Z"
+                            "updated_at": "2026-01-09T12:54:05.000000Z"
                         }
                     }
                 ]
@@ -881,8 +1774,8 @@
     },
     {
         "id": 5,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 7,
+        "profession_id": 8,
         "npc_type_id": 2,
         "name": "雑貨屋",
         "level": 4,
@@ -895,22 +1788,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 7,
+            "key": "taiga",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 8,
+            "key": "leatherworker",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 20,
                 "npc_id": 5,
                 "content": "Sell シュルカーボックス",
+                "slot": 0,
                 "created_at": "2025-12-30T18:46:26.000000Z",
                 "updated_at": "2025-12-30T18:46:26.000000Z",
                 "view_item_id": 1249,
@@ -925,12 +1819,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1249,
-                            "name": null,
+                            "name": "シュルカーボックス",
                             "key": "minecraft:shulker_box",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:23.000000Z",
-                            "updated_at": "2025-12-29T04:35:23.000000Z"
+                            "updated_at": "2026-01-09T12:54:58.000000Z"
                         }
                     }
                 ],
@@ -951,8 +1845,9 @@
                 "id": 21,
                 "npc_id": 5,
                 "content": "Sell バンドル",
+                "slot": 1,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 57,
                 "rewards": [
                     {
@@ -965,12 +1860,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 57,
-                            "name": null,
+                            "name": "バンドル",
                             "key": "minecraft:bundle",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:23.000000Z",
-                            "updated_at": "2025-12-29T04:34:23.000000Z"
+                            "updated_at": "2026-01-09T12:53:58.000000Z"
                         }
                     }
                 ],
@@ -991,8 +1886,9 @@
                 "id": 22,
                 "npc_id": 5,
                 "content": "Sell 額縁",
+                "slot": 2,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 233,
                 "rewards": [
                     {
@@ -1005,12 +1901,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 233,
-                            "name": null,
+                            "name": "額縁",
                             "key": "minecraft:item_frame",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:32.000000Z",
-                            "updated_at": "2025-12-29T04:34:32.000000Z"
+                            "updated_at": "2026-01-09T12:54:07.000000Z"
                         }
                     }
                 ],
@@ -1031,8 +1927,9 @@
                 "id": 23,
                 "npc_id": 5,
                 "content": "Sell 蝋燭(白)",
+                "slot": 3,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1462,
                 "rewards": [
                     {
@@ -1045,12 +1942,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1462,
-                            "name": null,
+                            "name": "白色のろうそく",
                             "key": "minecraft:white_candle",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:34.000000Z",
-                            "updated_at": "2025-12-29T04:35:34.000000Z"
+                            "updated_at": "2026-01-09T12:55:09.000000Z"
                         }
                     }
                 ],
@@ -1071,8 +1968,9 @@
                 "id": 24,
                 "npc_id": 5,
                 "content": "Sell ランタン",
+                "slot": 4,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 921,
                 "rewards": [
                     {
@@ -1085,12 +1983,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 921,
-                            "name": null,
+                            "name": "ランタン",
                             "key": "minecraft:lantern",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:07.000000Z",
-                            "updated_at": "2025-12-29T04:35:07.000000Z"
+                            "updated_at": "2026-01-09T12:54:41.000000Z"
                         }
                     }
                 ],
@@ -1111,8 +2009,9 @@
                 "id": 25,
                 "npc_id": 5,
                 "content": "Sell お財布",
+                "slot": 5,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 244,
                 "rewards": [
                     {
@@ -1125,7 +2024,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1502,
-                            "name": "wallet",
+                            "name": "§6お財布",
                             "key": "minecraft:leather_horse_armor",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,rarity=\"common\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§6お財布\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7右クリックで所持金を確認します\"}],\"text\":\"\"}],custom_data={itemType:\"wallet\"},max_stack_size=1,consumable={consume_seconds:0.1f,animation:\"eat\",has_consume_particles:false,can_always_eat:true,sound:\"ui.button.click\"}]",
@@ -1151,8 +2050,9 @@
                 "id": 26,
                 "npc_id": 5,
                 "content": "Sell 表示切替 (スコアボード)",
+                "slot": 6,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 143,
                 "rewards": [
                     {
@@ -1165,7 +2065,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1505,
-                            "name": "sidebar_toggle",
+                            "name": "§b§l表示切替 (スコアボード)",
                             "key": "minecraft:end_crystal",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,rarity=\"rare\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§b§l表示切替 (スコアボード)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7右クリックで使用してスコアボードの表示/非表示を切り替えます\"}],\"text\":\"\"}],custom_data={itemType:\"sidebarToggle\"},max_stack_size=1,consumable={consume_seconds:0.1f,animation:\"eat\",has_consume_particles:false,can_always_eat:true,sound:\"ui.button.click\"}]",
@@ -1191,8 +2091,9 @@
                 "id": 27,
                 "npc_id": 5,
                 "content": "Sell 幸運ダイヤピッケル(幸運Ⅳ、耐久Ⅲ)",
+                "slot": 7,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 126,
                 "rewards": [
                     {
@@ -1225,7 +2126,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1510,
-                            "name": "toolTicket",
+                            "name": "ツールチケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ツールチケット\",color:gold}],text:\"\"},custom_data={itemType:toolTicket}]",
@@ -1239,8 +2140,9 @@
                 "id": 28,
                 "npc_id": 5,
                 "content": "Sell 効率強化ダイヤピッケル(耐久V、効率強化Ⅵ)",
+                "slot": 8,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 126,
                 "rewards": [
                     {
@@ -1273,7 +2175,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1510,
-                            "name": "toolTicket",
+                            "name": "ツールチケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ツールチケット\",color:gold}],text:\"\"},custom_data={itemType:toolTicket}]",
@@ -1287,8 +2189,9 @@
                 "id": 29,
                 "npc_id": 5,
                 "content": "Sell 効率強化ダイヤ斧(耐久V、効率強化Ⅵ)",
+                "slot": 9,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 119,
                 "rewards": [
                     {
@@ -1321,7 +2224,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1510,
-                            "name": "toolTicket",
+                            "name": "ツールチケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ツールチケット\",color:gold}],text:\"\"},custom_data={itemType:toolTicket}]",
@@ -1335,8 +2238,9 @@
                 "id": 30,
                 "npc_id": 5,
                 "content": "Sell 効率強化ダイヤシャベル(耐久V、効率強化Ⅵ)",
+                "slot": 10,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 127,
                 "rewards": [
                     {
@@ -1369,7 +2273,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1510,
-                            "name": "toolTicket",
+                            "name": "ツールチケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"ツールチケット\",color:gold}],text:\"\"},custom_data={itemType:toolTicket}]",
@@ -1383,10 +2287,10 @@
     },
     {
         "id": 6,
-        "biome_id": 1,
+        "biome_id": 7,
         "profession_id": 1,
         "npc_type_id": 2,
-        "name": "武器・防具屋",
+        "name": "武器屋",
         "level": 4,
         "created_at": "2025-12-30T18:46:26.000000Z",
         "updated_at": "2025-12-30T18:46:26.000000Z",
@@ -1397,8 +2301,8 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 7,
+            "key": "taiga",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
@@ -1413,6 +2317,7 @@
                 "id": 31,
                 "npc_id": 6,
                 "content": "Sell 弓 (耐久Ⅲ)",
+                "slot": 0,
                 "created_at": "2025-12-30T18:46:26.000000Z",
                 "updated_at": "2025-12-30T18:46:26.000000Z",
                 "view_item_id": 44,
@@ -1453,8 +2358,9 @@
                 "id": 32,
                 "npc_id": 6,
                 "content": "Sell 矢 ×64",
+                "slot": 1,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 13,
                 "rewards": [
                     {
@@ -1467,12 +2373,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 13,
-                            "name": null,
+                            "name": "矢",
                             "key": "minecraft:arrow",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:20.000000Z",
-                            "updated_at": "2025-12-29T04:34:20.000000Z"
+                            "updated_at": "2026-01-09T12:53:55.000000Z"
                         }
                     }
                 ],
@@ -1493,8 +2399,9 @@
                 "id": 33,
                 "npc_id": 6,
                 "content": "Sell トライデント",
+                "slot": 2,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 434,
                 "rewards": [
                     {
@@ -1507,12 +2414,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 434,
-                            "name": null,
+                            "name": "トライデント",
                             "key": "minecraft:trident",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:42.000000Z",
-                            "updated_at": "2025-12-29T04:34:42.000000Z"
+                            "updated_at": "2026-01-09T12:54:17.000000Z"
                         }
                     }
                 ],
@@ -1533,8 +2440,9 @@
                 "id": 34,
                 "npc_id": 6,
                 "content": "Sell メイス",
+                "slot": 3,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 257,
                 "rewards": [
                     {
@@ -1547,12 +2455,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 257,
-                            "name": null,
+                            "name": "メイス",
                             "key": "minecraft:mace",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:33.000000Z",
-                            "updated_at": "2025-12-29T04:34:33.000000Z"
+                            "updated_at": "2026-01-09T12:54:08.000000Z"
                         }
                     }
                 ],
@@ -1573,8 +2481,9 @@
                 "id": 35,
                 "npc_id": 6,
                 "content": "Sell ダイヤ剣 (耐久Ⅲ、虫特効Ⅵ)",
+                "slot": 4,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 128,
                 "rewards": [
                     {
@@ -1607,7 +2516,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1512,
-                            "name": "weaponTicket",
+                            "name": "武器チケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"武器チケット\",color:gold}],text:\"\"},custom_data={itemType:weaponTicket}]",
@@ -1621,8 +2530,9 @@
                 "id": 36,
                 "npc_id": 6,
                 "content": "Sell ダイヤ剣 (耐久Ⅲ、アンデット特効Ⅵ)",
+                "slot": 5,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 128,
                 "rewards": [
                     {
@@ -1655,7 +2565,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1512,
-                            "name": "weaponTicket",
+                            "name": "武器チケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"武器チケット\",color:gold}],text:\"\"},custom_data={itemType:weaponTicket}]",
@@ -1669,8 +2579,9 @@
                 "id": 37,
                 "npc_id": 6,
                 "content": "Sell ダイヤ剣 (耐久Ⅲ、ノックバックX)",
+                "slot": 6,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 128,
                 "rewards": [
                     {
@@ -1703,7 +2614,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1512,
-                            "name": "weaponTicket",
+                            "name": "武器チケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"武器チケット\",color:gold}],text:\"\"},custom_data={itemType:weaponTicket}]",
@@ -1717,8 +2628,9 @@
                 "id": 38,
                 "npc_id": 6,
                 "content": "Sell トライデント (耐久Ⅲ、忠誠Ⅲ、水棲Ⅵ)",
+                "slot": 7,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 434,
                 "rewards": [
                     {
@@ -1751,7 +2663,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1512,
-                            "name": "weaponTicket",
+                            "name": "武器チケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"武器チケット\",color:gold}],text:\"\"},custom_data={itemType:weaponTicket}]",
@@ -1765,8 +2677,9 @@
                 "id": 39,
                 "npc_id": 6,
                 "content": "Sell 弓 (耐久Ⅲ、無限、修繕、パンチX)",
+                "slot": 8,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 44,
                 "rewards": [
                     {
@@ -1799,7 +2712,7 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1512,
-                            "name": "weaponTicket",
+                            "name": "武器チケット",
                             "key": "minecraft:paper",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"武器チケット\",color:gold}],text:\"\"},custom_data={itemType:weaponTicket}]",
@@ -1814,7 +2727,7 @@
     {
         "id": 7,
         "biome_id": 1,
-        "profession_id": 1,
+        "profession_id": 9,
         "npc_type_id": 2,
         "name": "本屋",
         "level": 4,
@@ -1833,16 +2746,17 @@
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 9,
+            "key": "librarian",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 40,
                 "npc_id": 7,
                 "content": "Sell エンチャ本 (耐久Ⅲ)",
+                "slot": 0,
                 "created_at": "2025-12-30T18:46:26.000000Z",
                 "updated_at": "2025-12-30T18:46:26.000000Z",
                 "view_item_id": 141,
@@ -1883,8 +2797,9 @@
                 "id": 41,
                 "npc_id": 7,
                 "content": "Sell エンチャ本 (鋭さV)",
+                "slot": 1,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 141,
                 "rewards": [
                     {
@@ -1923,8 +2838,9 @@
                 "id": 42,
                 "npc_id": 7,
                 "content": "Sell エンチャ本 (幸運Ⅲ)",
+                "slot": 2,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 141,
                 "rewards": [
                     {
@@ -1963,8 +2879,9 @@
                 "id": 43,
                 "npc_id": 7,
                 "content": "Sell エンチャ本 (効率強化V)",
+                "slot": 3,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 141,
                 "rewards": [
                     {
@@ -2003,8 +2920,8 @@
     },
     {
         "id": 8,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 6,
+        "profession_id": 10,
         "npc_type_id": 2,
         "name": "海晶屋",
         "level": 4,
@@ -2017,22 +2934,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 6,
+            "key": "swamp",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 10,
+            "key": "mason",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 44,
                 "npc_id": 8,
                 "content": "Sell 海晶ブロック ×64",
+                "slot": 0,
                 "created_at": "2025-12-30T18:46:26.000000Z",
                 "updated_at": "2025-12-30T18:46:26.000000Z",
                 "view_item_id": 1159,
@@ -2047,12 +2965,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1159,
-                            "name": null,
+                            "name": "プリズマリン",
                             "key": "minecraft:prismarine",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:19.000000Z",
-                            "updated_at": "2025-12-29T04:35:19.000000Z"
+                            "updated_at": "2026-01-09T12:54:53.000000Z"
                         }
                     }
                 ],
@@ -2073,8 +2991,9 @@
                 "id": 45,
                 "npc_id": 8,
                 "content": "Sell 暗海晶ブロック ×64",
+                "slot": 1,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 746,
                 "rewards": [
                     {
@@ -2087,12 +3006,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 746,
-                            "name": null,
+                            "name": "ダークプリズマリン",
                             "key": "minecraft:dark_prismarine",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:58.000000Z",
-                            "updated_at": "2025-12-29T04:34:58.000000Z"
+                            "updated_at": "2026-01-09T12:54:33.000000Z"
                         }
                     }
                 ],
@@ -2113,8 +3032,9 @@
                 "id": 46,
                 "npc_id": 8,
                 "content": "Sell シーランタン ×1",
+                "slot": 2,
                 "created_at": "2025-12-30T18:46:26.000000Z",
-                "updated_at": "2025-12-30T18:46:26.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1243,
                 "rewards": [
                     {
@@ -2127,12 +3047,12 @@
                         "updated_at": "2025-12-30T18:46:26.000000Z",
                         "item": {
                             "id": 1243,
-                            "name": null,
+                            "name": "シーランタン",
                             "key": "minecraft:sea_lantern",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:23.000000Z",
-                            "updated_at": "2025-12-29T04:35:23.000000Z"
+                            "updated_at": "2026-01-09T12:54:58.000000Z"
                         }
                     }
                 ],
@@ -2153,8 +3073,8 @@
     },
     {
         "id": 1,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 4,
+        "profession_id": 9,
         "npc_type_id": 3,
         "name": "クエスト (★ (初級))",
         "level": 1,
@@ -2167,40 +3087,41 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 4,
+            "key": "savanna",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 9,
+            "key": "librarian",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 1,
                 "npc_id": 1,
                 "content": "街のお掃除",
+                "slot": 0,
                 "created_at": "2025-12-30T18:34:45.000000Z",
                 "updated_at": "2025-12-30T18:34:45.000000Z",
-                "view_item_id": 1041,
+                "view_item_id": 926,
                 "rewards": [
                     {
                         "id": 1,
                         "trade_id": 1,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2210,19 +3131,19 @@
                     {
                         "id": 1,
                         "trade_id": 1,
-                        "item_id": 1041,
+                        "item_id": 926,
                         "quantity": 64,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
-                            "id": 1041,
-                            "name": null,
-                            "key": "minecraft:oak_leaves",
+                            "id": 926,
+                            "name": "落ち葉",
+                            "key": "minecraft:leaf_litter",
                             "is_original": 0,
                             "nbt": null,
-                            "created_at": "2025-12-29T04:35:13.000000Z",
-                            "updated_at": "2025-12-29T04:35:13.000000Z"
+                            "created_at": "2025-12-29T04:35:07.000000Z",
+                            "updated_at": "2026-01-09T12:54:42.000000Z"
                         }
                     }
                 ]
@@ -2231,24 +3152,25 @@
                 "id": 2,
                 "npc_id": 1,
                 "content": "珍味？",
+                "slot": 1,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 185,
                 "rewards": [
                     {
                         "id": 2,
                         "trade_id": 2,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2265,12 +3187,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 185,
-                            "name": null,
+                            "name": "金のリンゴ",
                             "key": "minecraft:golden_apple",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:29.000000Z",
-                            "updated_at": "2025-12-29T04:34:29.000000Z"
+                            "updated_at": "2026-01-09T12:54:04.000000Z"
                         }
                     }
                 ]
@@ -2279,24 +3201,25 @@
                 "id": 3,
                 "npc_id": 1,
                 "content": "ダイヤ発見記念",
+                "slot": 2,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 118,
                 "rewards": [
                     {
                         "id": 3,
                         "trade_id": 3,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2313,12 +3236,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 118,
-                            "name": null,
+                            "name": "ダイヤモンド",
                             "key": "minecraft:diamond",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:26.000000Z",
-                            "updated_at": "2025-12-29T04:34:26.000000Z"
+                            "updated_at": "2026-01-09T12:54:01.000000Z"
                         }
                     }
                 ]
@@ -2327,24 +3250,25 @@
                 "id": 4,
                 "npc_id": 1,
                 "content": "アメジスト発見記念",
+                "slot": 3,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 495,
                 "rewards": [
                     {
                         "id": 4,
                         "trade_id": 4,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2361,12 +3285,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 495,
-                            "name": null,
+                            "name": "アメジストブロック",
                             "key": "minecraft:amethyst_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:45.000000Z",
-                            "updated_at": "2025-12-29T04:34:45.000000Z"
+                            "updated_at": "2026-01-09T12:54:20.000000Z"
                         }
                     }
                 ]
@@ -2375,24 +3299,25 @@
                 "id": 5,
                 "npc_id": 1,
                 "content": "スローライフ",
+                "slot": 4,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 378,
                 "rewards": [
                     {
                         "id": 5,
                         "trade_id": 5,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2409,12 +3334,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 378,
-                            "name": null,
+                            "name": "生鮭",
                             "key": "minecraft:salmon",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:39.000000Z",
-                            "updated_at": "2025-12-29T04:34:39.000000Z"
+                            "updated_at": "2026-01-09T12:54:14.000000Z"
                         }
                     }
                 ]
@@ -2423,24 +3348,25 @@
                 "id": 6,
                 "npc_id": 1,
                 "content": "モンスターハンター",
+                "slot": 5,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 376,
                 "rewards": [
                     {
                         "id": 6,
                         "trade_id": 6,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2457,12 +3383,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 376,
-                            "name": null,
+                            "name": "腐った肉",
                             "key": "minecraft:rotten_flesh",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:39.000000Z",
-                            "updated_at": "2025-12-29T04:34:39.000000Z"
+                            "updated_at": "2026-01-09T12:54:14.000000Z"
                         }
                     }
                 ]
@@ -2471,24 +3397,25 @@
                 "id": 7,
                 "npc_id": 1,
                 "content": "雪だるま",
+                "slot": 6,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1270,
                 "rewards": [
                     {
                         "id": 7,
                         "trade_id": 7,
                         "item_id": 1532,
-                        "quantity": 10,
+                        "quantity": 1,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2505,12 +3432,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1270,
-                            "name": null,
+                            "name": "雪ブロック",
                             "key": "minecraft:snow_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:25.000000Z",
-                            "updated_at": "2025-12-29T04:35:25.000000Z"
+                            "updated_at": "2026-01-09T12:54:59.000000Z"
                         }
                     }
                 ]
@@ -2519,8 +3446,8 @@
     },
     {
         "id": 2,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 4,
+        "profession_id": 9,
         "npc_type_id": 3,
         "name": "クエスト (★★ (中級))",
         "level": 2,
@@ -2533,22 +3460,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 4,
+            "key": "savanna",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 9,
+            "key": "librarian",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 8,
                 "npc_id": 2,
                 "content": "リッチな昼食",
+                "slot": 0,
                 "created_at": "2025-12-30T18:34:45.000000Z",
                 "updated_at": "2025-12-30T18:34:45.000000Z",
                 "view_item_id": 363,
@@ -2557,16 +3485,16 @@
                         "id": 8,
                         "trade_id": 8,
                         "item_id": 1532,
-                        "quantity": 20,
+                        "quantity": 2,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2583,12 +3511,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 363,
-                            "name": null,
+                            "name": "ウサギシチュー",
                             "key": "minecraft:rabbit_stew",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:38.000000Z",
-                            "updated_at": "2025-12-29T04:34:38.000000Z"
+                            "updated_at": "2026-01-09T12:54:13.000000Z"
                         }
                     }
                 ]
@@ -2597,24 +3525,25 @@
                 "id": 9,
                 "npc_id": 2,
                 "content": "硬くて溶けない氷",
+                "slot": 1,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1085,
                 "rewards": [
                     {
                         "id": 9,
                         "trade_id": 9,
                         "item_id": 1532,
-                        "quantity": 20,
+                        "quantity": 2,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2631,12 +3560,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1085,
-                            "name": null,
+                            "name": "氷塊",
                             "key": "minecraft:packed_ice",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:15.000000Z",
-                            "updated_at": "2025-12-29T04:35:15.000000Z"
+                            "updated_at": "2026-01-09T12:54:50.000000Z"
                         }
                     }
                 ]
@@ -2645,24 +3574,25 @@
                 "id": 10,
                 "npc_id": 2,
                 "content": "ブヨブヨしてる緑な奴",
+                "slot": 2,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1251,
                 "rewards": [
                     {
                         "id": 10,
                         "trade_id": 10,
                         "item_id": 1532,
-                        "quantity": 20,
+                        "quantity": 2,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2679,12 +3609,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1251,
-                            "name": null,
+                            "name": "スライムブロック",
                             "key": "minecraft:slime_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:24.000000Z",
-                            "updated_at": "2025-12-29T04:35:24.000000Z"
+                            "updated_at": "2026-01-09T12:54:58.000000Z"
                         }
                     }
                 ]
@@ -2693,24 +3623,25 @@
                 "id": 11,
                 "npc_id": 2,
                 "content": "ブヨブヨしてる甘い奴",
+                "slot": 3,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 880,
                 "rewards": [
                     {
                         "id": 11,
                         "trade_id": 11,
                         "item_id": 1532,
-                        "quantity": 20,
+                        "quantity": 2,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2727,12 +3658,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 880,
-                            "name": null,
+                            "name": "ハチミツブロック",
                             "key": "minecraft:honey_block",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:05.000000Z",
-                            "updated_at": "2025-12-29T04:35:05.000000Z"
+                            "updated_at": "2026-01-09T12:54:39.000000Z"
                         }
                     }
                 ]
@@ -2741,8 +3672,8 @@
     },
     {
         "id": 3,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 4,
+        "profession_id": 9,
         "npc_type_id": 3,
         "name": "クエスト (★★★ (上級))",
         "level": 3,
@@ -2755,22 +3686,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 4,
+            "key": "savanna",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 9,
+            "key": "librarian",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 12,
                 "npc_id": 3,
                 "content": "うさぎ討伐隊",
+                "slot": 0,
                 "created_at": "2025-12-30T18:34:45.000000Z",
                 "updated_at": "2025-12-30T18:34:45.000000Z",
                 "view_item_id": 360,
@@ -2779,16 +3711,16 @@
                         "id": 12,
                         "trade_id": 12,
                         "item_id": 1532,
-                        "quantity": 30,
+                        "quantity": 3,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2805,12 +3737,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 360,
-                            "name": null,
+                            "name": "ウサギの足",
                             "key": "minecraft:rabbit_foot",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:38.000000Z",
-                            "updated_at": "2025-12-29T04:34:38.000000Z"
+                            "updated_at": "2026-01-09T12:54:13.000000Z"
                         }
                     }
                 ]
@@ -2819,24 +3751,25 @@
                 "id": 13,
                 "npc_id": 3,
                 "content": "お豆腐屋さん",
+                "slot": 1,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 796,
                 "rewards": [
                     {
                         "id": 13,
                         "trade_id": 13,
                         "item_id": 1532,
-                        "quantity": 30,
+                        "quantity": 3,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2853,12 +3786,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 796,
-                            "name": null,
+                            "name": "乾燥したガスト",
                             "key": "minecraft:dried_ghast",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:00.000000Z",
-                            "updated_at": "2025-12-29T04:35:00.000000Z"
+                            "updated_at": "2026-01-09T12:54:35.000000Z"
                         }
                     }
                 ]
@@ -2867,24 +3800,25 @@
                 "id": 14,
                 "npc_id": 3,
                 "content": "イカしたフィスを探せ",
+                "slot": 2,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1475,
                 "rewards": [
                     {
                         "id": 14,
                         "trade_id": 14,
                         "item_id": 1532,
-                        "quantity": 30,
+                        "quantity": 3,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2901,12 +3835,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1475,
-                            "name": null,
+                            "name": "ウィザースケルトンの頭蓋骨",
                             "key": "minecraft:wither_skeleton_skull",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:35.000000Z",
-                            "updated_at": "2025-12-29T04:35:35.000000Z"
+                            "updated_at": "2026-01-09T12:55:09.000000Z"
                         }
                     }
                 ]
@@ -2915,24 +3849,25 @@
                 "id": 15,
                 "npc_id": 3,
                 "content": "ホットな羽付き大会",
+                "slot": 3,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 172,
                 "rewards": [
                     {
                         "id": 15,
                         "trade_id": 15,
                         "item_id": 1532,
-                        "quantity": 30,
+                        "quantity": 3,
                         "price": null,
                         "created_at": "2025-12-30T18:34:45.000000Z",
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1532,
-                            "name": "lotteryTicket10",
+                            "name": "福引ガチャ (10連)",
                             "key": "minecraft:allay_spawn_egg",
                             "is_original": 1,
-                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"bl福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
+                            "nbt": "[enchantment_glint_override=true,rarity=rare,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b},custom_name={\"extra\":[{\"bold\":true,\"text\":\"福引ガチャ (10連)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"右クリックでガチャを引く\"}],\"text\":\"\"}],custom_data={itemType:\"lottery_ticket\",lotteryName:\"福引\",count:10}]",
                             "created_at": "2025-12-30T09:12:43.000000Z",
                             "updated_at": "2025-12-30T09:12:43.000000Z"
                         }
@@ -2949,12 +3884,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 172,
-                            "name": null,
+                            "name": "ガストの涙",
                             "key": "minecraft:ghast_tear",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:29.000000Z",
-                            "updated_at": "2025-12-29T04:34:29.000000Z"
+                            "updated_at": "2026-01-09T12:54:04.000000Z"
                         }
                     }
                 ]
@@ -2963,8 +3898,8 @@
     },
     {
         "id": 4,
-        "biome_id": 1,
-        "profession_id": 1,
+        "biome_id": 4,
+        "profession_id": 9,
         "npc_type_id": 3,
         "name": "クエスト (特別クエスト)",
         "level": 4,
@@ -2977,22 +3912,23 @@
             "updated_at": null
         },
         "biome": {
-            "id": 1,
-            "key": "desert",
+            "id": 4,
+            "key": "savanna",
             "created_at": "2025-12-30T07:14:58.000000Z",
             "updated_at": "2025-12-30T07:14:58.000000Z"
         },
         "profession": {
-            "id": 1,
-            "key": "armorer",
-            "created_at": "2025-12-30T07:14:55.000000Z",
-            "updated_at": "2025-12-30T07:14:55.000000Z"
+            "id": 9,
+            "key": "librarian",
+            "created_at": "2025-12-30T07:14:57.000000Z",
+            "updated_at": "2025-12-30T07:14:57.000000Z"
         },
         "trades": [
             {
                 "id": 16,
                 "npc_id": 4,
                 "content": "ブラック鉱夫",
+                "slot": 0,
                 "created_at": "2025-12-30T18:34:45.000000Z",
                 "updated_at": "2025-12-30T18:34:45.000000Z",
                 "view_item_id": 1053,
@@ -3027,12 +3963,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1053,
-                            "name": null,
+                            "name": "黒曜石",
                             "key": "minecraft:obsidian",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:13.000000Z",
-                            "updated_at": "2025-12-29T04:35:13.000000Z"
+                            "updated_at": "2026-01-09T12:54:48.000000Z"
                         }
                     }
                 ]
@@ -3041,8 +3977,9 @@
                 "id": 17,
                 "npc_id": 4,
                 "content": "赤くてデカくなるアレ",
+                "slot": 1,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 1199,
                 "rewards": [
                     {
@@ -3055,7 +3992,7 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1492,
-                            "name": "health_boost_1",
+                            "name": "§l体力増強(10)",
                             "key": "minecraft:sniffer_spawn_egg",
                             "is_original": 1,
                             "nbt": "[enchantment_glint_override=true,rarity=\"uncommon\",custom_name={\"extra\":[{\"bold\":true,\"text\":\"§l体力増強(10)\"}],\"text\":\"\"},lore=[{\"extra\":[{\"italic\":false,\"underlined\":false,\"bold\":false,\"color\":\"gray\",\"obfuscated\":false,\"strikethrough\":false,\"text\":\"§7ホットバーにある時体力が10増える\"}],\"text\":\"\"}],custom_data={itemType:\"accessory\",accessoryType:\"healthBoost\",level:1},max_stack_size=1,entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
@@ -3075,12 +4012,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 1199,
-                            "name": null,
+                            "name": "赤色のキノコ",
                             "key": "minecraft:red_mushroom",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:35:21.000000Z",
-                            "updated_at": "2025-12-29T04:35:21.000000Z"
+                            "updated_at": "2026-01-09T12:54:55.000000Z"
                         }
                     }
                 ]
@@ -3089,8 +4026,9 @@
                 "id": 18,
                 "npc_id": 4,
                 "content": "目指せ太公望",
+                "slot": 2,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 350,
                 "rewards": [
                     {
@@ -3123,12 +4061,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 350,
-                            "name": null,
+                            "name": "フグ",
                             "key": "minecraft:pufferfish",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:38.000000Z",
-                            "updated_at": "2025-12-29T04:34:38.000000Z"
+                            "updated_at": "2026-01-09T12:54:13.000000Z"
                         }
                     }
                 ]
@@ -3137,8 +4075,9 @@
                 "id": 19,
                 "npc_id": 4,
                 "content": "追尾しない方の甲羅",
+                "slot": 3,
                 "created_at": "2025-12-30T18:34:45.000000Z",
-                "updated_at": "2025-12-30T18:34:45.000000Z",
+                "updated_at": "2026-01-11T10:38:31.000000Z",
                 "view_item_id": 299,
                 "rewards": [
                     {
@@ -3171,12 +4110,12 @@
                         "updated_at": "2025-12-30T18:34:45.000000Z",
                         "item": {
                             "id": 299,
-                            "name": null,
+                            "name": "オウムガイの殻",
                             "key": "minecraft:nautilus_shell",
                             "is_original": 0,
                             "nbt": null,
                             "created_at": "2025-12-29T04:34:35.000000Z",
-                            "updated_at": "2025-12-29T04:34:35.000000Z"
+                            "updated_at": "2026-01-09T12:54:10.000000Z"
                         }
                     }
                 ]
