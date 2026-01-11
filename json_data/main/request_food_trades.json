@@ -1,0 +1,64 @@
+{
+  "store": [
+    {
+      "name": "お食事処",
+      "biome_id": 1,
+      "profession_id": 1,
+      "npc_type_id": 2,
+      "type": 2,
+      "level": 4,
+      "trades": [
+        {
+          "content": "Sell 鉱夫じゃがいも",
+          "view_item_id": 16,
+          "costs": [
+            {
+              "item_id": 1511,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1553,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 爆速スープ",
+          "view_item_id": 24,
+          "costs": [
+            {
+              "item_id": 1511,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1554,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell マグマパイ",
+          "view_item_id": 353,
+          "costs": [
+            {
+              "item_id": 1511,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1555,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patch": [],
+  "delete": []
+}
