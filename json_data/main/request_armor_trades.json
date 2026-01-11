@@ -1,0 +1,136 @@
+{
+  "store": [
+    {
+      "name": "防具交換所 (無制限)",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 2,
+      "level": 1,
+      "trades": [
+        {
+          "content": "Sell ダイヤのヘルメット(水中呼吸 III)",
+          "view_item_id": 122,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1550,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell ダイヤのヘルメット(水中呼吸 I)",
+          "view_item_id": 122,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1551,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell ダイヤのブーツ(水中歩行 III)",
+          "view_item_id": 120,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1552,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "クエスト (防具交換 (初回限定))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 3,
+      "level": 1,
+      "trades": [
+        {
+          "content": "ダイヤのヘルメット(防護V、耐久V)",
+          "view_item_id": 1513,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1546,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "ダイヤのチェストプレート(防護V、耐久V)",
+          "view_item_id": 1513,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1547,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "ダイヤのレギンス(防護V、耐久V)",
+          "view_item_id": 1513,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1548,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "ダイヤのブーツ(防護V、耐久V)",
+          "view_item_id": 1513,
+          "costs": [
+            {
+              "item_id": 1513,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1549,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patch": [],
+  "delete": []
+}

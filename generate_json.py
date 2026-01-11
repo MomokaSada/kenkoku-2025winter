@@ -196,36 +196,101 @@ shops = [
     }
 ]
 
+# --- Armor Exchange Shops (防具交換所) ---
+# Separate definition for new JSON output
+armor_shops = [
+    {
+        "name": "防具交換所 (無制限)",
+        "description": "防具チケット枚で交換",
+        "items": [
+            # ショップ形式（何度でも可）：防具チケット1枚と交換
+            {"name": "ダイヤのヘルメット(水中呼吸 III)", "original_name": "ダイヤのヘルメット(水中呼吸 III)", "cost_original": "防具チケット"},
+            {"name": "ダイヤのヘルメット(水中呼吸 I)", "original_name": "ダイヤのヘルメット(水中呼吸 I)", "cost_original": "防具チケット"},
+            {"name": "ダイヤのブーツ(水中歩行 III)", "original_name": "ダイヤのブーツ(水中歩行 III)", "cost_original": "防具チケット"},
+        ]
+    }
+]
+
+# --- Restaurant Shops (お食事処) ---
+# Separate definition for food JSON output
+restaurant_shops = [
+    {
+        "name": "お食事処",
+        "description": "お食事券1枚と交換",
+        "items": [
+            # ショップ形式（何度でも可）：お食事券1枚と交換
+            {"name": "鉱夫じゃがいも", "original_name": "鉱夫じゃがいも", "cost_original": "お食事券"},
+            {"name": "爆速スープ", "original_name": "爆速スープ", "cost_original": "お食事券"},
+            {"name": "マグマパイ", "original_name": "マグマパイ", "cost_original": "お食事券"},
+        ]
+    }
+]
+
+
+# --- Vanilla Quest Patches (バニラクエスト追加分) ---
+# Separate definition for patch JSON output
+vanilla_quest_patches = [
+    {
+        "id": 1,
+        "difficulty": "★ (初級)",
+        "list": [
+            {"name": "ケーキ", "req_key": "minecraft:cake", "req_amount": 1, "reward_lottery_tickets": 1},
+            {"name": "ビートルート", "req_key": "minecraft:beetroot", "req_amount": 16, "reward_lottery_tickets": 1},
+            {"name": "パンプキンパイ", "req_key": "minecraft:pumpkin_pie", "req_amount": 1, "reward_lottery_tickets": 1},
+            {"name": "クッキー", "req_key": "minecraft:cookie", "req_amount": 16, "reward_lottery_tickets": 1},
+        ]
+    },
+    {
+        "id": 2,
+        "difficulty": "★★ (中級)",
+        "list": [
+            {"name": "熱帯魚", "req_key": "minecraft:tropical_fish", "req_amount": 16, "reward_lottery_tickets": 2},
+            {"name": "鱈", "req_key": "minecraft:cod", "req_amount": 64, "reward_lottery_tickets": 2},
+            {"name": "鮭", "req_key": "minecraft:salmon", "req_amount": 64, "reward_lottery_tickets": 2},
+            {"name": "うさぎの皮", "req_key": "minecraft:rabbit_hide", "req_amount": 4, "reward_lottery_tickets": 2},
+            {"name": "青緑の染料", "req_key": "minecraft:cyan_dye", "req_amount": 16, "reward_lottery_tickets": 2},
+        ]
+    },
+    {
+        "id": 3,
+        "difficulty": "★★★ (上級)",
+        "list": [
+            {"name": "古代の残骸", "req_key": "minecraft:ancient_debris", "req_amount": 1, "reward_lottery_tickets": 3},
+            {"name": "エンドクリスタル", "req_key": "minecraft:end_crystal", "req_amount": 1, "reward_lottery_tickets": 3},
+        ]
+    }
+]
+
 # --- Quests (クエスト) -> NPC Type 3 (Quest) ---
 quests = [
     {
         "difficulty": "★ (初級)",
         "list": [
-            {"name": "街のお掃除", "req_key": "minecraft:oak_leaves", "req_amount": 64, "reward_tickets": 10},
-            {"name": "珍味？", "req_key": "minecraft:golden_apple", "req_amount": 1, "reward_tickets": 10},
-            {"name": "ダイヤ発見記念", "req_key": "minecraft:diamond", "req_amount": 1, "reward_tickets": 10},
-            {"name": "アメジスト発見記念", "req_key": "minecraft:amethyst_block", "req_amount": 10, "reward_tickets": 10},
-            {"name": "スローライフ", "req_key": "minecraft:salmon", "req_amount": 16, "reward_tickets": 10},
-            {"name": "モンスターハンター", "req_key": "minecraft:rotten_flesh", "req_amount": 16, "reward_tickets": 10},
-            {"name": "雪だるま", "req_key": "minecraft:snow_block", "req_amount": 2, "reward_tickets": 10},
+            {"name": "街のお掃除", "req_key": "minecraft:oak_leaves", "req_amount": 64, "reward_lottery_tickets": 1},
+            {"name": "珍味？", "req_key": "minecraft:golden_apple", "req_amount": 1, "reward_lottery_tickets": 1},
+            {"name": "ダイヤ発見記念", "req_key": "minecraft:diamond", "req_amount": 1, "reward_lottery_tickets": 1},
+            {"name": "アメジスト発見記念", "req_key": "minecraft:amethyst_block", "req_amount": 10, "reward_lottery_tickets": 1},
+            {"name": "スローライフ", "req_key": "minecraft:salmon", "req_amount": 16, "reward_lottery_tickets": 1},
+            {"name": "モンスターハンター", "req_key": "minecraft:rotten_flesh", "req_amount": 16, "reward_lottery_tickets": 1},
+            {"name": "雪だるま", "req_key": "minecraft:snow_block", "req_amount": 2, "reward_lottery_tickets": 1},
         ]
     },
     {
         "difficulty": "★★ (中級)",
         "list": [
-            {"name": "リッチな昼食", "req_key": "minecraft:rabbit_stew", "req_amount": 1, "reward_tickets": 20},
-            {"name": "硬くて溶けない氷", "req_key": "minecraft:packed_ice", "req_amount": 1, "reward_tickets": 20},
-            {"name": "ブヨブヨしてる緑な奴", "req_key": "minecraft:slime_block", "req_amount": 4, "reward_tickets": 20},
-            {"name": "ブヨブヨしてる甘い奴", "req_key": "minecraft:honey_block", "req_amount": 4, "reward_tickets": 20},
+            {"name": "リッチな昼食", "req_key": "minecraft:rabbit_stew", "req_amount": 1, "reward_lottery_tickets": 2},
+            {"name": "硬くて溶けない氷", "req_key": "minecraft:packed_ice", "req_amount": 1, "reward_lottery_tickets": 2},
+            {"name": "ブヨブヨしてる緑な奴", "req_key": "minecraft:slime_block", "req_amount": 4, "reward_lottery_tickets": 2},
+            {"name": "ブヨブヨしてる甘い奴", "req_key": "minecraft:honey_block", "req_amount": 4, "reward_lottery_tickets": 2},
         ]
     },
     {
         "difficulty": "★★★ (上級)",
         "list": [
-            {"name": "うさぎ討伐隊", "req_key": "minecraft:rabbit_foot", "req_amount": 4, "reward_tickets": 30},
-            {"name": "お豆腐屋さん", "req_key": "minecraft:dried_ghast", "req_amount": 3, "reward_tickets": 30},
-            {"name": "イカしたフィスを探せ", "req_key": "minecraft:wither_skeleton_skull", "req_amount": 1, "reward_tickets": 30},
-            {"name": "ホットな羽付き大会", "req_key": "minecraft:ghast_tear", "req_amount": 3, "reward_tickets": 30},
+            {"name": "うさぎ討伐隊", "req_key": "minecraft:rabbit_foot", "req_amount": 4, "reward_lottery_tickets": 3},
+            {"name": "お豆腐屋さん", "req_key": "minecraft:dried_ghast", "req_amount": 3, "reward_lottery_tickets": 3},
+            {"name": "イカしたフィスを探せ", "req_key": "minecraft:wither_skeleton_skull", "req_amount": 1, "reward_lottery_tickets": 3},
+            {"name": "ホットな羽付き大会", "req_key": "minecraft:ghast_tear", "req_amount": 3, "reward_lottery_tickets": 3},
         ]
     },
     {
@@ -236,6 +301,21 @@ quests = [
             {"name": "赤くてデカくなるアレ", "req_key": "minecraft:red_mushroom", "req_amount": 32, "reward_original": "health_boost_1"},
             {"name": "目指せ太公望", "req_key": "minecraft:pufferfish", "req_amount": 64, "reward_original": "fishingRod"},
             {"name": "追尾しない方の甲羅", "req_key": "minecraft:nautilus_shell", "req_amount": 3, "reward_original": None},  # 亀の甲羅 - TBD
+        ]
+    }
+]
+
+# --- Armor Exchange Quests (防具交換クエスト) ---
+# Separate definition for new JSON output
+armor_quests = [
+    {
+        "difficulty": "防具交換 (初回限定)",
+        "list": [
+            # クエスト形式（1回のみ取引可能）：防具チケット1枚と交換
+            {"name": "ダイヤのヘルメット(防護V、耐久V)", "req_original": "防具チケット", "req_amount": 1, "reward_original": "ダイヤのヘルメット(防護V、耐久V)"},
+            {"name": "ダイヤのチェストプレート(防護V、耐久V)", "req_original": "防具チケット", "req_amount": 1, "reward_original": "ダイヤのチェストプレート(防護V、耐久V)"},
+            {"name": "ダイヤのレギンス(防護V、耐久V)", "req_original": "防具チケット", "req_amount": 1, "reward_original": "ダイヤのレギンス(防護V、耐久V)"},
+            {"name": "ダイヤのブーツ(防護V、耐久V)", "req_original": "防具チケット", "req_amount": 1, "reward_original": "ダイヤのブーツ(防護V、耐久V)"},
         ]
     }
 ]
@@ -346,12 +426,18 @@ for shop in shops:
             db_id = get_id_by_key(item["key"])
         
         if db_id:
-            # Determine cost (money or ticket)
+            # Determine cost (money or ticket or original)
             if "price" in item:
                 cost = {"price": item["price"]}
             elif "ticket_cost" in item:
                 # Ticket-based exchange (use paper as ticket placeholder)
                 cost = {"item_id": PAPER_ID, "quantity": item["ticket_cost"]}
+            elif "cost_original" in item:
+                 cost_id = get_id_by_name(item["cost_original"])
+                 if cost_id:
+                     cost = {"item_id": cost_id, "quantity": 1}
+                 else:
+                     continue
             else:
                 continue
             
@@ -383,7 +469,13 @@ for cat in quests:
         "trades": []
     }
     for quest in cat["list"]:
-        req_id = get_id_by_key(quest["req_key"])
+        # Requirement can be vanilla key or original item
+        req_id = None
+        if "req_key" in quest:
+            req_id = get_id_by_key(quest["req_key"])
+        elif "req_original" in quest:
+            req_id = get_id_by_name(quest["req_original"])
+
         if not req_id:
             continue
         
@@ -414,6 +506,63 @@ for cat in quests:
 with open(os.path.join(OUTPUT_DIR, 'request_quest.json'), 'w', encoding='utf-8') as f:
     json.dump(quest_request, f, indent=2, ensure_ascii=False)
 print(f"  Created request_quest.json with {len(quest_request['store'])} NPCs")
+
+
+print("\n--- Generating Quest Patch JSON ---")
+quest_patch_request = {"store": [], "patch": [], "delete": []}
+
+for cat in vanilla_quest_patches:
+    npc = {
+        "id": cat["id"],
+        "name": f"クエスト ({cat['difficulty']})",
+        "biome_id": BIOME_ID,
+        "profession_id": PROFESSION_ID,
+        "npc_type_id": 3,  # quest
+        "add_trades": []
+    }
+    
+    # Only process new quests from the patch list (no merging needed)
+    for quest in cat["list"]:
+        # Requirement can be vanilla key or original item
+        req_id = None
+        if "req_key" in quest:
+            req_id = get_id_by_key(quest["req_key"])
+        elif "req_original" in quest:
+            req_id = get_id_by_name(quest["req_original"])
+
+        if not req_id:
+            continue
+        
+        # Determine reward
+        if "reward_tickets" in quest:
+            reward = {"item_id": PAPER_ID, "quantity": quest["reward_tickets"]}
+        elif "reward_lottery_tickets" in quest:
+             # Hardcoded Lottery Ticket ID from user request
+            reward = {"item_id": 1532, "quantity": quest["reward_lottery_tickets"]}
+        elif "reward_original" in quest and quest["reward_original"]:
+            reward_id = get_id_by_name(quest["reward_original"])
+            if reward_id:
+                reward = {"item_id": reward_id, "quantity": 1}
+            else:
+                continue
+        else:
+            # Default to paper if not specified
+            reward = {"item_id": PAPER_ID, "quantity": 1}
+        
+        trade = {
+            "content": quest["name"],
+            "view_item_id": req_id,
+            "costs": [{"item_id": req_id, "quantity": quest["req_amount"]}],
+            "rewards": [reward]
+        }
+        npc["add_trades"].append(trade)
+    
+    if npc["add_trades"]:
+        quest_patch_request["patch"].append(npc)
+
+with open(os.path.join(OUTPUT_DIR, 'request_quest_patch.json'), 'w', encoding='utf-8') as f:
+    json.dump(quest_patch_request, f, indent=2, ensure_ascii=False)
+print(f"  Created request_quest_patch.json with {len(quest_patch_request['patch'])} patches")
 
 
 print("\n--- Generating Lottery JSON ---")
@@ -448,6 +597,140 @@ with open(os.path.join(OUTPUT_DIR, 'request_lottery.json'), 'w', encoding='utf-8
     json.dump(lottery_request, f, indent=2, ensure_ascii=False)
 print(f"  Created request_lottery.json with {len(lottery_obj['rarities'])} rarities")
 
+
+print("\n--- Generating Armor Trades JSON ---")
+armor_request = {"store": [], "patch": [], "delete": []}
+
+# Process Armor Shops
+for shop in armor_shops:
+    npc = {
+        "name": shop["name"],
+        "biome_id": BIOME_ID,
+        "profession_id": PROFESSION_ID,
+        "npc_type_id": 2,  # shop
+        "trades": []
+    }
+    for item in shop["items"]:
+        # Get item ID
+        db_id = None
+        if "original_name" in item:
+            db_id = get_id_by_name(item["original_name"])
+        elif "key" in item:
+            db_id = get_id_by_key(item["key"])
+        
+        if db_id:
+            # Determine cost
+            if "cost_original" in item:
+                 cost_id = get_id_by_name(item["cost_original"])
+                 if cost_id:
+                     cost = {"item_id": cost_id, "quantity": 1}
+                 else:
+                     continue
+            else:
+                continue
+            
+            trade = {
+                "content": f"Sell {item['name']}",
+                "view_item_id": db_id,
+                "costs": [cost],
+                "rewards": [{"item_id": db_id, "quantity": item.get("quantity", 1)}]
+            }
+            npc["trades"].append(trade)
+    
+    if npc["trades"]:
+        armor_request["store"].append(npc)
+
+# Process Armor Quests
+for cat in armor_quests:
+    npc = {
+        "name": f"クエスト ({cat['difficulty']})",
+        "biome_id": BIOME_ID,
+        "profession_id": PROFESSION_ID,
+        "npc_type_id": 3,  # quest
+        "trades": []
+    }
+    for quest in cat["list"]:
+        # Requirement can be vanilla key or original item
+        req_id = None
+        if "req_key" in quest:
+            req_id = get_id_by_key(quest["req_key"])
+        elif "req_original" in quest:
+            req_id = get_id_by_name(quest["req_original"])
+
+        if not req_id:
+            continue
+        
+        # Determine reward
+        if "reward_original" in quest and quest["reward_original"]:
+            reward_id = get_id_by_name(quest["reward_original"])
+            if reward_id:
+                reward = {"item_id": reward_id, "quantity": 1}
+            else:
+                continue
+        else:
+            continue
+        
+        trade = {
+            "content": quest["name"],
+            "view_item_id": req_id,
+            "costs": [{"item_id": req_id, "quantity": quest["req_amount"]}],
+            "rewards": [reward]
+        }
+        npc["trades"].append(trade)
+    
+    if npc["trades"]:
+        armor_request["store"].append(npc)
+
+with open(os.path.join(OUTPUT_DIR, 'request_armor_trades.json'), 'w', encoding='utf-8') as f:
+    json.dump(armor_request, f, indent=2, ensure_ascii=False)
+print(f"  Created request_armor_trades.json with {len(armor_request['store'])} NPCs")
+
+
+print("\n--- Generating Food Trades JSON ---")
+food_request = {"store": [], "patch": [], "delete": []}
+
+# Process Restaurant Shops
+for shop in restaurant_shops:
+    npc = {
+        "name": shop["name"],
+        "biome_id": BIOME_ID,
+        "profession_id": PROFESSION_ID,
+        "npc_type_id": 2,  # shop
+        "trades": []
+    }
+    for item in shop["items"]:
+        # Get item ID
+        db_id = None
+        if "original_name" in item:
+            db_id = get_id_by_name(item["original_name"])
+        elif "key" in item:
+            db_id = get_id_by_key(item["key"])
+        
+        if db_id:
+            # Determine cost
+            if "cost_original" in item:
+                 cost_id = get_id_by_name(item["cost_original"])
+                 if cost_id:
+                     cost = {"item_id": cost_id, "quantity": 1}
+                 else:
+                     continue
+            else:
+                continue
+            
+            trade = {
+                "content": f"Sell {item['name']}",
+                "view_item_id": db_id,
+                "costs": [cost],
+                "rewards": [{"item_id": db_id, "quantity": item.get("quantity", 1)}]
+            }
+            npc["trades"].append(trade)
+    
+    if npc["trades"]:
+        food_request["store"].append(npc)
+
+with open(os.path.join(OUTPUT_DIR, 'request_food_trades.json'), 'w', encoding='utf-8') as f:
+    json.dump(food_request, f, indent=2, ensure_ascii=False)
+print(f"  Created request_food_trades.json with {len(food_request['store'])} NPCs")
 
 print("\n=== Done! ===")
 print(f"Output directory: {OUTPUT_DIR}")
