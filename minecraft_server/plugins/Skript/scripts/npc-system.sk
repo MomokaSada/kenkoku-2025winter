@@ -353,7 +353,7 @@ on rightclick on villager:
 on rightclick on villager:
     if scoreboard tags of target contains "kenkoku_npc":
         cancel event
-        openTradeMenu(player, event-entity, 1)
+        openTradeMenu(player, event-entity, 0)
 
 # メインメニュー表示関数
 function openTradeMenu(p: player, npc: entity, page: number):
@@ -370,9 +370,9 @@ function openTradeMenu(p: player, npc: entity, page: number):
         send "&c[Error] NPCのIDを取得できませんでした。" to {_p}
         stop
     
-    # NPCの取引リストを取得（view_item_idからitems.keyを取得、npc_typeも取得）
+    # NPCの取引リストを取得（view_item_idからitems.keyを取得、npc_typeも取得、slotで表示位置を指定）
     delete {_trades::*}
-    execute "SELECT t.id, t.content, vi.key as view_item_key, nt.name as npc_type FROM trades t LEFT JOIN items vi ON t.view_item_id = vi.id JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.id" in {kenkoku_db} and store the result in {_trades::*}
+    execute "SELECT t.id, t.content, t.slot as gui_slot, vi.key as view_item_key, nt.name as npc_type FROM trades t LEFT JOIN items vi ON t.view_item_id = vi.id JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.slot" in {kenkoku_db} and store the result in {_trades::*}
     
     # 詳細情報の取得 (Bulk Fetch)
     delete {_costs::*}
@@ -423,133 +423,188 @@ function openTradeMenu(p: player, npc: entity, page: number):
         send "&c[Error] このNPCには取引がありません。" to {_p}
         stop
     
-    # ページネーション計算
-    set {_total_trades} to size of {_trades::id::*}
+
+
+    # マッピング用変数の初期化
+    delete {_map_tid::*}
+    delete {_map_content::*}
+    delete {_map_view_key::*}
+    delete {_map_npc_type::*}
+    set {_max_slot} to 0
+    
+    # DBデータをマッピング配列に展開
+    set {_total_records} to size of {_trades::id::*}
+    loop {_total_records} times:
+        # スロット値の取得と数値化
+        set {_raw_slot} to {_trades::gui_slot::%loop-number%}
+        set {_slot_num} to ("%{_raw_slot}%" parsed as number)
+        
+
+        
+        # スロット設定がない場合は自動割り当て（既存の最大+1）
+        if {_slot_num} is not set:
+
+            set {_slot_num} to {_max_slot} + 1
+            
+        # マッピング（絶対スロット番号をキーにする）
+        set {_map_tid::%{_slot_num}%} to {_trades::id::%loop-number%}
+        set {_map_content::%{_slot_num}%} to {_trades::content::%loop-number%}
+        set {_map_view_key::%{_slot_num}%} to {_trades::view_item_key::%loop-number%}
+        set {_map_npc_type::%{_slot_num}%} to {_trades::npc_type::%loop-number%}
+        
+        # 最大スロット更新
+        if {_slot_num} > {_max_slot}:
+            set {_max_slot} to {_slot_num}
+    
+    # broadcast "&d[Debug] Max Slot: %{_max_slot}%, Total Pages: %floor({_max_slot} / 45) + 1%"
+    
     set {_per_page} to 45  # 9x5 = 45スロット
-    set {_total_pages} to ({_total_trades} / {_per_page}) rounded up
+    set {_total_pages_calc} to (floor({_max_slot} / {_per_page})) + 1
+    # 文字列経由で整数化（パース安全策）
+    set {_total_pages} to ("%{_total_pages_calc}%" parsed as integer)
+    
+    if {_total_pages} is not set:
+        set {_total_pages} to 1
     
     if {_total_pages} < 1:
         set {_total_pages} to 1
     
-    if {_page} > {_total_pages}:
-        set {_page} to {_total_pages}
-    if {_page} < 1:
-        set {_page} to 1
+    # ページループ処理（page 0が最初）
+    if {_page} < 0:
+        set {_page} to {_total_pages} - 1  # -1の場合は最後のページへ
+    if {_page} >= {_total_pages}:
+        set {_page} to 0  # 最後+1の場合は最初のページへ
     
     # チェストGUIを作成
     set {_npc_name} to display name of {_npc}
-    open chest with 6 rows named "&6&l取引メニュー - %{_npc_name}% (%{_page}%/%{_total_pages}%)" to {_p}
+    set {_display_page} to {_page} + 1
+    open chest with 6 rows named "&6&l取引メニュー - %{_npc_name}% (%{_display_page}%/%{_total_pages}%)" to {_p}
+    wait 2 ticks
+    if name of {_p}'s current inventory does not contain "取引メニュー":
+        stop
     
-    # 取引アイテムを配置
-    set {_start_idx} to ({_page} - 1) * {_per_page} + 1
-    set {_end_idx} to {_page} * {_per_page}
+    # 取引アイテムを配置（現在のページの0-44スロットを走査）
+    set {_page_offset} to {_page} * {_per_page}
     
-    if {_end_idx} > {_total_trades}:
-        set {_end_idx} to {_total_trades}
+    loop 45 times:
+        set {_gui_slot_idx} to loop-number - 1 # 0 to 44
+        set {_abs_slot} to {_page_offset} + {_gui_slot_idx}
+        
+        # このスロットにデータがあるか確認
+        if {_map_tid::%{_abs_slot}%} is set:
+            set {_current_tid} to {_map_tid::%{_abs_slot}%}
+            set {_current_content} to {_map_content::%{_abs_slot}%}
+            set {_current_view_key} to {_map_view_key::%{_abs_slot}%}
+            set {_current_npc_type} to {_map_npc_type::%{_abs_slot}%}
+            
+            # view_item_idからアイテムを作成（minecraft:プレフィックスを除去）
+            if {_current_view_key} is set:
+                # minecraft:を削除
+                if {_current_view_key} contains "minecraft:":
+                    replace "minecraft:" with "" in {_current_view_key}
+                
+                set {_trade_item} to {_current_view_key} parsed as item type
+            
+            # パース失敗時はフォールバック
+            if {_trade_item} is not set:
+                set {_trade_item} to paper
+            
+            # クエスト完了済みかチェック
+            set {_is_completed} to false
+            
+            if {_current_npc_type} is "quest":
+                if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_current_tid}%":
+                    set {_is_completed} to true
+            
+            # アイテム名とLoreを設定
+            delete {_lore::*}
+            
+            if {_current_npc_type} is "quest":
+                set {_title_prefix} to "&e&l[クエスト]"
+                set {_click_msg} to "&7クリックでクエストをクリア"
+                set {_cost_header} to "&e&l納品アイテム"
+                set {_reward_header} to "&e&l返礼アイテム"
+            else if {_current_npc_type} is "pawnshop":
+                set {_title_prefix} to "&6&l[買取]"
+                set {_click_msg} to "&7クリックで売却"
+                set {_cost_header} to "&6&l売却アイテム"
+                set {_reward_header} to "&6&l獲得報酬"
+            else if {_current_npc_type} is "shop":
+                set {_title_prefix} to "&b&l[ショップ]"
+                set {_click_msg} to "&7クリックで購入"
+                set {_cost_header} to "&b&l必要コスト"
+                set {_reward_header} to "&b&l購入アイテム"
+            else:
+                set {_title_prefix} to "&e&l"
+                set {_click_msg} to "&7クリックで交換"
+                set {_cost_header} to "&f&l納品アイテム"
+                set {_reward_header} to "&f&l返礼アイテム"
+            
+            # アイテム名と基本Loreの設定
+            if {_is_completed} is true:
+                set name of {_trade_item} to "&7&l[完了] %{_current_content}%"
+                add "&8このクエストは完了済みです" to {_lore::*}
+                add "" to {_lore::*}
+            else:
+                set name of {_trade_item} to "%{_title_prefix}% %{_current_content}%"
+                add {_click_msg} to {_lore::*}
+                add "" to {_lore::*}
+            
+            # Cost Lines
+            if {_cost_lines::%{_current_tid}%::*} is set:
+                add {_cost_header} to {_lore::*}
+                loop {_cost_lines::%{_current_tid}%::*}:
+                    add loop-value-2 to {_lore::*}
+                add "" to {_lore::*}
+                
+            # Reward Lines
+            if {_reward_lines::%{_current_tid}%::*} is set:
+                add {_reward_header} to {_lore::*}
+                loop {_reward_lines::%{_current_tid}%::*}:
+                    add loop-value-2 to {_lore::*}
+                        
+            set lore of {_trade_item} to {_lore::*}
+            
+            # カスタムNBTでトレードID埋め込み
+            set {_nbt} to "{custom_data:{tradeId:%{_current_tid}%,npcId:%{_npc_id}%}}"
+            add nbt compound from {_nbt} to nbt of {_trade_item}
+            
+            # GUIスロットに配置
+            set slot {_gui_slot_idx} of {_p}'s current inventory to {_trade_item}
     
-    set {_slot} to 0
-    loop {_total_trades} times:
-        if loop-number >= {_start_idx}:
-            if loop-number <= {_end_idx}:
-                set {_current_tid} to {_trades::id::%loop-number%}
-                set {_current_content} to {_trades::content::%loop-number%}
-                set {_current_view_key} to {_trades::view_item_key::%loop-number%}
-                set {_current_npc_type} to {_trades::npc_type::%loop-number%}
-                
-                # view_item_idからアイテムを作成（minecraft:プレフィックスを除去）
-                if {_current_view_key} is set:
-                    # minecraft:を削除
-                    if {_current_view_key} contains "minecraft:":
-                        replace "minecraft:" with "" in {_current_view_key}
-                    
-                    set {_trade_item} to {_current_view_key} parsed as item type
-                
-                # パース失敗時はフォールバック
-                if {_trade_item} is not set:
-                    set {_trade_item} to paper
-                
-                # クエスト完了済みかチェック
-                set {_is_completed} to false
-                
-                # クエスト完了済みかチェック
-                set {_is_completed} to false
-                
-                if {_current_npc_type} is "quest":
-                    if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_current_tid}%":
-                        set {_is_completed} to true
-                
-                # アイテム名とLoreを設定
-                # ヘッダーとサブタイトルの設定
-                delete {_lore::*}
-                
-                if {_current_npc_type} is "quest":
-                    set {_title_prefix} to "&e&l[クエスト]"
-                    set {_click_msg} to "&7クリックでクエストをクリア"
-                    set {_cost_header} to "&e&l納品アイテム"
-                    set {_reward_header} to "&e&l返礼アイテム"
-                else if {_current_npc_type} is "pawnshop":
-                    set {_title_prefix} to "&6&l[買取]"
-                    set {_click_msg} to "&7クリックで売却"
-                    set {_cost_header} to "&6&l売却アイテム"
-                    set {_reward_header} to "&6&l獲得報酬"
-                else if {_current_npc_type} is "shop":
-                    set {_title_prefix} to "&b&l[ショップ]"
-                    set {_click_msg} to "&7クリックで購入"
-                    set {_cost_header} to "&b&l必要コスト"
-                    set {_reward_header} to "&b&l購入アイテム"
-                else:
-                    set {_title_prefix} to "&e&l"
-                    set {_click_msg} to "&7クリックで交換"
-                    set {_cost_header} to "&f&l納品アイテム"
-                    set {_reward_header} to "&f&l返礼アイテム"
-                
-                # アイテム名と基本Loreの設定
-                if {_is_completed} is true:
-                    # 完了済みでも内容は表示するが、完了マークをつける
-                    set name of {_trade_item} to "&7&l[完了] %{_current_content}%"
-                    add "&8このクエストは完了済みです" to {_lore::*}
-                    add "" to {_lore::*}
-                else:
-                    set name of {_trade_item} to "%{_title_prefix}% %{_current_content}%"
-                    add {_click_msg} to {_lore::*}
-                    add "" to {_lore::*}
-                
-                # Cost Lines
-                if {_cost_lines::%{_current_tid}%::*} is set:
-                    add {_cost_header} to {_lore::*}
-                    loop {_cost_lines::%{_current_tid}%::*}:
-                        add loop-value-2 to {_lore::*}
-                    add "" to {_lore::*}
-                    
-                # Reward Lines
-                if {_reward_lines::%{_current_tid}%::*} is set:
-                    add {_reward_header} to {_lore::*}
-                    loop {_reward_lines::%{_current_tid}%::*}:
-                        add loop-value-2 to {_lore::*}
-                            
-                set lore of {_trade_item} to {_lore::*}
-                
-                # カスタムNBTでトレードID埋め込み
-                set {_nbt} to "{custom_data:{tradeId:%{_current_tid}%,npcId:%{_npc_id}%}}"
-                add nbt compound from {_nbt} to nbt of {_trade_item}
-                
-                set slot {_slot} of {_p}'s current inventory to {_trade_item}
-                add 1 to {_slot}
+    # ページネーションボタン（常に表示、ループ対応）
+    set {_last_page} to {_total_pages} - 1
     
-    # ページネーションボタン
-    if {_page} > 1:
-        set {_prev_btn} to arrow
-        set name of {_prev_btn} to "&a&l← 前のページ"
-        set {_nbt_prev} to "{custom_data:{action:""prev_page"",npcId:%{_npc_id}%,page:%{_page}%}}"
-        add nbt compound from {_nbt_prev} to nbt of {_prev_btn}
-        set slot 45 of {_p}'s current inventory to {_prev_btn}
     
-    if {_page} < {_total_pages}:
-        set {_next_btn} to arrow
-        set name of {_next_btn} to "&a&l次のページ →"
-        set {_nbt_next} to "{custom_data:{action:""next_page"",npcId:%{_npc_id}%,page:%{_page}%}}"
-        add nbt compound from {_nbt_next} to nbt of {_next_btn}
-        set slot 52 of {_p}'s current inventory to {_next_btn}
+    # 前のページボタン
+    set {_prev_btn} to 1 of arrow
+    set name of {_prev_btn} to "&a&l← 前のページ"
+    if {_page} is 0:
+        set lore of {_prev_btn} to "&7最後のページへ移動"
+        set {_target_page} to {_total_pages} - 1
+    else:
+        set lore of {_prev_btn} to "&7ページ %{_page}% へ移動"
+        set {_target_page} to {_page} - 1
+        
+    set {_nbt_prev} to "{custom_data:{action:""prev_page"",npcId:%{_npc_id}%,targetPage:%{_target_page}%}}"
+    add nbt compound from {_nbt_prev} to nbt of {_prev_btn}
+    set slot 48 of {_p}'s current inventory to {_prev_btn}
+    
+    # 次のページボタン
+    set {_next_btn} to 1 of arrow
+    set name of {_next_btn} to "&a&l次のページ →"
+    set {_next_page_display} to {_page} + 2
+    
+    if {_page} is {_last_page}:
+        set lore of {_next_btn} to "&7最初のページへ移動"
+        set {_target_page} to 0
+    else:
+        set lore of {_next_btn} to "&7ページ %{_next_page_display}% へ移動"
+        set {_target_page} to {_page} + 1
+        
+    set {_nbt_next} to "{custom_data:{action:""next_page"",npcId:%{_npc_id}%,targetPage:%{_target_page}%}}"
+    add nbt compound from {_nbt_next} to nbt of {_next_btn}
+    set slot 50 of {_p}'s current inventory to {_next_btn}
     
     # 一括取引量の初期化
     if {-trade_amount::%{_p}%} is not set:
@@ -598,10 +653,10 @@ on inventory click:
                 set {_sub::*} to split {_val} at ","
                 set {_npc_id} to {_sub::1} parsed as number
                 
-                set {_parts2::*} to split {_nbt_str} at "page:"
+                set {_parts2::*} to split {_nbt_str} at "targetPage:"
                 set {_val2} to {_parts2::2}
                 set {_sub2::*} to split {_val2} at "}"
-                set {_page} to {_sub2::1} parsed as number
+                set {_target_page} to {_sub2::1} parsed as number
                 
                 close player's inventory
                 wait 1 tick
@@ -610,7 +665,7 @@ on inventory click:
                 loop all entities in radius 10 of player:
                     loop scoreboard tags of loop-entity:
                         if loop-value-2 is "npc_id_%{_npc_id}%":
-                            openTradeMenu(player, loop-entity, {_page} - 1)
+                            openTradeMenu(player, loop-entity, {_target_page})
                             stop
                             
             else if {_nbt_str} contains "next_page":
@@ -620,10 +675,10 @@ on inventory click:
                 set {_sub::*} to split {_val} at ","
                 set {_npc_id} to {_sub::1} parsed as number
                 
-                set {_parts2::*} to split {_nbt_str} at "page:"
+                set {_parts2::*} to split {_nbt_str} at "targetPage:"
                 set {_val2} to {_parts2::2}
                 set {_sub2::*} to split {_val2} at "}"
-                set {_page} to {_sub2::1} parsed as number
+                set {_target_page} to {_sub2::1} parsed as number
                 
                 close player's inventory
                 wait 1 tick
@@ -632,7 +687,7 @@ on inventory click:
                 loop all entities in radius 10 of player:
                     loop scoreboard tags of loop-entity:
                         if loop-value-2 is "npc_id_%{_npc_id}%":
-                            openTradeMenu(player, loop-entity, {_page} + 1)
+                            openTradeMenu(player, loop-entity, {_target_page})
                             stop
                             
             else if {_nbt_str} contains "toggle_amount":
@@ -738,7 +793,7 @@ function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: num
     # 取引成功後、GUIを再表示
     wait 1 tick
     if {_npc_entity} is set:
-        openTradeMenu({_player}, {_npc_entity}, 1)
+        openTradeMenu({_player}, {_npc_entity}, 0)
 
 # 取引実行関数
 function executeTrade(p: player, tid: number, amount: number = 1):
