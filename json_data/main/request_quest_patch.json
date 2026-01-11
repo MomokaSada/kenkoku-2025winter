@@ -1,0 +1,209 @@
+{
+  "store": [],
+  "patch": [
+    {
+      "id": 1,
+      "name": "クエスト (★ (初級))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "npc_type_id": 3,
+      "add_trades": [
+        {
+          "content": "ケーキ",
+          "view_item_id": 610,
+          "costs": [
+            {
+              "item_id": 610,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "ビートルート",
+          "view_item_id": 22,
+          "costs": [
+            {
+              "item_id": 22,
+              "quantity": 16
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "パンプキンパイ",
+          "view_item_id": 353,
+          "costs": [
+            {
+              "item_id": 353,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "クッキー",
+          "view_item_id": 92,
+          "costs": [
+            {
+              "item_id": 92,
+              "quantity": 16
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "クエスト (★★ (中級))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "npc_type_id": 3,
+      "add_trades": [
+        {
+          "content": "熱帯魚",
+          "view_item_id": 435,
+          "costs": [
+            {
+              "item_id": 435,
+              "quantity": 16
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "鱈",
+          "view_item_id": 80,
+          "costs": [
+            {
+              "item_id": 80,
+              "quantity": 64
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "鮭",
+          "view_item_id": 378,
+          "costs": [
+            {
+              "item_id": 378,
+              "quantity": 64
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "うさぎの皮",
+          "view_item_id": 361,
+          "costs": [
+            {
+              "item_id": 361,
+              "quantity": 4
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "青緑の染料",
+          "view_item_id": 112,
+          "costs": [
+            {
+              "item_id": 112,
+              "quantity": 16
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "クエスト (★★★ (上級))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "npc_type_id": 3,
+      "add_trades": [
+        {
+          "content": "古代の残骸",
+          "view_item_id": 497,
+          "costs": [
+            {
+              "item_id": 497,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 3
+            }
+          ]
+        },
+        {
+          "content": "エンドクリスタル",
+          "view_item_id": 143,
+          "costs": [
+            {
+              "item_id": 143,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "delete": []
+}
