@@ -1,0 +1,59 @@
+{
+  "store": [],
+  "patch": [
+    {
+      "id": 14,
+      "add_trades": [
+        {
+          "content": "Sell お食事処",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1558,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 防具屋",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1557,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 防具屋(一回限定アイテム)",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1556,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "delete": []
+}
