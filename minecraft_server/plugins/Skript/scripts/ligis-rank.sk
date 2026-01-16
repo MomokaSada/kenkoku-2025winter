@@ -1,0 +1,46 @@
+command /rank [<text>] [<number>] [<number>]:
+    trigger:
+        if arg-1 is not set:
+            send "----------------"
+            send "＊/rankコマンドの使い方＊"
+            send "・/rank 0"
+            send "順位の表示に問題があるときに使ってください"
+            send ""
+            send "・/rank 内容 順位A 順位B"
+            send "内容:/statと同じように見たい統計内容を記入する"
+            send "  例:/rank walk_one_cm"
+            send "  例:/rank mine_block:stone"
+            send ""
+            send "順位A:見たい順位を記入する"
+            send "  例:/rank walk_one_cm 2"
+            send "    ->歩いた距離2位を表示する"
+            send ""
+            send "順位B:順位Aから順位Bまでの順位をまとめて見れる"
+            send "  例:/rank walk_one_cm 3 7"
+            send "    ->歩いた距離3～7位を表示する"
+            send "----------------"
+        else if arg-1 is "0":
+            execute console command "/papi reload"
+            send "順位の表示を修正しました"
+        else:
+            set {_rank_start} to arg-2
+            set {_n} to 1
+            if arg-3 is set:
+                set {_rank_end} to arg-3
+                if {_rank_start} < {_rank_end}:
+                    set {_n} to {_rank_end} - {_rank_start}
+                    add 1 to {_n}
+                else:
+                    set {_n} to 0
+                    send "記入した数値に問題があります"
+                    send "/rank 内容 順位A 順位B"
+                    send "順位Bの値が順位Aの値を超えてはいけません"
+            if {_n} is not 0:
+                send "----------------"
+                loop {_n} times:
+                    set {_rank} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%"
+                    send {_rank}
+                    add 1 to {_rank_start}
+                    if {_rank_start} > 100:
+                        stop loop
+                send "----------------"
