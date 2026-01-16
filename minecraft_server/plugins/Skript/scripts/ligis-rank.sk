@@ -1,0 +1,23 @@
+command /rank <text> [<number>] [<number>]:
+    trigger:
+        if arg-1 is "0":
+            execute console command "/papi reload"
+        else:
+            set {_rank_start} to arg-2
+            set {_n} to 1
+            if arg-3 is set:
+                set {_rank_end} to arg-3
+                if {_rank_start} < {_rank_end}:
+                    set {_n} to {_rank_end} - {_rank_start}
+                    add 1 to {_n}
+            send "----------------"
+            loop {_n} times:
+                if arg-2 is set:
+                    set {_rank} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%:%arg-2%"
+                else:
+                    set {_rank} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%"
+                send {_rank}
+                add 1 to {_rank_start}
+                if {_rank_start} > 100:
+                    stop loop
+            send "----------------"
