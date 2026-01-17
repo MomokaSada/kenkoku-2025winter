@@ -330,6 +330,24 @@ command /npc-update:
 on damage of villager:
     if scoreboard tags of victim contains "kenkoku_npc":
         cancel event
+        # NPC移動システムのNPC選択
+        if attacker's held item is wooden hoe:
+            send "&a[System] 移動させるNPCを選択しました" to attacker
+            send "&a木のクワを投げるとTPされます" to attacker
+            add "move_%attacker%" to scoreboard tags of victim
+            add "move_%attacker%" to scoreboard tags of attacker
+
+# NPC移動システムの移動実行
+on drop of wooden hoe:
+    if player has scoreboard tag "move_%player%":
+        loop villagers:
+            if loop-entity has scoreboard tag "move_%player%":
+                teleport the loop-entity to the player
+                remove "move_%player%" from scoreboard tags of player
+                remove "move_%player%" from scoreboard tags of loop-entity 
+                send "&a[System] NPCの移動が完了しました" to player
+                cancel event
+                stop loop
 
 # 取引画面を開いた際（右クリック時）の処理
 on rightclick on villager:
