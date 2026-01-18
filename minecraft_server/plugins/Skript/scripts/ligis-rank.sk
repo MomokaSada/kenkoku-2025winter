@@ -10,7 +10,7 @@ command /info:
 command /rank [<text>] [<number>] [<number>] [<text>]:
     trigger:
         if arg-1 is not set:
-            send "----------------"
+            send "--------------------------------"
             send "＊/rankコマンドの使い方＊"
             send "・/rank 0"
             send "順位の表示に問題があるときに使ってください"
@@ -27,7 +27,7 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
             send "順位B:順位Aから順位Bまでの順位をまとめて見れる"
             send "  例:/rank walk_one_cm 3 7"
             send "    ->歩いた距離3～7位を表示する"
-            send "----------------"
+            send "--------------------------------"
         else if arg-1 is "0":
             execute console command "/papi reload"
             send "順位の表示を修正しました"
@@ -45,7 +45,6 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
                     send "/rank 内容 順位A 順位B"
                     send "順位Bの値が順位Aの値を超えてはいけません"
             if {_n} is not 0:
-                send {_n}
                 add the value of the placeholder "playerstats_server,%arg-1%,only:number" parsed as number to {rank_server}
                 loop {_n} times:
                     if {_name} is {_name2}:
@@ -68,6 +67,7 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
                 add 1 to {_n}
                 set {_name2} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
             set {_n} to 1
+            send "--------------------------------"
             send "総数:%{rank_server}%"
             loop 200 times:
                 set {_rank} to max({rank::*})
@@ -77,6 +77,7 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
                 send "%{_n}%.%{_%{_rank}%}%.................%{_rank}% (%{_rank_per}%％)"
                 remove {_rank} from {rank::*}
                 add 1 to {_n}
+            send "--------------------------------"
         else if arg-1 is "clear":
             send "加算した値をクリアしました"
             set {_n} to 1
@@ -103,7 +104,7 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
                         send "順位Bの値が順位Aの値を超えてはいけません"
                 if {_n} is not 0:
                     add the value of the placeholder "playerstats_server,%arg-1%,only:number" parsed as number to {_rank_server}
-                    send "----------------"
+                    send "--------------------------------"
                     send "%arg-1% 総数:%{_rank_server}%"
                     loop {_n} times:
                         clear {_rank}
@@ -114,6 +115,6 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
                         send {_rank}
                         add 1 to {_rank_start}
                         set {_name2} to the value of the placeholder "playerstats_top:%{_rank_start}%,total_world_time,only:player_name"
-                    send "----------------"
+                    send "--------------------------------"
         else:
             send "該当するコマンドが見つかりません"
