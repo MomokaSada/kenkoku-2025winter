@@ -330,12 +330,6 @@ command /npc-update:
 on damage of villager:
     if scoreboard tags of victim contains "kenkoku_npc":
         cancel event
-        # NPC移動システムのNPC選択
-        if attacker's held item is wooden hoe:
-            send "&a[System] 移動させるNPCを選択しました" to attacker
-            send "&a木のクワを投げるとTPされます" to attacker
-            add "move_%attacker%" to scoreboard tags of victim
-            add "move_%attacker%" to scoreboard tags of attacker
 
 # NPC移動システムの移動実行
 on drop of wooden hoe:
@@ -371,7 +365,14 @@ on rightclick on villager:
 on rightclick on villager:
     if scoreboard tags of target contains "kenkoku_npc":
         cancel event
-        openTradeMenu(player, event-entity, 0)
+        # NPC移動システムのNPC選択
+        if player's held item is wooden hoe:
+            send "&a[System] 移動させるNPCを選択しました" to player
+            send "&a木のクワを投げるとTPされます" to player
+            add "move_%player%" to scoreboard tags of event-entity
+            add "move_%player%" to scoreboard tags of player
+        else:
+            openTradeMenu(player, event-entity, 0)
 
 # メインメニュー表示関数
 function openTradeMenu(p: player, npc: entity, page: number):
