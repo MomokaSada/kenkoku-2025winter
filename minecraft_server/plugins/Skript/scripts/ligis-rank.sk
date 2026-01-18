@@ -71,7 +71,7 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
             send "総数:%{rank_server}%"
             loop 200 times:
                 set {_rank} to max({rank::*})
-                if {_rank} is 0:
+                if {_rank} is not set:
                     stop loop
                 set {_rank_per} to ceiling({_rank} / {rank_server} * 10000) / 100
                 send "%{_n}%.%{_%{_rank}%}%.................%{_rank}% (%{_rank_per}%％)"
@@ -110,7 +110,7 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
                         clear {_rank}
                         if {_name} is {_name2}:
                             stop loop
-                        set {_name} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
+                        set {_name} to the value of the placeholder "playerstats_top:%{_rank_start}%,total_world_time,only:player_name"
                         set {_rank} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%"
                         send {_rank}
                         add 1 to {_rank_start}
