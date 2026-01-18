@@ -1,11 +1,7 @@
 command /info:
     trigger:
-        send "%player%"
-        send {rank_%player%}
-        if {rank_%player%} is 11:
-            send "number"
-        if {rank_%player%} is "11":
-            send "strings"
+        send "server:%{rank_server}%"
+        send "list:%{rank::*}%"
 
 command /rank [<text>] [<number>] [<number>] [<text>]:
     trigger:
@@ -33,48 +29,86 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
             send "順位の表示を修正しました"
         else if arg-4 is "add":
             set {_rank_start} to arg-2
-            set {_n} to 1
+            set {_rank_times} to 1
             if arg-3 is set:
                 set {_rank_end} to arg-3
                 if {_rank_start} < {_rank_end}:
-                    set {_n} to {_rank_end} - {_rank_start}
-                    add 1 to {_n}
+                    set {_rank_times} to {_rank_end} - {_rank_start}
+                    add 1 to {_rank_times}
                 else:
-                    set {_n} to 0
+                    set {_rank_times} to 0
                     send "記入した数値に問題があります"
                     send "/rank 内容 順位A 順位B"
                     send "順位Bの値が順位Aの値を超えてはいけません"
-            if {_n} is not 0:
-                add the value of the placeholder "playerstats_server,%arg-1%,only:number" parsed as number to {rank_server}
-                loop {_n} times:
-                    if {_name} is {_name2}:
+            if {_rank_times} is not 0:
+                set {_n} to 1
+                set {_rank_strings} to the value of the placeholder "playerstats_server,%arg-1%,only:number"
+                loop 20 times:
+                    set {_rank_value1} to characters at {_n} of {_rank_strings} parsed as number
+                    add 1 to {_n}
+                    set {_rank_value2} to characters at {_n} of {_rank_strings} parsed as number
+                    if {_rank_value1} and {_rank_value2} is not set:
                         stop loop
-                    set {_name} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
-                    set {_name} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%,only:player_name"
-                    add the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%,only:number" parsed as number to {rank_%{_name}%}
+                    if {_rank_value1} is set:
+                        add {_rank_value1} to {_rank_value::*}
+                set {_n} to 1
+                set {_rank_value::*} to reversed {_rank_value::*}
+                loop 20 times:
+                    set {_rank_value} to first element of {_rank_value::*}
+                    remove {_rank_value} from {_rank_value::*}
+                    add {_rank_value} * {_n} to {rank_server}
+                    set {_n} to {_n} * 10
+                    if {_rank_value::*} is not set:
+                        stop loop
+                loop {_rank_times} times:
+                    set {_name1} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%,only:player_name"
+                    set {_rank_strings} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%,only:number"
                     add 1 to {_rank_start}
-                    set {_name2} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
+                    set {_name2} to the value of the placeholder "playerstats_top:%{_rank_start}%,%arg-1%,only:player_name"
+                    if {_name1} is {_name2}:
+                        stop loop
+                    set {_n} to 1
+                    loop 20 times:
+                        set {_rank_value1} to characters at {_n} of {_rank_strings} parsed as number
+                        add 1 to {_n}
+                        set {_rank_value2} to characters at {_n} of {_rank_strings} parsed as number
+                        if {_rank_value1} and {_rank_value2} is not set:
+                            stop loop
+                        if {_rank_value1} is set:
+                            add {_rank_value1} to {_rank_value::*}
+                    set {_n} to 1
+                    set {_rank_value::*} to reversed {_rank_value::*}
+                    loop 20 times:
+                        set {_rank_value} to first element of {_rank_value::*}
+                        remove {_rank_value} from {_rank_value::*}
+                        add {_rank_value} * {_n} to {rank_%{_name1}%}
+                        set {_n} to {_n} * 10
+                        if {_rank_value::*} is not set:
+                            stop loop
+                    send {_name1}
+                    send {rank_%{_name1}%}
                 send "%arg-2%～%arg-3%位の%arg-1%の値を加算しました"
         else if arg-1 is "get":
             clear {rank::*}
             set {_n} to 1
             loop 200 times:
-                if {_name} is {_name2}:
-                    stop loop
-                set {_name} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
-                set {_%{rank_%{_name}%}%} to {_name}
-                add {rank_%{_name}%} to {rank::*}
+                set {_name1} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
                 add 1 to {_n}
                 set {_name2} to the value of the placeholder "playerstats_top:%{_n}%,total_world_time,only:player_name"
+                if {_name1} is {_name2}:
+                    stop loop
+                set {_%{rank_%{_name1}%}%} to {_name1}
+                add {rank_%{_name1}%} to {rank::*}
             set {_n} to 1
             send "--------------------------------"
-            send "総数:%{rank_server}%"
+            send "総数:&b%{rank_server}%"
             loop 200 times:
                 set {_rank} to max({rank::*})
                 if {_rank} is not set:
                     stop loop
                 set {_rank_per} to ceiling({_rank} / {rank_server} * 10000) / 100
-                send "%{_n}%.%{_%{_rank}%}%.................%{_rank}% (%{_rank_per}%％)"
+                send "%{_n}%.&a%{_%{_rank}%}%"
+                send "    ->  &b%{_rank}% (%{_rank_per}%％)"
                 remove {_rank} from {rank::*}
                 add 1 to {_n}
             send "--------------------------------"
@@ -91,22 +125,40 @@ command /rank [<text>] [<number>] [<number>] [<text>]:
         else if arg-2 is number:
             if arg-4 is not set:
                 set {_rank_start} to arg-2
-                set {_n} to 1
+                set {_rank_times} to 1
                 if arg-3 is set:
                     set {_rank_end} to arg-3
                     if {_rank_start} < {_rank_end}:
-                        set {_n} to {_rank_end} - {_rank_start}
-                        add 1 to {_n}
+                        set {_rank_times} to {_rank_end} - {_rank_start}
+                        add 1 to {_rank_times}
                     else:
-                        set {_n} to 0
+                        set {_rank_times} to 0
                         send "記入した数値に問題があります"
                         send "/rank 内容 順位A 順位B"
                         send "順位Bの値が順位Aの値を超えてはいけません"
-                if {_n} is not 0:
-                    add the value of the placeholder "playerstats_server,%arg-1%,only:number" parsed as number to {_rank_server}
+                if {_rank_times} is not 0:
+                    set {rank_server} to the value of the placeholder "playerstats_server,%arg-1%,only:number"
+                    set {_n} to 1
+                    loop 20 times:
+                        set {_rank_value1} to characters at {_n} of {rank_server} parsed as number
+                        add 1 to {_n}
+                        set {_rank_value2} to characters at {_n} of {rank_server} parsed as number
+                        if {_rank_value1} and {_rank_value2} is not set:
+                            stop loop
+                        if {_rank_value1} is set:
+                            add {_rank_value1} to {_rank_value::*}
+                    set {_n} to 1
+                    set {_rank_value::*} to reversed {_rank_value::*}
+                    loop 20 times:
+                        set {_rank_value} to first element of {_rank_value::*}
+                        remove {_rank_value} from {_rank_value::*}
+                        add {_rank_value} * {_n} to {_rank_server}
+                        set {_n} to {_n} * 10
+                        if {_rank_value::*} is not set:
+                            stop loop
                     send "--------------------------------"
                     send "%arg-1% 総数:%{_rank_server}%"
-                    loop {_n} times:
+                    loop {_rank_times} times:
                         clear {_rank}
                         if {_name} is {_name2}:
                             stop loop
