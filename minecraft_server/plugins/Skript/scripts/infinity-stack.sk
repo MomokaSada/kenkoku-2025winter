@@ -1,0 +1,110 @@
+#無限スタックのメインシステム
+on player inventory slot change:
+    if {%player%_InfinityStack} is true:
+        #無限スタックを使える状態かの判別
+        if player is not sneaking:
+            set {_check} to slot 0 of player's inventory
+            set {_check} to type of {_check}
+            set {_item} to type of event-item
+            if {_item} is not {_check}:
+                set {_check} to "%{_item}%"
+                set {_amount} to amount of {_item} in player's inventory
+
+                #イベントアイテムが無限スタック有効かどうか
+                if {%{_check}%} is 1:
+
+                    #イベント発生時のイベントアイテムの所持が48個以上である場合
+                    if {_amount} >= 48:
+                        set {_value} to {_amount} - 24
+                        add {_value} to {%player%_%{_item}%}
+                        remove {_value} of {_item} from player
+                        send actionbar "%{_item}%:%{%player%_%{_item}%}%"
+
+                    #イベント発生時のイベントアイテムの所持が16個以下である場合
+                    if {_amount} <= 16:
+
+                        #イベント発生時のイベントアイテムのデータスタック数が16以上である場合
+                        if {%player%_%{_item}%} >= 16:
+                            set {_value} to 24
+                        #イベント発生時のイベントアイテムのデータスタック数が16未満かつ0でない場合
+                        else if {%player%_%{_item}%} is not 0:
+                            set {_value} to {%player%_%{_item}%}
+
+                        add {_value} of {_item} to player
+                        remove {_value} from {%player%_%{_item}%}
+                        send actionbar "%{_item}%:%{%player%_%{_item}%}%"
+
+#データスタックからアイテムを取り出すシステム
+on player drop:
+    if {%player%_InfinityStack} is true:
+        if player is sneaking:
+            set {_item} to type of event-item
+            set {_check} to "%{_item}%"
+
+            #イベントアイテムが無限スタック有効かどうか
+            if {%{_check}%} is 1:
+
+                #イベント発生時のイベントアイテムのデータスタック数が64以上である場合
+                if {%player%_%{_item}%} >= 64:
+                    set {_value} to 64
+                #イベント発生時のイベントアイテムのデータスタック数が16未満かつ0でない場合
+                else if {%player%_%{_item}%} is not 0:
+                    set {_value} to {%player%_%{_item}%}
+
+                add {_value} of {_item} to player
+                remove {_value} from {%player%_%{_item}%}
+                send actionbar "%{_item}%:%{%player%_%{_item}%}%"
+                cancel event
+
+#イベントアイテムが無限スタック有効なら所持数を表示させるシステム
+on tool change:
+    if {%player%_InfinityStack} is true:
+        set {_item} to type of event-player's tool
+        set {_check} to "%{_item}%"
+        if {%{_check}%} is 1:
+            send actionbar "%{_item}%:%{%player%_%{_item}%}%"
+
+
+#変数の値を設定するシステム
+command /num <string> [<number>]:
+    permission: op
+    trigger:
+        if arg-2 is 00:
+            clear {%arg-1%}
+            send "reset {%arg-1%}"
+        else if arg-2 is not set:
+            send "{%arg-1%} is %{%arg-1%}%"
+        else:
+            set {%arg-1%} to arg-2
+            send "{%arg-1%} to %arg-2% %{%arg-1%}%"
+
+#採掘時のドロップアイテムをプレイヤーのもとにテレポートする
+on block drop:
+    if {%player%_DropTp} is true:
+        if player has enough space for event-item stacks:
+            wait a tick
+            add nbt compound from "{PickupDelay:0}" to nbt of event-entities
+            teleport event-entities to player
+
+# アイテムトリガー (無限スタック＆ドロップ回収)
+on right click:
+    set {_nbt} to custom nbt of player's tool
+    set {_itemType} to string tag "itemType" of {_nbt}
+
+    if {_itemType} is "dropTpTool":
+        cancel event
+        if {%player%_DropTp} is true:
+            delete {%player%_DropTp}
+            send "&cドロップ回収をOFFにしました" to player
+        else:
+            set {%player%_DropTp} to true
+            send "&aドロップ回収をONにしました" to player
+
+    if {_itemType} is "infinityStackTool":
+        cancel event
+        if {%player%_InfinityStack} is true:
+            delete {%player%_InfinityStack}
+            send "&c無限スタックをOFFにしました" to player
+        else:
+            set {%player%_InfinityStack} to true
+            send "&a無限スタックをONにしました" to player
