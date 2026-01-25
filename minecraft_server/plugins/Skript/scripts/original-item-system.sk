@@ -335,8 +335,6 @@ command /get-original-item <text> [<integer>]:
             set {_rarity} to "rare"
             set {_is_accessory} to false
             set {_nbt_base} to "minecraft:chest"
-            # Force Glint
-            add nbt compound from "{Enchantments:[]}" to nbt of {_item}
 
         else if {_type} is "wallet":
             set {_item} to leather horse armor

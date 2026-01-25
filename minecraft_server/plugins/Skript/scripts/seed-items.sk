@@ -52,7 +52,7 @@ command /seed-original-items:
         
         # --- Utility Tools ---
         registerItem("drop_tp_tool", "minecraft:hopper", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&b&lドロップ回収""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックでドロップ回収のON/OFFを切り替えます""}],""text"":""""}],custom_data={itemType:""dropTpTool""},max_stack_size=1]")
-        registerItem("infinity_stack_tool", "minecraft:chest", "[Enchantments:[],enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&a&l無限スタック""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックで無限スタックのON/OFFを切り替えます""}],""text"":""""}],custom_data={itemType:""infinityStackTool""},max_stack_size=1]")
+        registerItem("infinity_stack_tool", "minecraft:chest", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&a&l無限スタック""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックで無限スタックのON/OFFを切り替えます""}],""text"":""""}],custom_data={itemType:""infinityStackTool""},max_stack_size=1]")
         
         send "&a[Seeder] 処理が完了しました。"
 
