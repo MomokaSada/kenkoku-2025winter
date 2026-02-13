@@ -1,0 +1,11 @@
+hologram:
+  example_hologram:
+    lines:
+    - 'Playing: %song_title%'
+    - '%song_number%/%songs_count%'
+  example_OP_hologram:
+    lines:
+    - 'Playing: %song_title%'
+    - '%song_number%/%songs_count%'
+    - '{next}Skip song'
+

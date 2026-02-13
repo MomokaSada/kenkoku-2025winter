@@ -1,0 +1,70 @@
+# update-original-names.sk
+# 全オリジナルアイテムのname列を更新するコマンド
+
+command /update-original-names:
+    permission: op
+    trigger:
+        send "&a[System] オリジナルアイテム名の更新を開始します..."
+        
+        # データベースから全オリジナルアイテムを取得
+        delete {_all_items::*}
+        execute "SELECT id, name, nbt FROM items WHERE is_original = TRUE" in {kenkoku_db} and store the result in {_all_items::*}
+        
+        set {_count} to 0
+        loop {_all_items::id::*}:
+            set {_id} to loop-value
+            set {_unique_name} to {_all_items::name::%loop-index%}
+            set {_nbt_str} to {_all_items::nbt::%loop-index%}
+            
+            # クォート除去
+            if {_nbt_str} starts with """":
+                set {_len} to length of {_nbt_str}
+                set {_nbt_str} to subtext of {_nbt_str} from 2 to {_len} - 1
+            
+            # custom_name の extra の text から名前を抽出
+            # パターン: {"extra":[{"bold":true,"text":"体力増強(10)"}],"text":""}
+            set {_display_name} to ""
+            
+            if {_nbt_str} contains "custom_name":
+                # custom_name= で分割
+                set {_cn_parts::*} to split {_nbt_str} at "custom_name="
+                if size of {_cn_parts::*} >= 2:
+                    set {_cn_section} to {_cn_parts::2}
+                    
+                    # loreより前まで切り出し
+                    if {_cn_section} contains ",lore":
+                        set {_lore_parts::*} to split {_cn_section} at ",lore"
+                        set {_cn_section} to {_lore_parts::1}
+                    
+                    # text で分割
+                    # 1: {"extra":[{"bold":true,"
+                    # 2: ":"体力増強(10)"}],"  <- extra内のtext（これが欲しい）
+                    # 3: ":""}  <- 外側の空のtext
+                    if {_cn_section} contains "text":
+                        set {_text_parts::*} to split {_cn_section} at "text"
+                        # 2番目の要素がextra内のtext
+                        if size of {_text_parts::*} >= 2:
+                            set {_target} to {_text_parts::2}
+                            
+                            # :"体力増強(10)"}], の形式から "体力増強(10)" を抽出
+                            if {_target} contains ":":
+                                set {_colon_parts::*} to split {_target} at ":"
+                                if size of {_colon_parts::*} >= 2:
+                                    set {_after_colon} to {_colon_parts::2}
+                                    # " で始まる場合
+                                    if {_after_colon} starts with """":
+                                        set {_value} to subtext of {_after_colon} from 2 to length of {_after_colon}
+                                        # 次の " まで
+                                        if {_value} contains """":
+                                            set {_quote_parts::*} to split {_value} at """"
+                                            if size of {_quote_parts::*} >= 1:
+                                                set {_display_name} to {_quote_parts::1}
+            
+            # 名前が取得できた場合のみ更新
+            if {_display_name} is not "":
+                if {_display_name} is not {_unique_name}:
+                    execute "UPDATE items SET name = %{_display_name}% WHERE id = %{_id}%" in {kenkoku_db}
+                    send "&7更新: %{_unique_name}% -> %{_display_name}%"
+                    add 1 to {_count}
+        
+        send "&a[System] %{_count}% 個のアイテム名を更新しました。"

@@ -1,0 +1,454 @@
+{
+  "store": [
+    {
+      "name": "雑貨屋",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 2,
+      "level": 4,
+      "trades": [
+        {
+          "content": "Sell シュルカーボックス",
+          "view_item_id": 1249,
+          "costs": [
+            {
+              "price": 100000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1249,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell バンドル",
+          "view_item_id": 57,
+          "costs": [
+            {
+              "price": 500
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 57,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 額縁",
+          "view_item_id": 233,
+          "costs": [
+            {
+              "price": 100
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 233,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 蝋燭(白)",
+          "view_item_id": 1462,
+          "costs": [
+            {
+              "price": 100
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1462,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell ランタン",
+          "view_item_id": 921,
+          "costs": [
+            {
+              "price": 100
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 921,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell お財布",
+          "view_item_id": 244,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1502,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 表示切替 (スコアボード)",
+          "view_item_id": 143,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1505,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 幸運ダイヤピッケル(幸運Ⅳ、耐久Ⅲ)",
+          "view_item_id": 126,
+          "costs": [
+            {
+              "item_id": 1510,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1515,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 効率強化ダイヤピッケル(耐久V、効率強化Ⅵ)",
+          "view_item_id": 126,
+          "costs": [
+            {
+              "item_id": 1510,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1516,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 効率強化ダイヤ斧(耐久V、効率強化Ⅵ)",
+          "view_item_id": 119,
+          "costs": [
+            {
+              "item_id": 1510,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1517,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 効率強化ダイヤシャベル(耐久V、効率強化Ⅵ)",
+          "view_item_id": 127,
+          "costs": [
+            {
+              "item_id": 1510,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1518,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "武器・防具屋",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 2,
+      "level": 4,
+      "trades": [
+        {
+          "content": "Sell 弓 (耐久Ⅲ)",
+          "view_item_id": 44,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1519,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 矢 ×64",
+          "view_item_id": 13,
+          "costs": [
+            {
+              "price": 500
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 13,
+              "quantity": 64
+            }
+          ]
+        },
+        {
+          "content": "Sell トライデント",
+          "view_item_id": 434,
+          "costs": [
+            {
+              "price": 5000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 434,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell メイス",
+          "view_item_id": 257,
+          "costs": [
+            {
+              "price": 50000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 257,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell ダイヤ剣 (耐久Ⅲ、虫特効Ⅵ)",
+          "view_item_id": 128,
+          "costs": [
+            {
+              "item_id": 1512,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1520,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell ダイヤ剣 (耐久Ⅲ、アンデット特効Ⅵ)",
+          "view_item_id": 128,
+          "costs": [
+            {
+              "item_id": 1512,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1521,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell ダイヤ剣 (耐久Ⅲ、ノックバックX)",
+          "view_item_id": 128,
+          "costs": [
+            {
+              "item_id": 1512,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1522,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell トライデント (耐久Ⅲ、忠誠Ⅲ、水棲Ⅵ)",
+          "view_item_id": 434,
+          "costs": [
+            {
+              "item_id": 1512,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1524,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell 弓 (耐久Ⅲ、無限、修繕、パンチX)",
+          "view_item_id": 44,
+          "costs": [
+            {
+              "item_id": 1512,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1523,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "本屋",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 2,
+      "level": 4,
+      "trades": [
+        {
+          "content": "Sell エンチャ本 (耐久Ⅲ)",
+          "view_item_id": 141,
+          "costs": [
+            {
+              "price": 5000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1525,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell エンチャ本 (鋭さV)",
+          "view_item_id": 141,
+          "costs": [
+            {
+              "price": 5000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1526,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell エンチャ本 (幸運Ⅲ)",
+          "view_item_id": 141,
+          "costs": [
+            {
+              "price": 10000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1527,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell エンチャ本 (効率強化V)",
+          "view_item_id": 141,
+          "costs": [
+            {
+              "price": 10000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1528,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "海晶屋",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 2,
+      "level": 4,
+      "trades": [
+        {
+          "content": "Sell 海晶ブロック ×64",
+          "view_item_id": 1159,
+          "costs": [
+            {
+              "price": 3000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1159,
+              "quantity": 64
+            }
+          ]
+        },
+        {
+          "content": "Sell 暗海晶ブロック ×64",
+          "view_item_id": 746,
+          "costs": [
+            {
+              "price": 3000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 746,
+              "quantity": 64
+            }
+          ]
+        },
+        {
+          "content": "Sell シーランタン ×1",
+          "view_item_id": 1243,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1243,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

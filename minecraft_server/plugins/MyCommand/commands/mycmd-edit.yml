@@ -37,14 +37,14 @@ team-set:
   - /team add KurumiyaCountry
   - /team add HamuCountry
   - /team add KonkunCountry
-  - '/team modify TyokoreCountry prefix {"text":"[ちょこれ国]","color":"gold"}'
-  - '/team modify KurumiyaCountry prefix {"text":"[來宮国]","color":"gold"}'
-  - '/team modify HamuCountry prefix {"text":"[はむ国]","color":"gold"}'
-  - '/team modify KonkunCountry prefix {"text":"[こん国]","color":"gold"}'
-  - '/team modify TyokoreCountry displayName {"text":"[ちょこれ国]","color":"gold"}'
-  - '/team modify KurumiyaCountry displayName {"text":"[來宮国]","color":"gold"}'
-  - '/team modify HamuCountry displayName {"text":"[はむ国]","color":"gold"}'
-  - '/team modify KonkunCountry displayName {"text":"[こん国]","color":"gold"}'
+  - /team modify TyokoreCountry prefix {"text":"[ちょこれ国]","color":"gold"}
+  - /team modify KurumiyaCountry prefix {"text":"[來宮国]","color":"gold"}
+  - /team modify HamuCountry prefix {"text":"[はむ国]","color":"gold"}
+  - /team modify KonkunCountry prefix {"text":"[こん国]","color":"gold"}
+  - /team modify TyokoreCountry displayName {"text":"[ちょこれ国]","color":"gold"}
+  - /team modify KurumiyaCountry displayName {"text":"[來宮国]","color":"gold"}
+  - /team modify HamuCountry displayName {"text":"[はむ国]","color":"gold"}
+  - /team modify KonkunCountry displayName {"text":"[こん国]","color":"gold"}
   type: RUN_CONSOLE
   permission-required: true
 
@@ -55,3 +55,6 @@ system-reload:
   - /skript reload all
   type: RUN_COMMAND
   permission-required: true
+rank:
+  runcmd:
+  - /papi parse $player %playerstats_top:$arg1,$arg2%

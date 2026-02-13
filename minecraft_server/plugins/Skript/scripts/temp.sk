@@ -1,0 +1,49 @@
+# テスト用：1つのアイテムをパースして名前を確認
+command /test-parse-item:
+    permission: op
+    trigger:
+        execute "SELECT id, `key`, nbt, name FROM items WHERE is_original = TRUE LIMIT 1" in {kenkoku_db} and store the result in {_test::*}
+        
+        set {_id} to {_test::id::1}
+        set {_key} to {_test::key::1}
+        set {_nbt_str} to {_test::nbt::1}
+        set {_old_name} to {_test::name::1}
+        
+        broadcast "&e=== Test Parse Item ==="
+        broadcast "&7ID: %{_id}%"
+        broadcast "&7Key: %{_key}%"
+        broadcast "&7Old Name: %{_old_name}%"
+        broadcast "&7NBT (first 100 chars): %subtext of {_nbt_str} from 1 to 100%"
+        
+        # クォート除去
+        if {_nbt_str} starts with """":
+            set {_len} to length of {_nbt_str}
+            set {_nbt_str} to subtext of {_nbt_str} from 2 to {_len} - 1
+            broadcast "&7Removed quotes from NBT"
+        
+        # パース
+        if {_nbt_str} starts with "[":
+            broadcast "&7Using Component Syntax parse"
+            set {_combined} to "%{_key}%%{_nbt_str}%"
+            broadcast "&7Combined string (first 150): %subtext of {_combined} from 1 to 150%"
+            set {_item} to {_combined} parsed as item
+        else:
+            broadcast "&7Using Standard NBT parse"
+            set {_item} to {_key} parsed as item
+            if {_nbt_str} is not "":
+                add nbt compound from {_nbt_str} to nbt of {_item}
+        
+        set {_display_name} to name of {_item}
+        
+        broadcast "&7Parsed item: %{_item}%"
+        broadcast "&7Display name: %{_display_name}%"
+        
+        if {_display_name} is set:
+            if {_display_name} is {_old_name}:
+                broadcast "&c>>> Names MATCH - will NOT update"
+            else:
+                broadcast "&a>>> Names DIFFER - will update"
+                broadcast "&a    Old: %{_old_name}%"
+                broadcast "&a    New: %{_display_name}%"
+        else:
+            broadcast "&c>>> Display name is NOT SET"

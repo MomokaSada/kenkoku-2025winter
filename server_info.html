@@ -243,6 +243,21 @@
 
   <div class="container">
 
+    <!-- 趣旨 & ルール -->
+    <div class="card full-width">
+      <h2>📜 趣旨とルール</h2>
+
+      <h3 style="margin-top: 10px;">[趣旨]</h3>
+      <p>配信者が国王になって自国を発展させよう‼️</p>
+
+      <h3>[ルール] (国関連)</h3>
+      <ul class="rules-list">
+        <li>基本的に1人1国に所属</li>
+        <li>他国に入る場合は相手の配信者か運営の許可を取ろう！許可さえ取れば他の国に出張で出稼ぎしてもいいよ！</li>
+        <li>国外での建築は禁止（松明やチェスト程度ならいいけど、がっつり建築するのはダメだよ）</li>
+      </ul>
+    </div>
+
     <!-- 仕様 -->
     <div class="card full-width">
       <h2>⚠️ サーバー仕様・禁止事項</h2>
@@ -252,11 +267,11 @@
           <li>村人との取引禁止</li>
           <li>トラップ禁止</li>
         </ul>
-        <p class="note">※これらは順次開放予定です</p>
+        <p class="note">※エンドに関しては年明け頃に解禁にする予定。トラップは準備が整えば解禁する予定。村人との取引（というか手軽に手に入る修繕が）建国の仕様とすこぶる相性が悪いので解禁予定はなし</p>
       </div>
     </div>
 
-    <!-- 経済システム -->
+    <!-- 経済システム (RESTORED) -->
     <div class="card full-width">
       <h2>💸 経済システム</h2>
       <div style="margin-top: 15px;">
@@ -277,6 +292,7 @@
     <!-- 買取 -->
     <div class="card">
       <h2>💰 買取価格表</h2>
+      <p class="note">街の市役所に設置する買取用のNPCを設置予定。通貨とアイテムがトレードできる。<br>今後追加や修正の可能性大。</p>
 
       <h3>鉱石・ブロック</h3>
       <table class="price-table">
@@ -338,6 +354,26 @@
         </tr>
       </table>
 
+      <h3>水産物</h3>
+      <table class="price-table">
+        <tr>
+          <td>タラ</td>
+          <td class="price-value">10</td>
+        </tr>
+        <tr>
+          <td>鮭</td>
+          <td class="price-value">10</td>
+        </tr>
+        <tr>
+          <td>フグ</td>
+          <td class="price-value">50</td>
+        </tr>
+        <tr>
+          <td>熱帯魚</td>
+          <td class="price-value">50</td>
+        </tr>
+      </table>
+
       <h3>レアアイテム</h3>
       <table class="price-table">
         <tr>
@@ -351,7 +387,7 @@
       </table>
     </div>
 
-    <!-- アクセサリー -->
+    <!-- アクセサリー (RESTORED) -->
     <div class="card">
       <h2>💍 アクセサリー一覧</h2>
 
@@ -376,9 +412,42 @@
       </ul>
     </div>
 
+    <!-- 食事 (RESTORED SEPARATE CARD) -->
+    <div class="card">
+      <h2>🍽️ 食事システム</h2>
+      <p style="margin-top: 10px; margin-bottom: 15px; color: var(--text-secondary);">
+        お食事処で「お食事券」を使うことで、便利なバフを一定期間付与することができます。
+        <br>
+        <small>※「汚職（おしょく）事件」ではなく「お食事（しょくじ）券」です。</small>
+      </p>
+
+      <h3>メニュー一覧</h3>
+      <ul class="item-list">
+        <li>
+          <div>
+            <strong>鉱夫じゃがいも</strong> <span style="font-size: 0.8em; color: var(--accent-color);">[採掘速度+2]</span><br>
+            <span style="font-size: 0.85em; color: var(--text-secondary);">効果時間: 10分</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>爆速スープ</strong> <span style="font-size: 0.8em; color: var(--accent-color);">[スピード+1]</span><br>
+            <span style="font-size: 0.85em; color: var(--text-secondary);">効果時間: 30分</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>マグマパイ</strong> <span style="font-size: 0.8em; color: var(--accent-color);">[火炎耐性]</span><br>
+            <span style="font-size: 0.85em; color: var(--text-secondary);">効果時間: 30分</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
     <!-- 福引 -->
     <div class="card">
       <h2>🎰 福引システム</h2>
+      <p class="note">街のギルドに設置予定。チケット1枚で福引を一回引ける。福引券はクエストや企画などで入手可能。</p>
 
       <h3>確率設定</h3>
       <div style="margin-top: 15px;">
@@ -387,9 +456,9 @@
           <div class="progress-fill" style="width: 70%; background: #757575;"></div>
         </div>
 
-        <div class="gacha-rate"><span>当たり</span><span>23%</span></div>
+        <div class="gacha-rate"><span>当たり</span><span>24%</span></div>
         <div class="progress-bar">
-          <div class="progress-fill" style="width: 23%; background: #4caf50;"></div>
+          <div class="progress-fill" style="width: 24%; background: #4caf50;"></div>
         </div>
 
         <div class="gacha-rate"><span>大当たり</span><span>5%</span></div>
@@ -408,12 +477,12 @@
       <h3>景品リスト</h3>
 
       <h4>ハズレ</h4>
-      <ul class="item-list" style="margin-bottom: 15px;">
+      <ul class="item-list">
         <li>ハズレ券 ×1</li>
       </ul>
 
       <h4>当たり枠</h4>
-      <ul class="item-list" style="margin-bottom: 15px;">
+      <ul class="item-list">
         <li>スポンジ ×1</li>
         <li>お食事券 ×3</li>
         <li>ダイヤブロック ×1</li>
@@ -431,6 +500,137 @@
         <li>シュルカーボックス</li>
         <li>修繕</li>
       </ul>
+
+      <h4 style="color: var(--rare-color);">アクセサリー</h4>
+      <ul class="item-list super-rare-item">
+        <li>体力増強 (10)</li>
+        <li>体力増強 (20)</li>
+        <li>体力増強 (30)</li>
+        <li>スピード (Ⅰ)</li>
+        <li>採掘速度 (Ⅱ)</li>
+        <li>ジャンプ (Ⅱ)</li>
+        <li>低速落下</li>
+        <li>火炎耐性</li>
+        <li>暗視</li>
+        <li>無限エンパ</li>
+        <li>ペタペタくん</li>
+        <li>ジャンプくん</li>
+      </ul>
+    </div>
+
+    <!-- 施設 -->
+    <div class="card full-width">
+      <h2>🏢 施設</h2>
+      <p class="note">建物を建てた後にNPCを置いてそこで買い物をしたり、便利な効果を得たりできる。NPCを置くためには街を発展させてNPC交換券を入手する必要がある。</p>
+
+      <h3>馬車屋</h3>
+      <p>国の2点をお金を払うことでテレポートできる。</p>
+
+      <h3>市役所</h3>
+      <p>ゲーム開始時に共同拠点として建てて欲しい建物。内部にアイテム買取NPCを設置する。今後機能拡張の可能性もあるため広めに作ること</p>
+
+      <h3>ギルド</h3>
+      <p>ゲーム開始時に建てて欲しい建物。クエストと福引屋を設置する。クエストの数が増えると無尽蔵に大きくなるので、かなり広めに作ること</p>
+    </div>
+
+    <!-- ショップ (RESTORED SEPARATE CARD) -->
+    <div class="card full-width">
+      <h2>🏪 ショップ</h2>
+
+      <h3>雑貨屋</h3>
+      <table class="price-table">
+        <tr>
+          <td>シュルカーボックス</td>
+          <td class="price-value">100,000</td>
+        </tr>
+        <tr>
+          <td>バンドル</td>
+          <td class="price-value">500</td>
+        </tr>
+        <tr>
+          <td>額縁</td>
+          <td class="price-value">100</td>
+        </tr>
+        <tr>
+          <td>蝋燭(白)</td>
+          <td class="price-value">100</td>
+        </tr>
+        <tr>
+          <td>ランタン</td>
+          <td class="price-value">100</td>
+        </tr>
+      </table>
+      <h4 style="margin-top: 10px; color: var(--gold-color);">※ツールチケットで１つと交換</h4>
+      <ul class="item-list rare-item">
+        <li>幸運ダイヤピッケル (幸運Ⅳ、耐久Ⅲ)</li>
+        <li>効率強化ダイヤピッケル (耐久V、効率強化Ⅵ)</li>
+        <li>効率強化ダイヤ斧 (耐久V、効率強化Ⅵ)</li>
+        <li>効率強化ダイヤシャベル (耐久V、効率強化Ⅵ)</li>
+      </ul>
+
+      <h3>武器・防具屋</h3>
+      <table class="price-table">
+        <tr>
+          <td>弓 (耐久Ⅲ)</td>
+          <td class="price-value">1,000</td>
+        </tr>
+        <tr>
+          <td>矢 ×64</td>
+          <td class="price-value">500</td>
+        </tr>
+        <tr>
+          <td>トライデント</td>
+          <td class="price-value">5,000</td>
+        </tr>
+        <tr>
+          <td>メイス</td>
+          <td class="price-value">50,000</td>
+        </tr>
+      </table>
+      <h4 style="margin-top: 10px; color: var(--gold-color);">※武器チケットで1つと交換</h4>
+      <ul class="item-list rare-item">
+        <li>ダイヤ剣 (耐久Ⅲ、虫特効Ⅵ)</li>
+        <li>ダイヤ剣 (耐久Ⅲ、アンデット特効Ⅵ)</li>
+        <li>ダイヤ剣 (耐久Ⅲ、ノックバックX)</li>
+        <li>トライデント (耐久Ⅲ、忠誠Ⅲ、水棲Ⅵ)</li>
+        <li>弓 (耐久Ⅲ、無限、修繕、ノックバックX)</li>
+      </ul>
+
+      <h3>本屋</h3>
+      <table class="price-table">
+        <tr>
+          <td>エンチャ本 (耐久Ⅲ)</td>
+          <td class="price-value">5,000</td>
+        </tr>
+        <tr>
+          <td>エンチャ本 (鋭さV)</td>
+          <td class="price-value">5,000</td>
+        </tr>
+        <tr>
+          <td>エンチャ本 (幸運Ⅲ)</td>
+          <td class="price-value">10,000</td>
+        </tr>
+        <tr>
+          <td>エンチャ本 (効率強化V)</td>
+          <td class="price-value">10,000</td>
+        </tr>
+      </table>
+
+      <h3>海晶屋</h3>
+      <table class="price-table">
+        <tr>
+          <td>海晶ブロック ×64</td>
+          <td class="price-value">3,000</td>
+        </tr>
+        <tr>
+          <td>暗海晶ブロック ×64</td>
+          <td class="price-value">3,000</td>
+        </tr>
+        <tr>
+          <td>シーランタン ×1</td>
+          <td class="price-value">1,000</td>
+        </tr>
+      </table>
     </div>
 
     <!-- クエスト -->

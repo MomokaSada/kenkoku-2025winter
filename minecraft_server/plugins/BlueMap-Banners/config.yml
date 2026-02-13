@@ -1,0 +1,17 @@
+#################################################
+# BlueMap Banners configuration                 #
+#################################################
+
+# Use %banner% and %players% to replace with respective names
+markers:
+  label: "%banner%"
+  detail: "%banner%\n - %player%"
+  hidden: false
+
+# Use %banner% to replace with banner name
+messages:
+  enabled: true
+  +marker: "%banner% added to BlueMap!"
+  -marker: "%banner% removed from BlueMap!"
+  explode: "The %banner% banner exploded!"
+

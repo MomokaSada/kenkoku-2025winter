@@ -1,16 +1,7 @@
 # NPC管理システム
 
-# 定期的にNPCリストを更新する（補完用）
-every 5 minutes:
-    execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
-    clear {-npc_list_cache::*}
-    if {-npc_names_result::*} is set:
-        set {_row} to first element of {-npc_names_result::*}
-        set {_str} to "%{_row}%"
-        replace "names: " with "" in {_str}
-        set {_list::*} to split {_str} at "|"
-        loop {_list::*}:
-            add loop-value to {-npc_list_cache::*}
+# OOM対策: 定期ポーリングを削除し、on loadのみでNPCリストをキャッシュ
+# 必要な場合は /npc-refresh コマンドで手動更新
 
 on load:
     execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
@@ -22,31 +13,59 @@ on load:
         set {_list::*} to split {_str} at "|"
         loop {_list::*}:
             add loop-value to {-npc_list_cache::*}
+    # OOM対策: DB結果変数を即座にクリア
+    delete {-npc_names_result::*}
+
+# NPC手動更新コマンド（OOM対策のため定期ポーリングを廃止）
+command /npc-refresh:
+    permission: op
+    trigger:
+        execute "SELECT GROUP_CONCAT(name SEPARATOR '|') as names FROM npcs" in {kenkoku_db} and store the result in {-npc_names_result::*}
+        clear {-npc_list_cache::*}
+        if {-npc_names_result::*} is set:
+            set {_row} to first element of {-npc_names_result::*}
+            set {_str} to "%{_row}%"
+            replace "names: " with "" in {_str}
+            set {_list::*} to split {_str} at "|"
+            loop {_list::*}:
+                add loop-value to {-npc_list_cache::*}
+        delete {-npc_names_result::*}
+        send "&a[System] NPCリストを更新しました。"
 
 # NPCを召喚するコマンド
 # NPC召喚関数 (再利用可能)
-function spawnNpc(name: text, loc: location):
+function spawnNpc(name: text, loc: location, p: player):
     # DB接続チェック
     if {kenkoku_db} is not set:
         broadcast "&c[Error] データベース接続変数 {kenkoku_db} が設定されていません！"
         stop
         
-    delete {-npc_data::*}
-    
     # NPC基本情報取得
-    execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {-npc_data::*}
+    # NPC基本情報取得
+    set {_is_number} to false
+    set {_check_id} to {_name} parsed as number
+    if {_check_id} is set:
+        set {_is_number} to true
+        
+    if {_is_number} is true:
+        # IDまたは名前で検索
+        # SkriptのDB連携では変数が自動的にクオートされる可能性があるため、明示的なクオートを避けるか、
+        # あるいは文字列結合で対応する。
+        # ここではオリジナルが %{_name}% だったことを踏まえ、元に戻しつつID条件を加える。
+        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.id = %{_check_id}% OR n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
+    else:
+        # 名前で検索
+        execute "SELECT n.id, n.name, n.level, b.key as biome_key, p.key as profession_key, t.name as npc_type FROM npcs n LEFT JOIN biomes b ON n.biome_id = b.id LEFT JOIN professions p ON n.profession_id = p.id LEFT JOIN npc_types t ON n.npc_type_id = t.id WHERE n.name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_npc_data::*}
     
-    if {-npc_data::id::*} is not set:
+    if {_npc_data::id::*} is not set:
         broadcast "&c[Error] 指定されたNPC (%{_name}%) は見つかりませんでした。"
         stop
         
-    set {_id} to {-npc_data::id::1}
-    # 名前は引数のものを使う（DBのものと一致するはずだが）
-    # set {_name} to {-npc_data::name::1}
-    set {_level} to {-npc_data::level::1}
-    set {_biome} to {-npc_data::biome_key::1} ? "plains"
-    set {_profession} to {-npc_data::profession_key::1} ? "none"
-    set {_type_name} to {-npc_data::npc_type::1} ? "villager"
+    set {_id} to {_npc_data::id::1}
+    set {_level} to {_npc_data::level::1}
+    set {_biome} to {_npc_data::biome_key::1} ? "plains"
+    set {_profession} to {_npc_data::profession_key::1} ? "none"
+    set {_type_name} to {_npc_data::npc_type::1} ? "villager"
     
     # 村人を召喚
     spawn villager at {_loc}
@@ -54,8 +73,8 @@ function spawnNpc(name: text, loc: location):
     set display name of {_npc} to {_name}
     
     # NBT設定 (基本)
-    set {_nbt_str} to "{VillagerData:{profession:'minecraft:%{_profession}%',type:'minecraft:%{_biome}%',level:%{_level}%},NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b}"
-    add nbt compound from {_nbt_str} to nbt of {_npc}
+    set {_base_nbt} to "{VillagerData:{profession:""minecraft:%{_profession}%"",type:""minecraft:%{_biome}%"",level:%{_level}%},NoAI:1b,Invulnerable:1b,PersistenceRequired:1b,CustomNameVisible:1b,Silent:1b,Offers:{Recipes:[]}}"
+    add nbt compound from {_base_nbt} to nbt of {_npc}
     
     # タグ設定
     add "kenkoku_npc" to scoreboard tags of {_npc}
@@ -63,7 +82,7 @@ function spawnNpc(name: text, loc: location):
     add "npc_name_%{_name}%" to scoreboard tags of {_npc}
     
     # 取引情報の取得と設定
-    execute "SELECT id, content FROM trades WHERE npc_id = %{_id}%" in {kenkoku_db} and store the result in {-npc_trades::*}
+    execute "SELECT t.id, t.content, i.key as v_key, i.nbt as v_nbt, i.is_original as v_is_orig FROM trades t LEFT JOIN items i ON t.view_item_id = i.id WHERE t.npc_id = %{_id}%" in {kenkoku_db} and store the result in {_npc_trades::*}
     
     # NBTでのレシピ構築
     # リスト変数をループしてレシピNBT文字列を作成
@@ -71,39 +90,64 @@ function spawnNpc(name: text, loc: location):
     set {_recipes_nbt} to "["
     set {_first} to true
     
-    loop {-npc_trades::id::*}:
+    loop {_npc_trades::id::*}:
         set {_tid} to loop-value
-        set {_content} to {-npc_trades::content::%loop-index%}
+        set {_content} to {_npc_trades::content::%loop-index%}
         
         # ------------------------------------------------------------------
         # 新戦略: SkBeeのSNBTシリアライズを利用する
         # ------------------------------------------------------------------
         
-        # 1. Buy Item (取引権) - SkBeeにお任せ
-        set {_buy_item} to paper
-        # 名前設定
-        set name of {_buy_item} to "&d取引権"
-        set lore of {_buy_item} to "&7貿易に使用します"
-        # エンチャント
-        enchant {_buy_item} with unbreaking 1
-        add hide enchants to item flags of {_buy_item}
-        # NBT取得 (SkBeeが正しいフォーマットで出力してくれるはず)
-        set {_buy_snbt} to full nbt of {_buy_item}
+        # 1. Buy Item (取引権) - Hybrid Method
+        # Generate a dummy item to get its exact SNBT, matching /get-trading-right logic
+        set {_dummy_buy} to wandering trader spawn egg
         
-        # 2. Sell Item (結果アイテム)
-        # JSON Name
-        set {_sell_name_json} to "{\""text\"":\""%{_content}%\""}"
+        # 1. Standard Skript Name/Lore
+        set name of {_dummy_buy} to "&l取引券"
+        set lore of {_dummy_buy} to "&7交易に使用します"
         
-        # 2. Sell Item (結果アイテム)
-        set {_sell_item} to paper
-        set name of {_sell_item} to "%{_content}%"
+        # 2. Complex Components (SkBee)
+        # Use same NBT structure as original-item-system.sk
+        set {_nbt} to "{enchantment_glint_override:1b,rarity:""uncommon"",entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},custom_data:{itemType:""tradeTicket""}}"
         
-        # SkBeeを使って custom_data コンポーネントを注入 (item自体を操作)
-        add nbt compound from "{""minecraft:custom_data"":{KenkokuTradeId:%{_tid}%}}" to nbt of {_sell_item}
+        add nbt compound from {_nbt} to nbt of {_dummy_buy}
         
-        # NBT取得 (SkBeeが内部で正しい構造(SNBT)にしてくれる)
-        set {_sell_snbt} to full nbt of {_sell_item}
+        # 3. Get Full SNBT for Recipe
+        set {_buy_snbt} to full nbt of {_dummy_buy}
+        
+        # 2. Sell Item (結果アイテム) - view_item_idがあればそれを使う。なければ紙
+        set {_v_key} to {_npc_trades::v_key::%loop-index%}
+        set {_v_nbt} to {_npc_trades::v_nbt::%loop-index%}
+        set {_v_is_orig} to {_npc_trades::v_is_orig::%loop-index%}
 
+        if {_v_key} is set:
+            set {_dummy_sell} to {_v_key} parsed as item
+            # NBTの適用 (オリジナルアイテムの場合)
+            if {_v_is_orig} is true:
+                if {_v_nbt} is set:
+                    # クォート除去
+                    set {_clean_v_nbt} to {_v_nbt}
+                    if {_clean_v_nbt} starts with """":
+                        set {_len} to length of {_clean_v_nbt}
+                        set {_clean_v_nbt} to subtext of {_clean_v_nbt} from 2 to {_len} - 1
+                    
+                    if {_clean_v_nbt} starts with "[":
+                        # Component Syntaxの場合は一度文字列として扱ってからパースする
+                        # (表示用なので簡易的な対応)
+                        set {_dummy_sell} to "%{_v_key}%%{_clean_v_nbt}%" parsed as item
+                    else:
+                        add nbt compound from {_clean_v_nbt} to nbt of {_dummy_sell}
+        else:
+            set {_dummy_sell} to paper
+
+        set name of {_dummy_sell} to {_content}
+        
+        # Add Trade ID to Custom Data
+        set {_nbt_sell} to "{custom_data:{KenkokuTradeId:%{_tid}%}}"
+        add nbt compound from {_nbt_sell} to nbt of {_dummy_sell}
+        
+        set {_sell_snbt} to full nbt of {_dummy_sell}
+        
         # 3. レシピ文字列に追加
         # rewardExp:0b (経験値なし), uses:0 (使用回数0), maxUses:2147483647 (無制限)
         if {_first} is true:
@@ -114,18 +158,139 @@ function spawnNpc(name: text, loc: location):
         
     set {_recipes_nbt} to "%{_recipes_nbt}%]"
     
-    # Offersタグとして追加
-    # set {_offers_nbt} to "{Offers:{%{_recipes_nbt}%}}"
-    add nbt compound from "{Offers:{Recipes:%{_recipes_nbt}%}}" to nbt of {_npc}
+    # Offersタグとして追加（廃止 - カスタムGUIを使用）
+    # add nbt compound from "{Offers:{Recipes:%{_recipes_nbt}%}}" to nbt of {_npc}
+    
+    # トレード数をメタデータとして保存
+    set {_trade_count} to size of {_npc_trades::id::*}
+    set metadata value "trade_count" of {_npc} to {_trade_count}
         
-    broadcast "&a[System] NPC (%{_name}%) を召喚しました！ (Trades: %size of {-npc_trades::id::*}%)"
+    displayNpcSpawnSuccess({_name}, {_id}, {_trade_count})
+    
+    
+# NPC召喚成功メッセージの表示関数 (分離)
+function displayNpcSpawnSuccess(name: text, id: number, trade_count: number):
+    broadcast "&a[System] NPC (%{_name}%) を召喚しました！ (ID: %{_id}%, Trades: %{_trade_count}%)"
+
+
+# NPC召喚用スポーンエッグを与える関数
+function giveNpcSpawner(p: player, name: text):
+    # 1. データベースから存在するNPCか確認 (ID or Name)
+    set {_is_number} to false
+    set {_check_id} to {_name} parsed as number
+    if {_check_id} is set:
+        set {_is_number} to true
+        
+    delete {_check_name}
+    if {_is_number} is true:
+        execute "SELECT name FROM npcs WHERE id = %{_check_id}% OR name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_check_res::*}
+    else:
+        execute "SELECT name FROM npcs WHERE name = %{_name}% LIMIT 1" in {kenkoku_db} and store the result in {_check_res::*}
+        
+    set {_check_name} to {_check_res::name::1}
+    
+    if {_check_name} is not set:
+        send "&c[Error] 指定されたNPC (%{_name}%) は存在しません。" to {_p}
+        stop
+    
+    # 正規の名称を使用
+    set {_name} to {_check_name}
+    set {_item_name} to "NPC召喚: %{_name}%"
+
+    # 2. スポーンエッグの生成
+    set {_item} to villager spawn egg
+    
+    # Skript Standard
+    set name of {_item} to "&e%{_item_name}%"
+    set lore of {_item} to "&7右クリックでNPCを召喚します"
+    
+    # NBT設定 (カスタムデータ埋め込み)
+    set {_nbt} to "{"
+    set {_nbt} to "%{_nbt}%enchantment_glint_override:1b,"
+    set {_nbt} to "%{_nbt}%rarity:""rare"","
+    set {_nbt} to "%{_nbt}%entity_data:{id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b},"
+    set {_nbt} to "%{_nbt}%custom_data:{itemType:""npcSpawner"",npcName:""%{_name}%""}"
+    set {_nbt} to "%{_nbt}%}"
+    
+    add nbt compound from {_nbt} to nbt of {_item}
+    
+    # プレイヤーに付与
+    give {_item} to {_p}
+    
+    # 3. コピー用コマンドの生成 (1.20.5+ Syntax)
+    # custom_dataはNBT形式(key:value)だが、Componentのcustom_data={}内ではそれに従う
+    # 名前などはJson Component Syntaxが必要
+    
+    # 表示名 (Yellow & No Italic)
+    set {_display_json} to "[{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""yellow"",""text"":""%{_item_name}%""}],""text"":""""}]"
+    
+    # Lore (Gray)
+    set {_lore_json} to "[{""extra"":[{""bold"":false,""italic"":false,""underlined"":false,""strikethrough"":false,""obfuscated"":false,""color"":""gray"",""text"":""右クリックでNPCを召喚します""}],""text"":""""}]"
+    
+    # Command String Construction
+    set {_give_nbt} to "enchantment_glint_override=1b,rarity=rare,custom_name=%{_display_json}%,lore=%{_lore_json}%,custom_data={itemType:npcSpawner,npcName:""%{_name}%""},entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}"
+    
+    set {_command} to "/minecraft:give @p villager_spawn_egg[%{_give_nbt}%] 1"
+    
+    send "&a[System] NPC召喚エッグを入手しました。" to {_p}
+    send formatted "<tooltip:クリックでコピー><copy:%{_command}%>&e[Click to Copy] &7%{_command}%" to {_p}
+
+
+# NPCスポーンエッグの使用イベント
+on rightclick with villager spawn egg:
+    # ブロックをクリックしていない場合は無視
+    if clicked block is not set:
+        stop
+
+    # 使用したアイテムの特定（メインハンド or オフハンド）
+    set {_tool} to player's tool
+    set {_nbt} to custom nbt of {_tool}
+    set {_type} to string tag "itemType" of {_nbt}
+    
+    # メインハンドが対象でない場合、オフハンドをチェック
+    if {_type} is not "npcSpawner":
+        set {_tool} to player's offhand tool
+        set {_nbt} to custom nbt of {_tool}
+        set {_type} to string tag "itemType" of {_nbt}
+    
+    if {_type} is "npcSpawner":
+        cancel event
+        
+        set {_npc_name} to string tag "npcName" of {_nbt}
+        
+        if {_npc_name} is set:
+            # スポーン位置の計算 (プレイヤーの位置 = ~ ~ ~)
+            set {_loc} to location of player
+            
+            # NPC召喚実行
+            spawnNpc({_npc_name}, {_loc}, player)
+            
+            # サバイバルモードならアイテム消費
+            if player's gamemode is not creative:
+                remove 1 of {_tool} from inventory of player
+
+# NPC削除コマンド
+command /kill-npc:
+    permission: op
+    trigger:
+        set {_count} to 0
+        loop all entities in radius 5 of player:
+            if scoreboard tags of loop-entity contains "kenkoku_npc":
+                kill loop-entity
+                add 1 to {_count}
+        
+        if {_count} > 0:
+            send "&a[System] 周囲のNPCを %{_count}% 体削除しました。"
+        else:
+            send "&c[System] 半径5m以内に削除対象のNPCは見つかりませんでした。"
 
 # NPCを召喚するコマンド (Function呼び出し)
 command /spawn-npc <text>:
     permission: op
     usage: /spawn-npc <NPC名>
     trigger:
-        spawnNpc(arg-1, location of player)
+        giveNpcSpawner(player, arg-1)
+
 
 # NPC一括更新コマンド
 command /npc-update:
@@ -151,7 +316,8 @@ command /npc-update:
                 
                 if {_target_name} is set:
                     set {_loc} to location of loop-villager
-                    spawnNpc({_target_name}, {_loc})
+                    delete {_p_none}
+                    spawnNpc({_target_name}, {_loc}, {_p_none})
                     kill loop-villager
                     add 1 to {_count}
                 else:
@@ -160,210 +326,797 @@ command /npc-update:
                     
         broadcast "&a[System] %{_count}% 体のNPCを更新しました。"
 
-# デバッグ用: 取引権を入手するコマンド
-command /get-trading-right:
-    permission: op
-    trigger:
-        set {_item} to paper
-        enchant {_item} with unbreaking 1
-        add hide enchants to item flags of {_item}
-        set name of {_item} to "&d取引権"
-        set lore of {_item} to "&7貿易に使用します"
-        give {_item} to player
-        send "&a[System] 取引権を入手しました。"
+# NPCへのダメージインタラクション
+on damage of villager:
+    if scoreboard tags of victim contains "kenkoku_npc":
+        cancel event
 
-# 取引実行時の処理 (Inventory Click + NBT Tag ID)
-on inventory click:
-    # デバッグ情報の表示（必要に応じてコメントアウト）
-
-    
-    # ---------------------------------------------------------
-    # Merchant Inventory のチェック
-    # ---------------------------------------------------------
-    if "%event-inventory's type%" contains "merchant":
-        # 結果スロット(2)をクリックしたかチェック
-        if index of event-slot is 2:
-            # プレイヤー情報の確保
-            set {_player} to player
-            
-            # シフトクリック対策（デバッグ中は許可してもいいが、念のため）
-            # wait 1 tick の前に行う必要がある（イベントキャンセルは wait 後にはできないため）
-            if "%click type%" contains "SHIFT":
+# NPC移動システムの移動実行
+on drop of wooden hoe:
+    if player has scoreboard tag "move_%player%":
+        loop villagers:
+            if loop-entity has scoreboard tag "move_%player%":
+                teleport the loop-entity to the player
+                remove "move_%player%" from scoreboard tags of player
+                remove "move_%player%" from scoreboard tags of loop-entity 
+                send "&a[System] NPCの移動が完了しました" to player
                 cancel event
-                send "&c[System] 取引権は1つずつ購入してください。" to {_player}
-                stop
-            
-            # 直接スロットを確認してもNBTが空（仮想アイテム）のため、
-            # 1 tick 待って、プレイヤーが手に持った（実体化した）アイテムを確認する
-            wait 1 tick
-            
-            set {_cursor_item} to cursor slot of player
-            # カーソルになければ、インベントリに入った可能性もある（シフトクリック等）
-            # ここでは簡単のためカーソル優先、なければ直近で増えたアイテムを探すロジックが必要だが
-            # まずはカーソルチェック
-            
-            set {_nbt} to nbt of {_cursor_item}
-            
-            # ID取得試行 (文字列解析による最終手段)
-            # SkBeeのNBTオブジェクト操作が不安定なため、確実にログに出ている文字列からパースする
-            set {_nbt_str} to "%{_nbt}%"
-            # 例: "... KenkokuTradeId:22} ..." または "... KenkokuTradeId:22, ..."
-            
-            if {_nbt_str} contains "KenkokuTradeId:":
-                set {_parts::*} to split {_nbt_str} at "KenkokuTradeId:"
-                # _parts::2 は "22}" や "22," で始まる文字列
-                set {_val_part} to {_parts::2}
-                
-                # 数字の後の区切り文字（} または ,）を探す
-                # Skriptの split は簡単だが、汎用的にやるなら文字ループが必要。
-                # ここでは簡易的に、"}" と "," の両方で split を試みる
-                
-                # まず "}" で区切る (JSON/SNBTの閉じカッコ)
-                set {_sub_parts::*} to split {_val_part} at "}"
-                set {_raw_id} to {_sub_parts::1}
-                
-                # さらに "," で区切る (複数のタグがある場合)
-                set {_sub_parts_2::*} to split {_raw_id} at ","
-                set {_raw_id} to {_sub_parts_2::1}
-                
-                # 空白除去 (念のため)
-                replace all " " with "" in {_raw_id}
-                replace all "}" with "" in {_raw_id}
-                replace all "," with "" in {_raw_id}
-                
-                # 数値変換
-                set {_tid} to {_raw_id} parsed as number
-            
-            # もし取得できなかった場合の処理
-            if {_tid} is not set:
-                # 古い形式(ルート直下)も念のため確認
-                set {_tid} to {_nbt::KenkokuTradeId}
-                if {_tid} is not set:
-                    stop
-            
-            # アイテムが見つかったので、変数にセットして後続処理へ
-            set {_item} to {_cursor_item}
-            
-            wait 1 tick
-            
-            # ---------------------------------------------------------
-            # ロジック変更: 取引結果の「地図」を即座に「取引権(紙)」に戻す
-            # これにより、取引権は消費されず、結果(とコスト)だけが処理される
-            # ---------------------------------------------------------
-            
-            # プレイヤーの手持ち(カーソル)またはインベントリにある地図を探す
-            set {_found_loc} to "none"
-            if cursor slot of {_player} is {_item}:
-                set {_found_loc} to "cursor"
-            else if {_player} has {_item}:
-                set {_found_loc} to "inventory"
-            
-            # 取引権アイテムの生成（返還用）
-            set {_token_item} to paper
-            enchant {_token_item} with unbreaking 1
-            add hide enchants to item flags of {_token_item}
-            set name of {_token_item} to "&d取引権"
-            set lore of {_token_item} to "&7貿易に使用します"
-            
-            if {_found_loc} is "cursor":
-                set cursor slot of {_player} to {_token_item}
-            else if {_found_loc} is "inventory":
-                remove {_item} from {_player}
-                give {_token_item} to {_player}
-            else:
-                broadcast "&c[Debug] Item not found in cursor or inventory."
-                stop
-                
-            # ---------------------------------------------------------
-            # DB照会 & コストチェック
-            # ---------------------------------------------------------
-            set {_can_afford} to true
-            set {_err_msg} to ""
-            
-            # Trade IDからNPCタイプを取得してクエストかどうか判定
-            execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {-trade_info::*}
-            set {_npc_type} to {-trade_info::npc_type::1}
-            
-            # クエストの重複受領チェック
-            if {_npc_type} is "quest":
-                if scoreboard tags of {_player} contains "kenkoku_quest_completed_%{_tid}%":
-                    send "&c[System] このクエストは既に完了しています。" to {_player}
-                    stop
-            
-            # 1. コスト情報 (Cost Items + Money)
-            execute "SELECT i.key as item_key, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_reqs::*}
+                stop loop
 
-            # 2. リワード情報 (Reward Items + Money)
-            execute "SELECT i.key as item_key, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {-trade_rewards::*}
+# 取引画面を開いた際（右クリック時）の処理
+on rightclick on villager:
+    if scoreboard tags of target contains "kenkoku_npc":
+        set {_p} to player
+        
+        # 手持ちの「取引券」をチェック
+        set {_has_ticket} to false
+        loop all items in {_p}'s inventory:
+            set {_nbt} to custom nbt of loop-item
+            set {_type} to string tag "itemType" of {_nbt}
+            if {_type} is "tradeTicket":
+                set {_has_ticket} to true
+                stop loop
+        
+
+# カスタムGUI取引システム
+# 村人の取引UIを廃止し、チェストGUIで実装
+
+# NPC右クリックでカスタム取引メニューを表示
+on rightclick on villager:
+    if scoreboard tags of target contains "kenkoku_npc":
+        cancel event
+        # NPC移動システムのNPC選択
+        if player's held item is wooden hoe:
+            send "&a[System] 移動させるNPCを選択しました" to player
+            send "&a木のクワを投げるとTPされます" to player
+            add "move_%player%" to scoreboard tags of event-entity
+            add "move_%player%" to scoreboard tags of player
+        else:
+            openTradeMenu(player, event-entity, 0)
+
+# メインメニュー表示関数
+function openTradeMenu(p: player, npc: entity, page: number):
+    # NPCのIDを取得
+    set {_npc_id} to -1
+    loop scoreboard tags of {_npc}:
+        if loop-value starts with "npc_id_":
+            set {_id_str} to loop-value
+            replace "npc_id_" with "" in {_id_str}
+            set {_npc_id} to {_id_str} parsed as number
+            stop loop
+    
+    if {_npc_id} is -1:
+        send "&c[Error] NPCのIDを取得できませんでした。" to {_p}
+        stop
+    
+    # NPCの取引リストを取得（view_item_idからitems.keyを取得、npc_typeも取得、slotで表示位置を指定）
+    delete {_trades::*}
+    execute "SELECT t.id, t.content, t.slot as gui_slot, vi.key as view_item_key, nt.name as npc_type FROM trades t LEFT JOIN items vi ON t.view_item_id = vi.id JOIN npcs n ON t.npc_id = n.id JOIN npc_types nt ON n.npc_type_id = nt.id WHERE t.npc_id = %{_npc_id}% ORDER BY t.slot" in {kenkoku_db} and store the result in {_trades::*}
+    
+    # 詳細情報の取得 (Bulk Fetch)
+    delete {_costs::*}
+    delete {_rewards::*}
+    
+    # Costs
+    execute "SELECT tc.trade_id, IFNULL(i.name, i.key) as item_name, tc.quantity, tc.price, i.is_original FROM trade_costs tc JOIN trades t ON tc.trade_id = t.id LEFT JOIN items i ON tc.item_id = i.id WHERE t.npc_id = %{_npc_id}%" in {kenkoku_db} and store the result in {_costs::*}
+    
+    # Rewards
+    execute "SELECT r.trade_id, IFNULL(i.name, i.key) as item_name, r.quantity, r.price, i.is_original FROM rewards r JOIN trades t ON r.trade_id = t.id LEFT JOIN items i ON r.item_id = i.id WHERE t.npc_id = %{_npc_id}%" in {kenkoku_db} and store the result in {_rewards::*}
+    
+    # コスト情報の整形
+    loop {_costs::trade_id::*}:
+        set {_tid} to loop-value
+        set {_name} to {_costs::item_name::%loop-index%}
+        set {_qty} to {_costs::quantity::%loop-index%}
+        set {_price} to {_costs::price::%loop-index%}
+        
+        # アイテム名がキーそのものの場合は整形 (minecraft:除去など)
+        if {_name} contains "minecraft:":
+            replace "minecraft:" with "" in {_name}
+        
+        if {_price} > 0:
+            add "&7- %{_price}%G" to {_cost_lines::%{_tid}%::*}
+        
+        if {_name} is set:
+            if {_name} is not "":
+                add "&7- %{_name}% ×%{_qty}%" to {_cost_lines::%{_tid}%::*}
+                
+    # リワード情報の整形
+    loop {_rewards::trade_id::*}:
+        set {_tid} to loop-value
+        set {_name} to {_rewards::item_name::%loop-index%}
+        set {_qty} to {_rewards::quantity::%loop-index%}
+        set {_price} to {_rewards::price::%loop-index%}
+        
+        if {_name} contains "minecraft:":
+            replace "minecraft:" with "" in {_name}
             
-            # 3. 所持チェック
-            loop {-trade_reqs::item_key::*}:
-                set {_req_key} to loop-value
-                set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
-                set {_req_item} to {_req_key} parsed as item
-                if {_req_item} is set:
-                    if amount of {_req_item} in {_player}'s inventory < {_req_qty}:
-                        set {_can_afford} to false
-                        set {_err_msg} to "&cアイテムが足りません: %{_req_key}% x%{_req_qty}%"
+        if {_price} > 0:
+            add "&7- %{_price}%G" to {_reward_lines::%{_tid}%::*}
+            
+        if {_name} is set:
+            if {_name} is not "":
+                add "&7- %{_name}% ×%{_qty}%" to {_reward_lines::%{_tid}%::*}
+    
+    if {_trades::id::*} is not set:
+        send "&c[Error] このNPCには取引がありません。" to {_p}
+        stop
+    
+
+
+    # マッピング用変数の初期化
+    delete {_map_tid::*}
+    delete {_map_content::*}
+    delete {_map_view_key::*}
+    delete {_map_npc_type::*}
+    set {_max_slot} to 0
+    
+    # DBデータをマッピング配列に展開
+    set {_total_records} to size of {_trades::id::*}
+    loop {_total_records} times:
+        # スロット値の取得と数値化
+        set {_raw_slot} to {_trades::gui_slot::%loop-number%}
+        set {_slot_num} to ("%{_raw_slot}%" parsed as number)
+        
+
+        
+        # スロット設定がない場合は自動割り当て（既存の最大+1）
+        if {_slot_num} is not set:
+
+            set {_slot_num} to {_max_slot} + 1
+            
+        # マッピング（絶対スロット番号をキーにする）
+        set {_map_tid::%{_slot_num}%} to {_trades::id::%loop-number%}
+        set {_map_content::%{_slot_num}%} to {_trades::content::%loop-number%}
+        set {_map_view_key::%{_slot_num}%} to {_trades::view_item_key::%loop-number%}
+        set {_map_npc_type::%{_slot_num}%} to {_trades::npc_type::%loop-number%}
+        
+        # 最大スロット更新
+        if {_slot_num} > {_max_slot}:
+            set {_max_slot} to {_slot_num}
+    
+    # broadcast "&d[Debug] Max Slot: %{_max_slot}%, Total Pages: %floor({_max_slot} / 45) + 1%"
+    
+    set {_per_page} to 45  # 9x5 = 45スロット
+    set {_total_pages_calc} to (floor({_max_slot} / {_per_page})) + 1
+    # 文字列経由で整数化（パース安全策）
+    set {_total_pages} to ("%{_total_pages_calc}%" parsed as integer)
+    
+    if {_total_pages} is not set:
+        set {_total_pages} to 1
+    
+    if {_total_pages} < 1:
+        set {_total_pages} to 1
+    
+    # ページループ処理（page 0が最初）
+    if {_page} < 0:
+        set {_page} to {_total_pages} - 1  # -1の場合は最後のページへ
+    if {_page} >= {_total_pages}:
+        set {_page} to 0  # 最後+1の場合は最初のページへ
+    
+    # チェストGUIを作成
+    set {_npc_name} to display name of {_npc}
+    set {_display_page} to {_page} + 1
+    open chest with 6 rows named "&6&l取引メニュー - %{_npc_name}% (%{_display_page}%/%{_total_pages}%)" to {_p}
+    wait 2 ticks
+    if name of {_p}'s current inventory does not contain "取引メニュー":
+        stop
+    
+    # 取引アイテムを配置（現在のページの0-44スロットを走査）
+    set {_page_offset} to {_page} * {_per_page}
+    
+    loop 45 times:
+        set {_gui_slot_idx} to loop-number - 1 # 0 to 44
+        set {_abs_slot} to {_page_offset} + {_gui_slot_idx}
+        
+        # このスロットにデータがあるか確認
+        if {_map_tid::%{_abs_slot}%} is set:
+            set {_current_tid} to {_map_tid::%{_abs_slot}%}
+            set {_current_content} to {_map_content::%{_abs_slot}%}
+            set {_current_view_key} to {_map_view_key::%{_abs_slot}%}
+            set {_current_npc_type} to {_map_npc_type::%{_abs_slot}%}
+            
+            # view_item_idからアイテムを作成（minecraft:プレフィックスを除去）
+            if {_current_view_key} is set:
+                # minecraft:を削除
+                if {_current_view_key} contains "minecraft:":
+                    replace "minecraft:" with "" in {_current_view_key}
+                
+                set {_trade_item} to {_current_view_key} parsed as item type
+            
+            # パース失敗時はフォールバック
+            if {_trade_item} is not set:
+                set {_trade_item} to paper
+            
+            # クエスト完了済みかチェック
+            set {_is_completed} to false
+            
+            if {_current_npc_type} is "quest":
+                if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_current_tid}%":
+                    set {_is_completed} to true
+            
+            # アイテム名とLoreを設定
+            delete {_lore::*}
+            
+            if {_current_npc_type} is "quest":
+                set {_title_prefix} to "&e&l[クエスト]"
+                set {_click_msg} to "&7クリックでクエストをクリア"
+                set {_cost_header} to "&e&l納品アイテム"
+                set {_reward_header} to "&e&l返礼アイテム"
+            else if {_current_npc_type} is "pawnshop":
+                set {_title_prefix} to "&6&l[買取]"
+                set {_click_msg} to "&7クリックで売却"
+                set {_cost_header} to "&6&l売却アイテム"
+                set {_reward_header} to "&6&l獲得報酬"
+            else if {_current_npc_type} is "shop":
+                set {_title_prefix} to "&b&l[ショップ]"
+                set {_click_msg} to "&7クリックで購入"
+                set {_cost_header} to "&b&l必要コスト"
+                set {_reward_header} to "&b&l購入アイテム"
+            else:
+                set {_title_prefix} to "&e&l"
+                set {_click_msg} to "&7クリックで交換"
+                set {_cost_header} to "&f&l納品アイテム"
+                set {_reward_header} to "&f&l返礼アイテム"
+            
+            # アイテム名と基本Loreの設定
+            if {_is_completed} is true:
+                set name of {_trade_item} to "&7&l[完了] %{_current_content}%"
+                add "&8このクエストは完了済みです" to {_lore::*}
+                add "" to {_lore::*}
+            else:
+                set name of {_trade_item} to "%{_title_prefix}% %{_current_content}%"
+                add {_click_msg} to {_lore::*}
+                add "" to {_lore::*}
+            
+            # Cost Lines
+            if {_cost_lines::%{_current_tid}%::*} is set:
+                add {_cost_header} to {_lore::*}
+                loop {_cost_lines::%{_current_tid}%::*}:
+                    add loop-value-2 to {_lore::*}
+                add "" to {_lore::*}
+                
+            # Reward Lines
+            if {_reward_lines::%{_current_tid}%::*} is set:
+                add {_reward_header} to {_lore::*}
+                loop {_reward_lines::%{_current_tid}%::*}:
+                    add loop-value-2 to {_lore::*}
                         
-            loop {-trade_reqs::price::*}:
-                set {_price} to loop-value
-                if {_price} > 0:
-                    if {money::%{_player}%} is not set:
-                        set {money::%{_player}%} to 0
-                    if {money::%{_player}%} < {_price}:
-                        set {_can_afford} to false
-                        set {_err_msg} to "&cお金が足りません: %{_price}%G"
+            set lore of {_trade_item} to {_lore::*}
             
-            # 4. 取引実行
-            if {_can_afford} is true:
-                # コスト徴収
-                loop {-trade_reqs::item_key::*}:
-                    set {_req_key} to loop-value
-                    set {_req_qty} to {-trade_reqs::quantity::%loop-index%}
-                    set {_req_item} to {_req_key} parsed as item
-                    remove {_req_qty} of {_req_item} from {_player}
-                    send "&c- %{_req_key}% x%{_req_qty}%" to {_player}
+            # カスタムNBTでトレードID埋め込み
+            set {_nbt} to "{custom_data:{tradeId:%{_current_tid}%,npcId:%{_npc_id}%}}"
+            add nbt compound from {_nbt} to nbt of {_trade_item}
+            
+            # GUIスロットに配置
+            set slot {_gui_slot_idx} of {_p}'s current inventory to {_trade_item}
+    
+    # ページネーションボタン（常に表示、ループ対応）
+    set {_last_page} to {_total_pages} - 1
+    
+    
+    # 前のページボタン
+    set {_prev_btn} to 1 of arrow
+    set name of {_prev_btn} to "&a&l← 前のページ"
+    if {_page} is 0:
+        set lore of {_prev_btn} to "&7最後のページへ移動"
+        set {_target_page} to {_total_pages} - 1
+    else:
+        set lore of {_prev_btn} to "&7ページ %{_page}% へ移動"
+        set {_target_page} to {_page} - 1
+        
+    set {_nbt_prev} to "{custom_data:{action:""prev_page"",npcId:%{_npc_id}%,targetPage:%{_target_page}%}}"
+    add nbt compound from {_nbt_prev} to nbt of {_prev_btn}
+    set slot 48 of {_p}'s current inventory to {_prev_btn}
+    
+    # 次のページボタン
+    set {_next_btn} to 1 of arrow
+    set name of {_next_btn} to "&a&l次のページ →"
+    set {_next_page_display} to {_page} + 2
+    
+    if {_page} is {_last_page}:
+        set lore of {_next_btn} to "&7最初のページへ移動"
+        set {_target_page} to 0
+    else:
+        set lore of {_next_btn} to "&7ページ %{_next_page_display}% へ移動"
+        set {_target_page} to {_page} + 1
+        
+    set {_nbt_next} to "{custom_data:{action:""next_page"",npcId:%{_npc_id}%,targetPage:%{_target_page}%}}"
+    add nbt compound from {_nbt_next} to nbt of {_next_btn}
+    set slot 50 of {_p}'s current inventory to {_next_btn}
+    
+    # 一括取引量の初期化
+    if {-trade_amount::%{_p}%} is not set:
+        set {-trade_amount::%{_p}%} to 1
+    
+    # 一括取引切り替えボタン
+    set {_bulk_btn} to gold nugget
+    set name of {_bulk_btn} to "&e&l一括取引: &f&lx%{-trade_amount::%{_p}%}%"
+    set lore of {_bulk_btn} to "&7クリックで取引量を変更" and "&7(1 -> 16 -> 32 -> 48 -> 64)"
+    set {_nbt_bulk} to "{custom_data:{action:""toggle_amount"",npcId:%{_npc_id}%,page:%{_page}%}}"
+    add nbt compound from {_nbt_bulk} to nbt of {_bulk_btn}
+    set slot 53 of {_p}'s current inventory to {_bulk_btn}
+    
+    # 閉じるボタン
+    set {_close_btn} to barrier
+    set name of {_close_btn} to "&c&l閉じる"
+    set slot 49 of {_p}'s current inventory to {_close_btn}
+
+# Q長押し防止（カスタムGUI）
+on drop:
+    if "%player's current inventory's type%" contains "merchant":
+        cancel event
+    if name of player's current inventory contains "取引メニュー":
+        cancel event
+    if name of player's current inventory contains "取引確認":
+        cancel event
+
+# GUIクリック処理
+on inventory click:
+    if name of event-inventory contains "取引メニュー":
+        cancel event
+        set {_clicked} to event-slot
+        if {_clicked} is not air:
+            set {_nbt_str} to "%nbt of {_clicked}%"
+            
+            # 閉じるボタン
+            if name of {_clicked} contains "閉じる":
+                close player's inventory
+                stop
+            
+            # ページネーションボタン
+            if {_nbt_str} contains "prev_page":
+                # 前のページへ
+                set {_parts::*} to split {_nbt_str} at "npcId:"
+                set {_val} to {_parts::2}
+                set {_sub::*} to split {_val} at ","
+                set {_npc_id} to {_sub::1} parsed as number
                 
-                loop {-trade_reqs::price::*}:
-                    set {_price} to loop-value
-                    if {_price} > 0:
-                        subtract {_price} from {money::%{_player}%}
-                        send "&c- %{_price}%G" to {_player}
+                set {_parts2::*} to split {_nbt_str} at "targetPage:"
+                set {_val2} to {_parts2::2}
+                set {_sub2::*} to split {_val2} at "}"
+                set {_target_page} to {_sub2::1} parsed as number
                 
-                # リワード付与
-                loop {-trade_rewards::item_key::*}:
-                    set {_r_key} to loop-value
-                    set {_r_qty} to {-trade_rewards::quantity::%loop-index%}
-                    set {_r_item} to {_r_key} parsed as item
-                    give {_r_qty} of {_r_item} to {_player}
-                    send "&a+ %{_r_key}% x%{_r_qty}%" to {_player}
+                close player's inventory
+                wait 1 tick
+                
+                # NPCエンティティを再取得
+                loop all entities in radius 10 of player:
+                    loop scoreboard tags of loop-entity:
+                        if loop-value-2 is "npc_id_%{_npc_id}%":
+                            openTradeMenu(player, loop-entity, {_target_page})
+                            stop
+                            
+            else if {_nbt_str} contains "next_page":
+                # 次のページへ
+                set {_parts::*} to split {_nbt_str} at "npcId:"
+                set {_val} to {_parts::2}
+                set {_sub::*} to split {_val} at ","
+                set {_npc_id} to {_sub::1} parsed as number
+                
+                set {_parts2::*} to split {_nbt_str} at "targetPage:"
+                set {_val2} to {_parts2::2}
+                set {_sub2::*} to split {_val2} at "}"
+                set {_target_page} to {_sub2::1} parsed as number
+                
+                close player's inventory
+                wait 1 tick
+                
+                # NPCエンティティを再取得
+                loop all entities in radius 10 of player:
+                    loop scoreboard tags of loop-entity:
+                        if loop-value-2 is "npc_id_%{_npc_id}%":
+                            openTradeMenu(player, loop-entity, {_target_page})
+                            stop
+                            
+            else if {_nbt_str} contains "toggle_amount":
+                # 取引量切り替え
+                if {-trade_amount::%player%} is 1:
+                    set {-trade_amount::%player%} to 16
+                else if {-trade_amount::%player%} is 16:
+                    set {-trade_amount::%player%} to 32
+                else if {-trade_amount::%player%} is 32:
+                    set {-trade_amount::%player%} to 48
+                else if {-trade_amount::%player%} is 48:
+                    set {-trade_amount::%player%} to 64
+                else:
+                    set {-trade_amount::%player%} to 1
+                
+                # サウンド再生
+                play sound "ui.button.click" with volume 0.5 to player
+                
+                # リロード用情報の取得
+                set {_parts::*} to split {_nbt_str} at "npcId:"
+                set {_val} to {_parts::2}
+                set {_sub::*} to split {_val} at ","
+                set {_npc_id} to {_sub::1} parsed as number
+                
+                set {_parts2::*} to split {_nbt_str} at "page:"
+                set {_val2} to {_parts2::2}
+                set {_sub2::*} to split {_val2} at "}"
+                set {_page} to {_sub2::1} parsed as number
+                
+                close player's inventory
+                wait 1 tick
+                
+                # GUI再表示
+                loop all entities in radius 10 of player:
+                    loop scoreboard tags of loop-entity:
+                        if loop-value-2 is "npc_id_%{_npc_id}%":
+                            openTradeMenu(player, loop-entity, {_page})
+                            stop
+            
+            else if {_nbt_str} contains "tradeId:":
+                # 取引実行（GUIは開いたまま）
+                set {_parts::*} to split {_nbt_str} at "tradeId:"
+                set {_val} to {_parts::2}
+                set {_sub::*} to split {_val} at ","
+                set {_tid_str} to {_sub::1}
+                
+                # 不要な文字を除去（}やスペース）
+                replace "}" with "" in {_tid_str}
+                replace " " with "" in {_tid_str}
+                
+                set {_tid} to {_tid_str} parsed as number
+                
+                set {_tid} to {_tid_str} parsed as number
+                
+                # Debug: Check if TID is parsed
+                # broadcast "&d[Debug] Clicked Trade. Raw NBT: %{_nbt_str}%"
+                # broadcast "&d[Debug] Parsed TID: %{_tid}%"
+                
+                # NPC IDも取得（GUI再表示用）
+                set {_parts2::*} to split {_nbt_str} at "npcId:"
+                set {_val2} to {_parts2::2}
+                set {_sub2::*} to split {_val2} at ","
+                set {_nid_str} to {_sub2::1}
+                
+                # 不要な文字を除去
+                replace "}" with "" in {_nid_str}
+                replace " " with "" in {_nid_str}
+                replace "]" with "" in {_nid_str}
+                
+                set {_npc_id} to {_nid_str} parsed as number
+                
+                # NPCエンティティを取得
+                if {_npc_id} is set:
+                    loop all entities in radius 10 of player:
+                        loop scoreboard tags of loop-entity:
+                            if loop-value-2 is "npc_id_%{_npc_id}%":
+                                set {_npc_entity} to loop-entity
+                                stop loop
+                
+                # 取引実行してGUI再表示
+                if {_tid} is set:
+                    # broadcast "&d[Debug] Calling executeTradeAndRefresh with TID: %{_tid}%, Amount: %{-trade_amount::%player%}%"
+                    executeTradeAndRefresh(player, {_tid}, {_npc_entity}, {-trade_amount::%player%})
+                else:
+                    send "&c[Error] 取引IDの取得に失敗しました。" to player
+
+# 取引実行してGUI再表示する関数
+function executeTradeAndRefresh(p: player, tid: number, npc: entity, amount: number = 1):
+    # broadcast "&d[Debug] Inside executeTradeAndRefresh. TID: %{_tid}%, Amount: %{_amount}%"
+    
+    # パラメータをローカル変数に明示的に代入
+    set {_player} to {_p}
+    set {_trade_id} to {_tid}
+    set {_npc_entity} to {_npc}
+    set {_amt} to {_amount}
+    
+    executeTrade({_player}, {_trade_id}, {_amt})
+    
+    # 取引成功後、即座に関数アイテムをスキャンして実行 (Auto-Redeem)
+    wait 1 tick
+    scanInventoryForFunctionItems({_player})
+    
+    # 取引成功後、GUIを再表示
+    wait 1 tick
+    if {_npc_entity} is set:
+        openTradeMenu({_player}, {_npc_entity}, 0)
+
+# 取引実行関数
+function executeTrade(p: player, tid: number, amount: number = 1):
+    # broadcast "&d[Debug] Inside executeTrade. TID: %{_tid}%, Amount: %{_amount}%"
+    
+    # パラメータをローカル変数にセット
+    set {_p} to {_p}
+    set {_tid} to {_tid}
+    set {_amount} to {_amount}
+
+    # 一括取引の制限（デフォルト1）
+    if {_amount} < 1:
+        set {_amount} to 1
+    
+    # Trade IDからNPCタイプを取得
+    execute "SELECT t.name as npc_type FROM trades tr JOIN npcs n ON tr.npc_id = n.id JOIN npc_types t ON n.npc_type_id = t.id WHERE tr.id = %{_tid}% LIMIT 1" in {kenkoku_db} and store the result in {_trade_info::*}
+    set {_npc_type} to {_trade_info::npc_type::1}
+    
+    # クエストの場合、一括取引は無効化（常に1回）
+    if {_npc_type} is "quest":
+        set {_amount} to 1
+        # クエストの重複受領チェック
+        if scoreboard tags of {_p} contains "kenkoku_quest_completed_%{_tid}%":
+            send "&c[System] このクエストは既に完了しています。" to {_p}
+            stop
+    
+    # コスト情報取得
+    delete {_trade_reqs::*}
+    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, tc.quantity, tc.price FROM trade_costs tc LEFT JOIN items i ON tc.item_id = i.id WHERE tc.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {_trade_reqs::*}
+
+    # リワード情報取得
+    delete {_trade_rewards::*}
+    execute "SELECT i.key as item_key, IFNULL(i.name, '') as item_name, i.nbt, i.is_original, r.quantity, r.price FROM rewards r LEFT JOIN items i ON r.item_id = i.id WHERE r.trade_id = %{_tid}%" in {kenkoku_db} and store the result in {_trade_rewards::*}
+    
+    # コスト所持チェック（事前確認）
+    set {_can_afford} to true
+    set {_err_msg} to ""
+    
+    # アイテムチェック
+    loop {_trade_reqs::item_key::*}:
+        set {_req_key} to loop-value
+        set {_req_qty} to {_trade_reqs::quantity::%loop-index%}
+        set {_is_orig} to {_trade_reqs::is_original::%loop-index%}
+        set {_req_name} to {_trade_reqs::item_name::%loop-index%}
+        
+        set {_req_total_qty} to {_req_qty} * {_amount}
+        set {_amount_inv} to 0
+        if {_is_orig} is true:
+            # カスタムアイテムチェック: custom_data内の全要素を動的比較
+            set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
+            delete {_req_keys::*}
+            delete {_req_vals::*}
+            set {_has_req_data} to false
+            
+            # 1. custom_dataの中身を抽出 (JSON形式:{} と Component形式={} 両対応)
+            set {_content} to ""
+            if {_req_nbt_str} contains "custom_data:{":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            else if {_req_nbt_str} contains "custom_data={":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data={"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            
+            # 2. Key-Valueペアを解析してリスト化 (Case-Sensitivity維持のため並列リスト使用)
+            if {_content} is not "":
+                set {_has_req_data} to true
+                # カンマ区切りで要素を取得
+                set {_pairs::*} to split {_content} at ","
+                loop {_pairs::*}:
+                    set {_pair} to loop-value-2
+                    replace all " " with "" in {_pair}
+                    if {_pair} contains ":":
+                        set {_kv::*} to split {_pair} at ":"
+                        if size of {_kv::*} >= 2:
+                            set {_k} to {_kv::1}
+                            set {_v} to {_kv::2}
+                            replace all """" with "" in {_k}
+                            replace all """" with "" in {_v}
+                            
+                            add {_k} to {_req_keys::*}
+                            add {_v} to {_req_vals::*}
+            
+            # DEBUG
+            # broadcast "DEBUG: Req NBT: %{_req_nbt_str}%"
+            # broadcast "DEBUG: Content: %{_content}%"
+            # loop {_req_keys::*}:
+            #     broadcast "DEBUG: Req Tag Key:%loop-value-2% Val:%{_req_vals::%loop-index-2%}%"
+
+            if {_has_req_data} is true:
+                # 3. プレイヤーのアイテムと全タグ一致チェック
+                loop all items in {_p}'s inventory:
+                    set {_inv_nbt} to custom nbt of loop-item
+                    set {_match} to true
                     
-                loop {-trade_rewards::price::*}:
-                    set {_r_price} to loop-value
-                    if {_r_price} > 0:
-                        add {_r_price} to {money::%{_player}%}
-                        send "&a+ %{_r_price}%G" to {_player}
-                
-                # クエスト完了タグの付与
-                if {_npc_type} is "quest":
-                    add "kenkoku_quest_completed_%{_tid}%" to scoreboard tags of {_player}
-                
-                send "&a[System] 取引成立！"
-                
+                    loop {_req_keys::*}:
+                        set {_key} to loop-value-3
+                        set {_req_val} to {_req_vals::%loop-index-2%} # ここはloop-index-3ではなく、keysリストのindexを使うべき
+                        
+                        # プレイヤーアイテムからタグ値を取得
+                        # string tagとして取得して文字列比較する
+                        set {_act_val} to string tag {_key} of {_inv_nbt}
+                        
+                        # broadcast "DEBUG: Check %loop-item%: %{_key}% Act:%{_act_val}% vs Req:%{_req_val}%"
+                        
+                        if {_act_val} is not set:
+                            set {_match} to false
+                            stop loop
+                        if "%{_act_val}%" is not "%{_req_val}%":
+                            set {_match} to false
+                            stop loop
+                    
+                    if {_match} is true:
+                        add item amount of loop-item to {_amount_inv}
             else:
-                # 失敗時: メッセージのみ (アイテムは既に取引権に戻っている)
-                send {_err_msg} to {_player}
-                send "&c[System] 条件を満たしていないため、取引を実行できませんでした。"
+                # custom_dataがない場合は従来通り名前マッチング
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_p}'s inventory:
+                    set {_stripped_inv} to uncoloured name of loop-item
+                    if {_stripped_inv} is {_stripped_req}:
+                        add item amount of loop-item to {_amount_inv}
+        else:
+            # 通常アイテム
+            set {_item} to {_req_key} parsed as item type
+            set {_amount_inv} to amount of {_item} in {_p}'s inventory
+        
+        if {_amount_inv} < {_req_total_qty}:
+            set {_can_afford} to false
+            set {_err_msg} to "&c[System] アイテムが足りません (必要: %{_req_name}% x%{_req_total_qty}%)"
+            stop loop
+            
+    
+    # お金チェック (Custom Economy)
+    if {_can_afford} is true:
+        loop {_trade_reqs::price::*}:
+            set {_price} to loop-value
+            set {_total_price} to {_price} * {_amount}
+            if {_total_price} > 0:
+                set {_m} to metadata "money" of {_p}
+                if {_m} is not set:
+                    set {_m} to 0
+                if {_m} < {_total_price}:
+                    set {_can_afford} to false
+                    set {_err_msg} to "&c[System] お金が足りません (必要: %{_total_price}%G)"
+                    stop loop
+    
+    # エラーがあれば表示して終了
+    if {_can_afford} is false:
+        send {_err_msg} to {_p}
+        play sound "entity.villager.no" to {_p}
+        stop
+    
+    # コスト消費（実行）
+    # アイテム消費
+    loop {_trade_reqs::item_key::*}:
+        set {_req_key} to loop-value
+        set {_req_qty} to {_trade_reqs::quantity::%loop-index%}
+        set {_is_orig} to {_trade_reqs::is_original::%loop-index%}
+        set {_req_name} to {_trade_reqs::item_name::%loop-index%}
+        
+        set {_req_total_qty} to {_req_qty} * {_amount}
+        
+        if {_is_orig} is true:
+            # カスタムアイテム消費
+            set {_req_nbt_str} to {_trade_reqs::nbt::%loop-index%}
+            delete {_req_keys::*}
+            delete {_req_vals::*}
+            set {_has_req_data} to false
+            
+            # 1. 解析 (消費時も同じロジック)
+            set {_content} to ""
+            if {_req_nbt_str} contains "custom_data:{":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data:{"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            else if {_req_nbt_str} contains "custom_data={":
+                set {_parts::*} to split {_req_nbt_str} at "custom_data={"
+                set {_sub::*} to split {_parts::2} at "}"
+                set {_content} to {_sub::1}
+            
+            if {_content} is not "":
+                set {_has_req_data} to true
+                set {_pairs::*} to split {_content} at ","
+                loop {_pairs::*}:
+                    set {_pair} to loop-value-2
+                    replace all " " with "" in {_pair}
+                    if {_pair} contains ":":
+                        set {_kv::*} to split {_pair} at ":"
+                        if size of {_kv::*} >= 2:
+                            set {_k} to {_kv::1}
+                            set {_v} to {_kv::2}
+                            replace all """" with "" in {_k}
+                            replace all """" with "" in {_v}
+                            
+                            add {_k} to {_req_keys::*}
+                            add {_v} to {_req_vals::*}
+            
+            set {_remaining} to {_req_total_qty}
+            
+            if {_has_req_data} is true:
+                # 3. 全タグ一致で消費
+                loop all items in {_p}'s inventory:
+                    if {_remaining} > 0:
+                        set {_inv_nbt} to custom nbt of loop-item
+                        set {_match} to true
+                        
+                        loop {_req_keys::*}:
+                            set {_key} to loop-value-3
+                            set {_req_val} to {_req_vals::%loop-index-2%} # ここも重要：keysループのindexを使う
+                            set {_act_val} to string tag {_key} of {_inv_nbt}
+                            if {_act_val} is not set:
+                                set {_match} to false
+                                stop loop
+                            if "%{_act_val}%" is not "%{_req_val}%":
+                                set {_match} to false
+                                stop loop
+                        
+                        if {_match} is true:
+                            if item amount of loop-item >= {_remaining}:
+                                remove {_remaining} of loop-item from {_p}'s inventory
+                                set {_remaining} to 0
+                            else:
+                                set {_amt} to item amount of loop-item
+                                remove loop-item from {_p}'s inventory
+                                remove {_amt} from {_remaining}
+            else:
+                # 名前マッチングで消費 (フォールバック)
+                set {_stripped_req} to uncoloured {_req_name}
+                loop all items in {_p}'s inventory:
+                    if {_remaining} > 0:
+                        set {_stripped_inv} to uncoloured name of loop-item
+                        if {_stripped_inv} is {_stripped_req}:
+                            if item amount of loop-item >= {_remaining}:
+                                remove {_remaining} of loop-item from {_p}'s inventory
+                                set {_remaining} to 0
+                            else:
+                                set {_amt} to item amount of loop-item
+                                remove loop-item from {_p}'s inventory
+                                remove {_amt} from {_remaining}
+        else:
+            # 通常アイテム消費
+            set {_item} to {_req_key} parsed as item type
+            remove {_req_total_qty} of {_item} from {_p}'s inventory
+        send "&c[System] %{_req_name}% x%{_req_total_qty}% を消費しました。" to {_p}
+    
+    # お金消費 (Custom Economy)
+    loop {_trade_reqs::price::*}:
+        set {_price} to loop-value
+        set {_total_price} to {_price} * {_amount}
+        if {_total_price} > 0:
+            set {_m} to metadata "money" of {_p}
+            subtract {_total_price} from {_m}
+            set metadata "money" of {_p} to {_m}
+            
+            # DB更新
+            set {_uuid} to "%uuid of {_p}%"
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = '%{_uuid}%'" in {kenkoku_db}
+            updateSidebar({_p})
+            
+            send "&c[System] %{_total_price}%G を支払いました。" to {_p}
+    
+    # リワード付与
+    loop {_trade_rewards::item_key::*}:
+        set {_r_key} to loop-value
+        set {_r_qty} to {_trade_rewards::quantity::%loop-index%} * {_amount}
+        set {_r_nbt} to {_trade_rewards::nbt::%loop-index%}
+        set {_r_is_orig} to {_trade_rewards::is_original::%loop-index%}
 
-# その他のコマンドは変更なし
-on tab complete of "/spawn-npc":
-    set tab completions for position 1 to {-npc_list_cache::*}
+        if {_r_is_orig} is true:
+            if {_r_nbt} is not "{}":
+                execute console command "minecraft:give %{_p}% %{_r_key}%%{_r_nbt}% %{_r_qty}%"
+            else:
+                execute console command "minecraft:give %{_p}% %{_r_key}% %{_r_qty}%"
+        else:
+            # 通常アイテム付与
+            set {_item} to {_r_key} parsed as item type
+            give {_r_qty} of {_item} to {_p}
 
-command /kill-nearby-npc:
-    permission: op
-    trigger:
-        loop all villagers in radius 5 around player:
-            if scoreboard tags of loop-entity contains "kenkoku_npc":
-                kill loop-entity
-                send "&c[System] 近くのNPCを削除しました。"
+        if {_r_is_orig} is true:
+            send "&a+ %{_r_key}%(Custom) x%{_r_qty}%" to {_p}
+        else:
+            send "&a+ %{_r_key}% x%{_r_qty}%" to {_p}
+    
+    # リワード付与 (お金)
+    loop {_trade_rewards::price::*}:
+        set {_r_price} to loop-value * {_amount}
+        if {_r_price} > 0:
+            set {_m} to metadata "money" of {_p}
+            add {_r_price} to {_m}
+            set metadata "money" of {_p} to {_m}
+            
+            # DB更新
+            set {_uuid} to "%uuid of {_p}%"
+            execute "UPDATE player_information SET money = %{_m}% WHERE player_uuid = %{_uuid}%" in {kenkoku_db}
+            updateSidebar({_p})
+            
+            send "&a+ %{_r_price}%G" to {_p}
+    
+    # クエスト完了タグの付与
+    if {_npc_type} is "quest":
+        add "kenkoku_quest_completed_%{_tid}%" to scoreboard tags of {_p}
+    
+    send "&a&l[System] 取引成立！" to {_p}
+    play sound "entity.experience_orb.pickup" with volume 1.0 to {_p}
+
+

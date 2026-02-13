@@ -1,0 +1,71 @@
+# seed-items.sk
+# オリジナルアイテムを一括でDB(itemsテーブル)に登録・更新するシーダー
+
+command /seed-original-items:
+    permission: op
+    trigger:
+        send "&e[Seeder] オリジナルアイテムのDB登録を開始します..."
+        
+        # ---------------------------------------------------------
+        # 1. データ定義 (Type: {name, base_key, nbt_template})
+        # ---------------------------------------------------------
+        # DB保存用NBT: Component Syntax ([...])
+        # original-item-system.sk の出力形式に準拠
+
+        # --- Accessories ---
+        # Health Boost (Level 1-3)
+        registerItem("health_boost_1", "minecraft:sniffer_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&l体力増強(10)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時体力が10増える""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""healthBoost"",level:1},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("health_boost_2", "minecraft:sniffer_spawn_egg", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&l体力増強(20)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時体力が20増える""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""healthBoost"",level:2},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("health_boost_3", "minecraft:sniffer_spawn_egg", "[enchantment_glint_override=true,rarity=""epic"",custom_name={""extra"":[{""bold"":true,""text"":""&l体力増強(30)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時体力が30増える""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""healthBoost"",level:3},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+
+        # Speed Boost (Level 1-3)
+        registerItem("speed_boost_1", "minecraft:horse_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&lスピード(Ⅰ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時俊敏(1)が付与されます""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""speedBoost"",level:1},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("speed_boost_2", "minecraft:horse_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&lスピード(Ⅱ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時俊敏(2)が付与されます""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""speedBoost"",level:2},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("speed_boost_3", "minecraft:horse_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&lスピード(Ⅲ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時俊敏(3)が付与されます""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""speedBoost"",level:3},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+
+        # Haste Boost (Level 1-3)
+        registerItem("haste_boost_1", "minecraft:creeper_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&l採掘速度(Ⅰ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時採掘速度上昇(1)が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""hasteBoost"",level:1},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("haste_boost_2", "minecraft:creeper_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&l採掘速度(Ⅱ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時採掘速度上昇(2)が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""hasteBoost"",level:2},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("haste_boost_3", "minecraft:creeper_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&l採掘速度(Ⅲ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時採掘速度上昇(3)が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""hasteBoost"",level:3},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+
+        # Jump Boost (Level 1-3)
+        registerItem("jump_boost_1", "minecraft:frog_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&lジャンプ(Ⅰ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時ジャンプブースト(1)が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""jumpBoost"",level:1},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("jump_boost_2", "minecraft:frog_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&lジャンプ(Ⅱ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時ジャンプブースト(2)が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""jumpBoost"",level:2},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("jump_boost_3", "minecraft:frog_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&lジャンプ(Ⅲ)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時ジャンプブースト(3)が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""jumpBoost"",level:3},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+
+        # Misc Accessories
+        registerItem("slow_falling", "minecraft:chicken_spawn_egg", "[enchantment_glint_override=true,rarity=""uncommon"",custom_name={""extra"":[{""bold"":true,""text"":""&l低速落下""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時低速落下が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""slowFalling""},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("fire_resistance", "minecraft:magma_cube_spawn_egg", "[enchantment_glint_override=true,rarity=""epic"",custom_name={""extra"":[{""bold"":true,""text"":""&l火炎耐性""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時火炎耐性が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""fireResistance""},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+        registerItem("night_vision", "minecraft:bat_spawn_egg", "[enchantment_glint_override=true,rarity=""epic"",custom_name={""extra"":[{""bold"":true,""text"":""&l暗視""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7ホットバーにある時暗視が付与される""}],""text"":""""}],custom_data={itemType:""accessory"",accessoryType:""nightVision""},max_stack_size=1,entity_data={id:""minecraft:area_effect_cloud"",Duration:1,Radius:0.01f,Invulnerable:1b}]")
+
+        # --- Special Items ---
+        registerItem("infinite_pearl", "minecraft:ender_pearl", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&l無限エンパ""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7投げても消費されないエンパ""}],""text"":""""}],custom_data={itemType:""infinitePearl""},max_stack_size=1]")
+        registerItem("petapeta", "minecraft:slime_ball", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&lぺたぺたくん""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7壁に向かって持つと壁にくっつける""}],""text"":""""}],custom_data={itemType:""petaPeta""},max_stack_size=1]")
+        # ジャンプくん
+        registerItem("jumpkun", "minecraft:feather", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&lジャンプくん""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7使用すると上方向に飛ぶ""}],""text"":""""}],custom_data={itemType:""jumpKun""},max_stack_size=1]")
+        
+        # Sidebar Toggle (Consumable)
+        registerItem("sidebar_toggle", "minecraft:end_crystal", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&b&l表示切替 (スコアボード)""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックで使用してスコアボードの表示/非表示を切り替えます""}],""text"":""""}],custom_data={itemType:""sidebarToggle""},max_stack_size=1,consumable={consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""}]")
+        
+        # --- Wallet (Consumable) ---
+        registerItem("wallet", "minecraft:leather_horse_armor", "[enchantment_glint_override=true,rarity=""common"",custom_name={""extra"":[{""bold"":true,""text"":""&6お財布""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックで所持金を確認します""}],""text"":""""}],custom_data={itemType:""wallet""},max_stack_size=1,consumable={consume_seconds:0.1f,animation:""eat"",has_consume_particles:false,can_always_eat:true,sound:""ui.button.click""}]")
+        
+        # --- Utility Tools ---
+        registerItem("drop_tp_tool", "minecraft:hopper", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&b&lドロップ回収""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックでドロップ回収のON/OFFを切り替えます""}],""text"":""""}],custom_data={itemType:""dropTpTool""},max_stack_size=1]")
+        registerItem("infinity_stack_tool", "minecraft:chest", "[enchantment_glint_override=true,rarity=""rare"",custom_name={""extra"":[{""bold"":true,""text"":""&a&l無限スタック""}],""text"":""""},lore=[{""extra"":[{""italic"":false,""underlined"":false,""bold"":false,""color"":""gray"",""obfuscated"":false,""strikethrough"":false,""text"":""&7右クリックで無限スタックのON/OFFを切り替えます""}],""text"":""""}],custom_data={itemType:""infinityStackTool""},max_stack_size=1]")
+        
+        send "&a[Seeder] 処理が完了しました。"
+
+# 定義関数 (変更なし)
+function registerItem(unique_name: text, base_key: text, nbt: text):
+    # 存在チェック
+    delete {-check::*}
+    execute "SELECT id FROM items WHERE `name` = %{_unique_name}% AND `name` IS NOT NULL LIMIT 1" in {kenkoku_db} and store the result in {-check::*}
+    
+    if {-check::id::1} is set:
+        # 更新 (UPDATE)
+        execute "UPDATE items SET `key` = %{_base_key}%, is_original = TRUE, nbt = %{_nbt}%, updated_at = NOW() WHERE `name` = %{_unique_name}%" in {kenkoku_db}
+    else:
+        # 新規登録 (INSERT)
+        execute "INSERT INTO items (`key`, `name`, is_original, nbt, created_at, updated_at) VALUES (%{_base_key}%, %{_unique_name}%, TRUE, %{_nbt}%, NOW(), NOW())" in {kenkoku_db}
+

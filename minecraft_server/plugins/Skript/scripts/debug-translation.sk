@@ -1,0 +1,30 @@
+command /debug-trans-single:
+    permission: op
+    trigger:
+        set {_key} to "minecraft:diamond_sword"
+        set {_item} to {_key} parsed as item type
+        send "&eItem: %{_item}%"
+        
+        set {_trans_key} to translation key of {_item}
+        send "&eTranslation Key: %{_trans_key}%"
+        
+        set {_jp} to {-lang::%{_trans_key}%}
+        send "&eCached JP Name: %{_jp}%"
+        
+        if {_jp} is set:
+            # Match syntax from seed-items.sk (auto-quoting assumed)
+            # Use items.key to avoid reserved word collision
+            
+            # Debug msg
+            send "&eExecuting SQL (Pattern match): UPDATE items SET name = %{_jp}% WHERE items.key = %{_key}%"
+            
+            # Execute without manual single quotes around variables
+            execute "UPDATE items SET name = %{_jp}% WHERE items.key = %{_key}%" in {kenkoku_db}
+            
+            set {_err} to last sql error
+            if {_err} is set:
+                send "&c[Error] SQL Failed: %{_err}%"
+            else:
+                send "&aSQL executed successfully."
+        else:
+            send "&cJP Name not found in cache."

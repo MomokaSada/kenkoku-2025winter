@@ -1,0 +1,575 @@
+{
+  "store": [
+    {
+      "name": "写真展",
+      "biome_id": 4,
+      "profession_id": 8,
+      "type": 2,
+      "level": 5,
+      "trades": [
+        {
+          "content": "【サーバー情報】ＮＰＣ取引情報(5×3)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 0,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1568,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】ちょこれ(1×1)",
+          "view_item_id": 156,
+          "slot": 9,
+          "costs": [
+            {
+              "price": 100000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1560,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】ちょこれ(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 10,
+          "costs": [
+            {
+              "price": 10000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1561,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】はむ(1×1)",
+          "view_item_id": 156,
+          "slot": 11,
+          "costs": [
+            {
+              "price": 100000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1563,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】はむ(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 12,
+          "costs": [
+            {
+              "price": 10000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1562,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】こんくん(1×1)",
+          "view_item_id": 156,
+          "slot": 13,
+          "costs": [
+            {
+              "price": 100000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1564,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】こんくん(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 14,
+          "costs": [
+            {
+              "price": 10000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1565,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】來宮(1×1)",
+          "view_item_id": 156,
+          "slot": 15,
+          "costs": [
+            {
+              "price": 100000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1565,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【国王写真】來宮(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 16,
+          "costs": [
+            {
+              "price": 10000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1566,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】ぼたもち(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 17,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1569,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】はむトプス(3×3)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 18,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1570,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】あられ(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 19,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1571,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】あいす(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 20,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1572,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】筋骨隆々たまちゃん(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 21,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1573,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】さんぼんげ(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 22,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1574,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】くずもち(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 23,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1575,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】りぎす語録1(1×2)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 24,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1576,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】りぎす語録2(1×2)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 25,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1577,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】リギペン(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 26,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1578,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】リギスの晩餐(3×3)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 27,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1579,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】リギッキー(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 28,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1580,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】めぐねえ(2×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 29,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1581,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ1(2×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 30,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1582,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ2(2×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 31,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1583,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ3(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 32,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1584,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ4(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 33,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1585,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ5(2×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 34,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1586,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ6(2×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 35,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1587,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】パチ7(2×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 36,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1588,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】レゼ(4×2)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 37,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1589,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】シュン(幼女)のメモロビ(2×3)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 38,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1590,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】カイリュー(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 39,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1591,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】核爆弾ランチャー(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 40,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1592,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】たまちゃん(1×1)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 41,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1593,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "【その他】ちょこチュウ(2×3)(コピー不可)",
+          "view_item_id": 156,
+          "slot": 42,
+          "costs": [
+            {
+              "price": 30000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1594,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patch": [],
+  "delete": []
+}

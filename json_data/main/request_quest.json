@@ -1,0 +1,344 @@
+{
+  "store": [
+    {
+      "name": "クエスト (★ (初級))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 3,
+      "level": 1,
+      "trades": [
+        {
+          "content": "街のお掃除",
+          "view_item_id": 1041,
+          "costs": [
+            {
+              "item_id": 1041,
+              "quantity": 64
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "珍味？",
+          "view_item_id": 185,
+          "costs": [
+            {
+              "item_id": 185,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "ダイヤ発見記念",
+          "view_item_id": 118,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "アメジスト発見記念",
+          "view_item_id": 495,
+          "costs": [
+            {
+              "item_id": 495,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "スローライフ",
+          "view_item_id": 378,
+          "costs": [
+            {
+              "item_id": 378,
+              "quantity": 16
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "モンスターハンター",
+          "view_item_id": 376,
+          "costs": [
+            {
+              "item_id": 376,
+              "quantity": 16
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "雪だるま",
+          "view_item_id": 1270,
+          "costs": [
+            {
+              "item_id": 1270,
+              "quantity": 2
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "クエスト (★★ (中級))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 3,
+      "level": 2,
+      "trades": [
+        {
+          "content": "リッチな昼食",
+          "view_item_id": 363,
+          "costs": [
+            {
+              "item_id": 363,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "硬くて溶けない氷",
+          "view_item_id": 1085,
+          "costs": [
+            {
+              "item_id": 1085,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "ブヨブヨしてる緑な奴",
+          "view_item_id": 1251,
+          "costs": [
+            {
+              "item_id": 1251,
+              "quantity": 4
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        },
+        {
+          "content": "ブヨブヨしてる甘い奴",
+          "view_item_id": 880,
+          "costs": [
+            {
+              "item_id": 880,
+              "quantity": 4
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "クエスト (★★★ (上級))",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 3,
+      "level": 3,
+      "trades": [
+        {
+          "content": "うさぎ討伐隊",
+          "view_item_id": 360,
+          "costs": [
+            {
+              "item_id": 360,
+              "quantity": 4
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 3
+            }
+          ]
+        },
+        {
+          "content": "お豆腐屋さん",
+          "view_item_id": 796,
+          "costs": [
+            {
+              "item_id": 796,
+              "quantity": 3
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 3
+            }
+          ]
+        },
+        {
+          "content": "イカしたフィスを探せ",
+          "view_item_id": 1475,
+          "costs": [
+            {
+              "item_id": 1475,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 3
+            }
+          ]
+        },
+        {
+          "content": "ホットな羽付き大会",
+          "view_item_id": 172,
+          "costs": [
+            {
+              "item_id": 172,
+              "quantity": 3
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1532,
+              "quantity": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "クエスト (特別クエスト)",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 3,
+      "level": 4,
+      "trades": [
+        {
+          "content": "ブラック鉱夫",
+          "view_item_id": 1053,
+          "costs": [
+            {
+              "item_id": 1053,
+              "quantity": 32
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1529,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "赤くてデカくなるアレ",
+          "view_item_id": 1199,
+          "costs": [
+            {
+              "item_id": 1199,
+              "quantity": 32
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1492,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "目指せ太公望",
+          "view_item_id": 350,
+          "costs": [
+            {
+              "item_id": 350,
+              "quantity": 64
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1530,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "追尾しない方の甲羅",
+          "view_item_id": 299,
+          "costs": [
+            {
+              "item_id": 299,
+              "quantity": 3
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1531,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

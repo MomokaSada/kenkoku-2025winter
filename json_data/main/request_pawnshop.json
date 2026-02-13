@@ -1,0 +1,327 @@
+{
+  "store": [
+    {
+      "name": "買取屋(鉱石)",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 1,
+      "level": 1,
+      "trades": [
+        {
+          "content": "Buy 原銅ブロック",
+          "view_item_id": 1189,
+          "costs": [
+            {
+              "item_id": 1189,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 10
+            }
+          ]
+        },
+        {
+          "content": "Buy 原金ブロック",
+          "view_item_id": 1190,
+          "costs": [
+            {
+              "item_id": 1190,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 300
+            }
+          ]
+        },
+        {
+          "content": "Buy ダイヤ",
+          "view_item_id": 118,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 1000
+            }
+          ]
+        },
+        {
+          "content": "Buy レッドストーンブロック",
+          "view_item_id": 1216,
+          "costs": [
+            {
+              "item_id": 1216,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 100
+            }
+          ]
+        },
+        {
+          "content": "Buy ラピスラズリブロック",
+          "view_item_id": 922,
+          "costs": [
+            {
+              "item_id": 922,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 100
+            }
+          ]
+        },
+        {
+          "content": "Buy ネザーラック",
+          "view_item_id": 1034,
+          "costs": [
+            {
+              "item_id": 1034,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 1
+            }
+          ]
+        },
+        {
+          "content": "Buy 丸石",
+          "view_item_id": 660,
+          "costs": [
+            {
+              "item_id": 660,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 1
+            }
+          ]
+        },
+        {
+          "content": "Buy 荒れた深層岩",
+          "view_item_id": 656,
+          "costs": [
+            {
+              "item_id": 656,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "買取屋(農作物)",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 1,
+      "level": 1,
+      "trades": [
+        {
+          "content": "Buy 人参",
+          "view_item_id": 60,
+          "costs": [
+            {
+              "item_id": 60,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 2
+            }
+          ]
+        },
+        {
+          "content": "Buy じゃがいも",
+          "view_item_id": 344,
+          "costs": [
+            {
+              "item_id": 344,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 2
+            }
+          ]
+        },
+        {
+          "content": "Buy 俵",
+          "view_item_id": 877,
+          "costs": [
+            {
+              "item_id": 877,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 100
+            }
+          ]
+        },
+        {
+          "content": "Buy ビートルート",
+          "view_item_id": 22,
+          "costs": [
+            {
+              "item_id": 22,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 10
+            }
+          ]
+        },
+        {
+          "content": "Buy 青い目のジャガイモ",
+          "view_item_id": 340,
+          "costs": [
+            {
+              "item_id": 340,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "買取屋(水産物)",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 1,
+      "level": 1,
+      "trades": [
+        {
+          "content": "Buy タラ",
+          "view_item_id": 80,
+          "costs": [
+            {
+              "item_id": 80,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 10
+            }
+          ]
+        },
+        {
+          "content": "Buy 鮭",
+          "view_item_id": 378,
+          "costs": [
+            {
+              "item_id": 378,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 10
+            }
+          ]
+        },
+        {
+          "content": "Buy フグ",
+          "view_item_id": 350,
+          "costs": [
+            {
+              "item_id": 350,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 50
+            }
+          ]
+        },
+        {
+          "content": "Buy 熱帯魚",
+          "view_item_id": 435,
+          "costs": [
+            {
+              "item_id": 435,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "買取屋(レア)",
+      "biome_id": 1,
+      "profession_id": 1,
+      "type": 1,
+      "level": 3,
+      "trades": [
+        {
+          "content": "Buy エンチャント金リンゴ",
+          "view_item_id": 142,
+          "costs": [
+            {
+              "item_id": 142,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 30000
+            }
+          ]
+        },
+        {
+          "content": "Buy 海の心",
+          "view_item_id": 208,
+          "costs": [
+            {
+              "item_id": 208,
+              "quantity": 1
+            }
+          ],
+          "rewards": [
+            {
+              "price": 10000
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "patch": [],
+  "delete": []
+}
