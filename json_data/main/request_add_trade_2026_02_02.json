@@ -1,0 +1,62 @@
+{
+  "store": [],
+  "patch": [
+    {
+      "id": 14,
+      "add_trades": [
+        {
+          "content": "Sell 写真展",
+          "view_item_id": 443,
+          "costs": [
+            {
+              "item_id": 118,
+              "quantity": 10
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1595,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "add_trades": [
+        {
+          "content": "Sell エンドロッド",
+          "view_item_id": 804,
+          "costs": [
+            {
+              "price": 300
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 804,
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "content": "Sell プルプァブロック",
+          "view_item_id": 1179,
+          "costs": [
+            {
+              "price": 1000
+            }
+          ],
+          "rewards": [
+            {
+              "item_id": 1179,
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "delete": []
+}

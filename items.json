@@ -4860,6 +4860,42 @@
         "updated_at": "2026-01-09T12:54:03.000000Z"
     },
     {
+        "id": 1560,
+        "name": "【国王写真】ちょこれ(1×1)",
+        "key": "minecraft:filled_map",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"ちょこれ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"}],map_id=124]",
+        "created_at": "2026-01-17T05:48:55.000000Z",
+        "updated_at": "2026-01-17T05:48:55.000000Z"
+    },
+    {
+        "id": 1563,
+        "name": "【国王写真】はむ(1×1)",
+        "key": "minecraft:filled_map",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"はむ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"}],map_id=126]",
+        "created_at": "2026-01-17T14:44:34.000000Z",
+        "updated_at": "2026-01-17T14:44:34.000000Z"
+    },
+    {
+        "id": 1564,
+        "name": "【国王写真】こんくん(1×1)",
+        "key": "minecraft:filled_map",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"こんくん\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"}],map_id=127]",
+        "created_at": "2026-01-17T14:47:10.000000Z",
+        "updated_at": "2026-01-17T14:48:18.000000Z"
+    },
+    {
+        "id": 1565,
+        "name": "【国王写真】來宮(1×1)",
+        "key": "minecraft:filled_map",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"來宮\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"}],map_id=125]",
+        "created_at": "2026-01-17T14:51:10.000000Z",
+        "updated_at": "2026-01-17T14:51:10.000000Z"
+    },
+    {
         "id": 157,
         "name": "ファイヤーチャージ",
         "key": "minecraft:fire_charge",
@@ -9025,6 +9061,285 @@
         "nbt": "[enchantment_glint_override=true,custom_name={extra:[{text:\"防具チケット\",color:gold}],text:\"\"},custom_data={itemType:armorTicket}]",
         "created_at": "2025-12-30T03:09:48.000000Z",
         "updated_at": "2025-12-30T03:09:48.000000Z"
+    },
+    {
+        "id": 1561,
+        "name": "【国王写真】ちょこれ(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"ちょこれ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:9}]",
+        "created_at": "2026-01-17T14:07:16.000000Z",
+        "updated_at": "2026-01-17T14:07:16.000000Z"
+    },
+    {
+        "id": 1562,
+        "name": "【国王写真】はむ(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"はむ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:11}]",
+        "created_at": "2026-01-17T14:38:11.000000Z",
+        "updated_at": "2026-01-17T14:38:11.000000Z"
+    },
+    {
+        "id": 1566,
+        "name": "【国王写真】來宮(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"來宮\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:10}]",
+        "created_at": "2026-01-17T14:52:08.000000Z",
+        "updated_at": "2026-01-17T14:52:08.000000Z"
+    },
+    {
+        "id": 1567,
+        "name": "【国王写真】こんくん(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【国王写真】\",bold:true,color:gold},{text:\"こんくん\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:12}]",
+        "created_at": "2026-01-17T14:52:25.000000Z",
+        "updated_at": "2026-01-17T14:52:25.000000Z"
+    },
+    {
+        "id": 1568,
+        "name": "【サーバー情報】ＮＰＣ取引情報(5×3)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【サーバー情報】\",bold:true,color:dark_aqua},{text:\"ＮＰＣ取引情報\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"5 × 3\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:53}]",
+        "created_at": "2026-01-17T19:11:10.000000Z",
+        "updated_at": "2026-01-17T19:11:10.000000Z"
+    },
+    {
+        "id": 1569,
+        "name": "【その他】ぼたもち(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"ぼたもち\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:16}]",
+        "created_at": "2026-01-17T19:18:13.000000Z",
+        "updated_at": "2026-01-17T19:18:13.000000Z"
+    },
+    {
+        "id": 1570,
+        "name": "【その他】はむトプス(3×3)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"はむトプス\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"3 × 3\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:45}]",
+        "created_at": "2026-01-17T19:43:09.000000Z",
+        "updated_at": "2026-01-17T19:43:09.000000Z"
+    },
+    {
+        "id": 1571,
+        "name": "【その他】あられ(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"あられ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:20}]",
+        "created_at": "2026-01-17T20:00:25.000000Z",
+        "updated_at": "2026-01-17T20:00:25.000000Z"
+    },
+    {
+        "id": 1572,
+        "name": "【その他】あいす(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"あいす\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:21}]",
+        "created_at": "2026-01-18T04:53:51.000000Z",
+        "updated_at": "2026-01-18T04:53:51.000000Z"
+    },
+    {
+        "id": 1573,
+        "name": "【その他】筋骨隆々たまちゃん(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"筋骨隆々たまちゃん\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:18}]",
+        "created_at": "2026-01-26T05:49:23.000000Z",
+        "updated_at": "2026-01-26T05:49:23.000000Z"
+    },
+    {
+        "id": 1574,
+        "name": "【その他】さんぼんげ(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"さんぼんげ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:19}]",
+        "created_at": "2026-01-26T05:53:11.000000Z",
+        "updated_at": "2026-01-26T05:53:11.000000Z"
+    },
+    {
+        "id": 1575,
+        "name": "【その他】くずもち(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"くずもち\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:1}]",
+        "created_at": "2026-01-26T05:57:18.000000Z",
+        "updated_at": "2026-01-26T05:57:18.000000Z"
+    },
+    {
+        "id": 1576,
+        "name": "【その他】りぎす語録1(1×2)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"りぎす語録1\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 2\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:26}]",
+        "created_at": "2026-01-26T06:01:08.000000Z",
+        "updated_at": "2026-01-26T06:01:08.000000Z"
+    },
+    {
+        "id": 1577,
+        "name": "【その他】りぎす語録2(1×2)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"りぎす語録2\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 2\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:29}]",
+        "created_at": "2026-01-26T06:04:05.000000Z",
+        "updated_at": "2026-01-26T06:04:05.000000Z"
+    },
+    {
+        "id": 1578,
+        "name": "【その他】リギペン(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"リギペン\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:14}]",
+        "created_at": "2026-01-26T06:17:34.000000Z",
+        "updated_at": "2026-01-26T06:17:34.000000Z"
+    },
+    {
+        "id": 1579,
+        "name": "【その他】リギスの晩餐(3×3)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"リギスの晩餐\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"3 × 3\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:30}]",
+        "created_at": "2026-01-26T06:20:01.000000Z",
+        "updated_at": "2026-01-26T06:20:01.000000Z"
+    },
+    {
+        "id": 1580,
+        "name": "【その他】リギッキー(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"リギッキー\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:44}]",
+        "created_at": "2026-01-26T06:22:47.000000Z",
+        "updated_at": "2026-01-26T06:22:47.000000Z"
+    },
+    {
+        "id": 1581,
+        "name": "【その他】めぐねえ(2×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"めぐねえ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:43}]",
+        "created_at": "2026-01-26T06:25:49.000000Z",
+        "updated_at": "2026-01-26T06:25:49.000000Z"
+    },
+    {
+        "id": 1582,
+        "name": "【その他】パチ1(2×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ1\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:33}]",
+        "created_at": "2026-01-26T06:28:13.000000Z",
+        "updated_at": "2026-01-26T06:28:13.000000Z"
+    },
+    {
+        "id": 1583,
+        "name": "【その他】パチ2(2×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ2\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:34}]",
+        "created_at": "2026-01-26T06:29:34.000000Z",
+        "updated_at": "2026-01-26T06:29:34.000000Z"
+    },
+    {
+        "id": 1584,
+        "name": "【その他】パチ3(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ3\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:35}]",
+        "created_at": "2026-01-26T06:33:00.000000Z",
+        "updated_at": "2026-01-26T06:33:00.000000Z"
+    },
+    {
+        "id": 1585,
+        "name": "【その他】パチ4(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ4\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:36}]",
+        "created_at": "2026-01-26T06:34:06.000000Z",
+        "updated_at": "2026-01-26T06:34:06.000000Z"
+    },
+    {
+        "id": 1586,
+        "name": "【その他】パチ5(2×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ5\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:37}]",
+        "created_at": "2026-01-26T06:36:04.000000Z",
+        "updated_at": "2026-01-26T06:36:04.000000Z"
+    },
+    {
+        "id": 1587,
+        "name": "【その他】パチ6(2×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ6\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:38}]",
+        "created_at": "2026-01-26T06:36:50.000000Z",
+        "updated_at": "2026-01-26T06:36:50.000000Z"
+    },
+    {
+        "id": 1588,
+        "name": "【その他】パチ7(2×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"パチ7\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:39}]",
+        "created_at": "2026-01-26T06:38:12.000000Z",
+        "updated_at": "2026-01-26T06:38:12.000000Z"
+    },
+    {
+        "id": 1589,
+        "name": "【その他】レゼ(4×2)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"レゼ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"4 × 2\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:5}]",
+        "created_at": "2026-01-26T06:41:14.000000Z",
+        "updated_at": "2026-01-26T06:41:14.000000Z"
+    },
+    {
+        "id": 1590,
+        "name": "【その他】シュン(幼女)のメモロビ(2×3)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"シュン(幼女)のメモロビ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 3\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:42}]",
+        "created_at": "2026-01-26T06:43:52.000000Z",
+        "updated_at": "2026-01-26T06:43:52.000000Z"
+    },
+    {
+        "id": 1591,
+        "name": "【その他】カイリュー(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"カイリュー\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:15}]",
+        "created_at": "2026-01-26T06:47:16.000000Z",
+        "updated_at": "2026-01-26T06:47:16.000000Z"
+    },
+    {
+        "id": 1592,
+        "name": "【その他】核爆弾ランチャー(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"核爆弾ランチャー\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:0}]",
+        "created_at": "2026-01-26T06:48:59.000000Z",
+        "updated_at": "2026-01-26T06:48:59.000000Z"
+    },
+    {
+        "id": 1593,
+        "name": "【その他】たまちゃん(1×1)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"たまちゃん\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"1 × 1\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:17}]",
+        "created_at": "2026-01-26T06:51:50.000000Z",
+        "updated_at": "2026-01-26T06:54:22.000000Z"
+    },
+    {
+        "id": 1594,
+        "name": "【その他】ちょこチュウ(2×3)(コピー不可)",
+        "key": "minecraft:paper",
+        "is_original": 1,
+        "nbt": "[custom_name={extra:[{text:\"【その他】\",bold:true,color:green},{text:\"ちょこチュウ\",color:white}],text:\"\"},lore=[{extra:[{text:\"size : \",color:dark_gray},{text:\"2 × 3\",color:gray}],text:\"\"},{text:\"コピー不可\"}],custom_data={CombinedImageMap:40}]",
+        "created_at": "2026-01-26T06:54:37.000000Z",
+        "updated_at": "2026-01-26T06:54:37.000000Z"
     },
     {
         "id": 327,
@@ -13992,6 +14307,33 @@
         "is_original": 1,
         "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: クエスト (特別クエスト)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"クエスト (特別クエスト)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
         "created_at": "2025-12-31T02:35:41.000000Z",
-        "updated_at": "2025-12-31T02:35:41.000000Z"
+        "updated_at": "2026-01-11T08:08:47.000000Z"
+    },
+    {
+        "id": 1556,
+        "name": "防具屋(一回限定)のNPC召喚",
+        "key": "villager_spawn_egg",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 防具屋(一回限定)\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"防具屋(一回限定)\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "created_at": "2026-01-11T05:42:59.000000Z",
+        "updated_at": "2026-01-11T05:42:59.000000Z"
+    },
+    {
+        "id": 1557,
+        "name": "お食事処のNPC召喚",
+        "key": "villager_spawn_egg",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: お食事処\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"お食事処\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "created_at": "2026-01-11T05:42:59.000000Z",
+        "updated_at": "2026-01-11T05:42:59.000000Z"
+    },
+    {
+        "id": 1558,
+        "name": "防具屋のNPC召喚",
+        "key": "villager_spawn_egg",
+        "is_original": 1,
+        "nbt": "[enchantment_glint_override=1b,rarity=rare,custom_name=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"yellow\",\"text\":\"NPC召喚: 防具屋\"}],\"text\":\"\"}],lore=[{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"右クリックでNPCを召喚します\"}],\"text\":\"\"}],custom_data={itemType:npcSpawner,npcName:\"防具屋\"},entity_data={id:\"minecraft:area_effect_cloud\",Duration:1,Radius:0.01f,Invulnerable:1b}]",
+        "created_at": "2026-01-11T05:42:59.000000Z",
+        "updated_at": "2026-01-11T05:42:59.000000Z"
     }
 ]
