@@ -320,6 +320,22 @@ command /get-original-item <text> [<integer>]:
             set {_nbt_base} to "minecraft:end_crystal"
             set {_is_consumable} to true
 
+        else if {_type} is "dropTpTool":
+            set {_item} to hopper
+            set name of {_item} to "&b&lドロップ回収"
+            set lore of {_item} to "&7右クリックでドロップ回収のON/OFFを切り替えます"
+            set {_rarity} to "rare"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:hopper"
+
+        else if {_type} is "infinityStackTool":
+            set {_item} to chest
+            set name of {_item} to "&a&l無限スタック"
+            set lore of {_item} to "&7右クリックで無限スタックのON/OFFを切り替えます"
+            set {_rarity} to "rare"
+            set {_is_accessory} to false
+            set {_nbt_base} to "minecraft:chest"
+
         else if {_type} is "wallet":
             set {_item} to leather horse armor
             set name of {_item} to "&6お財布"
@@ -376,7 +392,7 @@ command /get-original-item <text> [<integer>]:
         send formatted "<tooltip:クリックでコピー><copy:%{_give_cmd}%>&e[Click to Copy] &7%{_give_cmd}%"
 
 on tab complete of "/get-original-item":
-    set {_types::*} to "healthBoost", "speedBoost", "hasteBoost", "jumpBoost", "slowFalling", "fireResistance", "nightVision", "infinitePearl", "petaPeta", "jumpKun", "sidebarToggle" and "wallet"
+    set {_types::*} to "healthBoost", "speedBoost", "hasteBoost", "jumpBoost", "slowFalling", "fireResistance", "nightVision", "infinitePearl", "petaPeta", "jumpKun", "sidebarToggle", "dropTpTool", "infinityStackTool" and "wallet"
     set tab completions for position 1 to {_types::*}
     if tab arg-1 is "healthBoost" or "speedBoost" or "hasteBoost" or "jumpBoost":
         set tab completions for position 2 to "1", "2" and "3"
@@ -522,7 +538,7 @@ every 5 ticks:
 on dispense:
     set {_nbt} to custom nbt of event-item
     set {_type} to string tag "itemType" of {_nbt}
-    if {_type} is "accessory" or "tradeTicket" or "infinitePearl" or "petaPeta" or "jumpKun" or "sidebarToggle":
+    if {_type} is "accessory" or "tradeTicket" or "infinitePearl" or "petaPeta" or "jumpKun" or "sidebarToggle" or "dropTpTool" or "infinityStackTool":
         cancel event
 
 # 消費防止: 右クリック (スポーンエッグの使用など) / 取引券の破棄機能
@@ -628,5 +644,5 @@ on place:
     set {_item} to player's tool
     set {_nbt} to custom nbt of {_item}
     set {_type} to string tag "itemType" of {_nbt}
-    if {_type} is "accessory" or "tradeTicket" or "infinitePearl" or "petaPeta" or "jumpKun" or "sidebarToggle":
+    if {_type} is "accessory" or "tradeTicket" or "infinitePearl" or "petaPeta" or "jumpKun" or "sidebarToggle" or "dropTpTool" or "infinityStackTool":
         cancel event
